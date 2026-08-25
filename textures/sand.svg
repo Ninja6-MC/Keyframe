@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
+  <!-- Pristine warm golden-buff beach sand with minimal scattered mineral flecks -->
+  <!-- ========================================================================= -->
+
+  <!-- 1. Base Warm Beach Sand (#dacfa3) -->
+  <rect width="512" height="512" fill="#dacfa3" />
+
+  <!-- 2. Shaded Sand Grains / Warm Tan Accents (#d1ba8a) -->
+  <g id="shaded_grains" fill="#d1ba8a" shape-rendering="crispEdges">
+    <rect x="32" y="64" width="32" height="32" />
+    <rect x="224" y="160" width="32" height="32" />
+    <rect x="384" y="224" width="32" height="32" />
+    <rect x="288" y="352" width="32" height="32" />
+    <rect x="0" y="384" width="32" height="32" />
+    <rect x="192" y="480" width="32" height="32" />
+    <rect x="480" y="480" width="32" height="32" />
+  </g>
+
+  <!-- 3. Sparkling Highlight Flecks / Pale Gold Mineral Grains (#e7e4bb) -->
+  <g id="highlight_grains" fill="#e7e4bb" shape-rendering="crispEdges">
+    <rect x="416" y="0" width="32" height="32" />
+    <rect x="256" y="32" width="32" height="32" />
+    <rect x="480" y="64" width="32" height="32" />
+    <rect x="128" y="128" width="32" height="32" />
+    <rect x="320" y="192" width="32" height="32" />
+    <rect x="160" y="224" width="32" height="32" />
+    <rect x="288" y="384" width="32" height="32" />
+  </g>
+</svg>
