@@ -76,15 +76,13 @@ function generateWaterFlowStripSvg(frameCount = 16) {
   const frames = [];
   const W = 1024;
   for (let f = 0; f < frameCount; f++) {
-    const shiftY = (W * f) / frameCount;
-
     frames.push(`
     <g transform="translate(0, ${f * W})">
-      <!-- Frame ${f} Base Translucent Flowing Water -->
-      <rect width="${W}" height="${W}" fill="#ffffff" fill-opacity="0.72" />
+      <!-- Frame ${f} Base Translucent Flowing Water (#b6b6b6 at 52% opacity) -->
+      <rect width="${W}" height="${W}" fill="#b6b6b6" fill-opacity="0.52" />
 
       <!-- Smooth Directional Downstream Currents -->
-      <g id="flow_currents_${f}" stroke="#ffffff" stroke-opacity="0.30" stroke-width="20" stroke-linecap="round" fill="none">
+      <g id="flow_currents_${f}" stroke="#c8c8c8" stroke-opacity="0.25" stroke-width="20" stroke-linecap="round" fill="none">
         <path d="M 128 0 C 128 256, 192 512, 128 1024" />
         <path d="M 384 0 C 448 256, 320 512, 384 1024" />
         <path d="M 640 0 C 608 256, 704 512, 640 1024" />
