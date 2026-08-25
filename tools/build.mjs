@@ -99,6 +99,21 @@ export async function buildResourcePack(targetRes = 512) {
 
     rasterize(srcSvg, destPng, targetRes);
     console.log(`  ✓ ${isItem ? "item" : "block"}/${stem}.png`);
+
+    // Backwards-compatibility alias for 1.20 - 1.20.2 (grass.png, grass_1.png, grass_2.png)
+    if (stem === "short_grass") {
+      const grassPng = path.join(BLOCKS_DIR, "grass.png");
+      fs.copyFileSync(destPng, grassPng);
+      console.log(`  ✓ block/grass.png (alias)`);
+    } else if (stem === "short_grass_1") {
+      const grassPng = path.join(BLOCKS_DIR, "grass_1.png");
+      fs.copyFileSync(destPng, grassPng);
+      console.log(`  ✓ block/grass_1.png (alias)`);
+    } else if (stem === "short_grass_2") {
+      const grassPng = path.join(BLOCKS_DIR, "grass_2.png");
+      fs.copyFileSync(destPng, grassPng);
+      console.log(`  ✓ block/grass_2.png (alias)`);
+    }
   }
 
   // 3. Bundle custom pack_template/assets (blockstates, models)
