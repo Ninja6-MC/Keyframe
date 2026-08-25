@@ -85,19 +85,19 @@ function generateWaterStillStripSvg(frameCount = 16) {
     <g transform="translate(0, ${f * 512})">
       <defs>
         <radialGradient id="caustic_g1_${f}" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14" />
-          <stop offset="60%" stop-color="#ffffff" stop-opacity="0.05" />
-          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+          <stop offset="60%" stop-color="#d8fbff" stop-opacity="0.14" />
+          <stop offset="100%" stop-color="#38d5ec" stop-opacity="0.0" />
         </radialGradient>
         <radialGradient id="caustic_g2_${f}" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
-          <stop offset="70%" stop-color="#ffffff" stop-opacity="0.04" />
-          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28" />
+          <stop offset="70%" stop-color="#d8fbff" stop-opacity="0.12" />
+          <stop offset="100%" stop-color="#38d5ec" stop-opacity="0.0" />
         </radialGradient>
       </defs>
 
-      <!-- Base Translucent Aquatic Surface (30% opacity for airy light blue) -->
-      <rect width="512" height="512" fill="#b0b0b0" fill-opacity="0.30" />
+      <!-- Base Radiant BSL Aqua Sky-Blue Aquatic Surface -->
+      <rect width="512" height="512" fill="#38d5ec" fill-opacity="0.45" />
 
       <!-- Broad Soft Toroidal Rolling Wave Swells -->
       <path d="M 0 ${160 + dy1} C 128 ${110 + dy1}, 256 ${190 + dy2}, 384 ${140 + dy1} C 448 ${115 + dy2}, 480 ${135 + dy1}, 512 ${160 + dy1} L 512 ${220 + dy1} C 480 ${195 + dy1}, 448 ${175 + dy2}, 384 ${200 + dy1} C 256 ${250 + dy2}, 128 ${170 + dy1}, 0 ${220 + dy1} Z" fill="url(#caustic_g1_${f})" />
@@ -122,11 +122,11 @@ function generateWaterFlowStripSvg(frameCount = 16) {
 
     frames.push(`
     <g transform="translate(0, ${f * W})">
-      <!-- Frame ${f} Base Translucent Flowing Water (30% opacity) -->
-      <rect width="${W}" height="${W}" fill="#b0b0b0" fill-opacity="0.30" />
+      <!-- Frame ${f} Base Radiant BSL Aqua Flowing Water -->
+      <rect width="${W}" height="${W}" fill="#38d5ec" fill-opacity="0.42" />
 
       <!-- Smooth Directional Downstream Currents -->
-      <g id="flow_currents_${f}" stroke="#ffffff" stroke-opacity="0.25" stroke-width="24" stroke-linecap="round" fill="none">
+      <g id="flow_currents_${f}" stroke="#ffffff" stroke-opacity="0.32" stroke-width="24" stroke-linecap="round" fill="none">
         <path d="M 128 0 C 128 256, 192 512, 128 1024" />
         <path d="M 384 0 C 448 256, 320 512, 384 1024" />
         <path d="M 640 0 C 608 256, 704 512, 640 1024" />
@@ -134,7 +134,7 @@ function generateWaterFlowStripSvg(frameCount = 16) {
       </g>
 
       <!-- Downstream Ripple Crests -->
-      <g stroke="#ffffff" stroke-opacity="0.35" stroke-width="8" stroke-linecap="round" fill="none">
+      <g stroke="#ffffff" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round" fill="none">
         <path d="M 0 ${(shiftY + 256) % W} Q 256 ${(shiftY + 320) % W}, 512 ${(shiftY + 256) % W} T 1024 ${(shiftY + 256) % W}" />
         <path d="M 0 ${(shiftY + 768) % W} Q 256 ${(shiftY + 832) % W}, 512 ${(shiftY + 768) % W} T 1024 ${(shiftY + 768) % W}" />
       </g>
