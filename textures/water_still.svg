@@ -1,29 +1,47 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <!-- Subtle Ambient Reflection Gradient -->
-    <linearGradient id="reflect_top" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#d4ebf2" stop-opacity="0.22" />
+    <!-- Subtle Ambient Sky Reflectance -->
+    <linearGradient id="water_sheen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
       <stop offset="100%" stop-color="#b6b6b6" stop-opacity="0.0" />
     </linearGradient>
   </defs>
 
-  <!-- Base Translucent Calm Aquatic Volume -->
-  <rect width="512" height="512" fill="#b6b6b6" fill-opacity="0.55" />
+  <!-- Base Translucent Aquatic Volume (52% opacity) -->
+  <rect width="512" height="512" fill="#b6b6b6" fill-opacity="0.52" />
 
-  <!-- Top Reflective Shimmer Sheen Layer -->
-  <rect width="512" height="512" fill="url(#reflect_top)" />
+  <!-- Top Ambient Sheen -->
+  <rect width="512" height="512" fill="url(#water_sheen)" />
 
-  <!-- Seamless Periodic Beach Wave Swells (Toroidal f(0,y) == f(512,y)) -->
-  <!-- Wave Swell 1 (Upper Horizontal Rolling Swell) -->
-  <path d="M 0 140 C 128 110, 256 165, 384 125 C 448 105, 480 125, 512 140 L 512 155 C 480 140, 448 120, 384 140 C 256 180, 128 125, 0 155 Z" fill="#ffffff" fill-opacity="0.20" />
-  <path d="M 0 140 C 128 110, 256 165, 384 125 C 448 105, 480 125, 512 140" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.32" stroke-linecap="round" />
+  <!-- Stylized Geometric Beach Caustic Lattice Network -->
+  <!-- Interlocking refractive sunlit webbing with 100% toroidal seamless wrap -->
+  <g stroke="#ffffff" stroke-opacity="0.38" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Web Node A -> Node B -> Wraps -->
+    <path d="M 0 128 C 64 140, 112 96, 176 112 C 240 128, 272 192, 336 176 C 400 160, 448 112, 512 128" />
+    <path d="M 0 384 C 64 368, 128 416, 192 384 C 256 352, 304 416, 384 400 C 448 384, 480 368, 512 384" />
+    
+    <!-- Vertical Cross-Struts (wrapping y=0 to y=512) -->
+    <path d="M 128 0 C 144 64, 160 112, 176 192 C 192 272, 160 336, 192 384 C 208 432, 176 480, 128 512" />
+    <path d="M 384 0 C 368 64, 352 128, 336 176 C 320 256, 368 320, 384 400 C 400 448, 384 480, 384 512" />
 
-  <!-- Wave Swell 2 (Lower Horizontal Rolling Swell) -->
-  <path d="M 0 380 C 128 350, 256 405, 384 365 C 448 345, 480 365, 512 380 L 512 395 C 480 380, 448 360, 384 380 C 256 420, 128 365, 0 395 Z" fill="#ffffff" fill-opacity="0.18" />
-  <path d="M 0 380 C 128 350, 256 405, 384 365 C 448 345, 480 365, 512 380" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.28" stroke-linecap="round" />
+    <!-- Interior Caustic Cell Struts -->
+    <path d="M 176 112 C 208 160, 288 144, 336 176" />
+    <path d="M 176 192 C 240 224, 272 240, 336 176" />
+    <path d="M 176 192 C 208 272, 288 288, 320 256 C 352 224, 368 320, 384 400" />
+    <path d="M 176 192 C 144 256, 160 320, 192 384" />
+    <path d="M 192 384 C 256 368, 320 352, 384 400" />
 
-  <!-- Gentle Sunlit Beach Ripple Accents (Tapered Refractive Glints) -->
-  <path d="M 80 80 Q 140 68, 200 84 Q 140 88, 80 80 Z" fill="#ffffff" fill-opacity="0.22" />
-  <path d="M 320 240 Q 390 226, 460 244 Q 390 248, 320 240 Z" fill="#ffffff" fill-opacity="0.20" />
-  <path d="M 120 450 Q 190 436, 260 454 Q 190 458, 120 450 Z" fill="#ffffff" fill-opacity="0.18" />
+    <!-- Corner Wrap Bridges -->
+    <path d="M 0 256 C 48 240, 96 224, 176 192" />
+    <path d="M 512 256 C 464 240, 416 224, 336 176" />
+  </g>
+
+  <!-- Fine Sunlit Caustic Shimmer Accents (Crisp Inner Core Highlights) -->
+  <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M 176 112 C 240 128, 272 192, 336 176" />
+    <path d="M 192 384 C 256 352, 304 416, 384 400" />
+    <path d="M 176 192 C 240 224, 272 240, 336 176" />
+    <path d="M 0 128 C 48 136, 96 104, 140 108" />
+    <path d="M 512 128 C 464 120, 432 144, 384 140" />
+  </g>
 </svg>
