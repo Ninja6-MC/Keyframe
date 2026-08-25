@@ -1,94 +1,130 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <!-- Bedrock Tectonic Palette -->
-    <!-- Base Deep Crust: #222222 -->
-    <!-- Shadow Crevice: #121212 -->
-    <!-- Mid-Slate Plates: #464646 -->
-    <!-- Slate Core: #585858 -->
-    <!-- Mineral Highlights: #828282 -->
-    <!-- Glint Facets: #9c9c9c -->
+    <!-- High-Contrast Tectonic Bedrock Palette -->
+    <!-- Base Void Black: #0d0d0d -->
+    <!-- Deep Crevice Shadow: #000000 -->
+    <!-- Dark Slate Mantle: #2a2a2a -->
+    <!-- Mid Slate Plate: #525252 -->
+    <!-- Raised Metamorphic Rock: #787878 -->
+    <!-- Sharp Mineral Highlight: #b0b0b0 -->
+    <!-- Diamond Specular Glint: #dedede -->
   </defs>
 
-  <!-- 1. Deep Primordial Mantle Crust Base -->
-  <rect width="512" height="512" fill="#222222" />
+  <!-- 1. Deep Void Mantle Crust Base -->
+  <rect width="512" height="512" fill="#0d0d0d" />
 
-  <!-- 2. Dark Crevice Fault Channels -->
-  <g fill="#121212">
-    <!-- Horizontal & Vertical Tectonic Fissure Cuts -->
-    <rect x="32" y="64" width="160" height="96" rx="12" />
-    <rect x="0" y="256" width="128" height="96" rx="12" />
-    <rect x="384" y="0" width="128" height="96" rx="12" />
-    <rect x="256" y="160" width="160" height="96" rx="12" />
-    <rect x="320" y="320" width="192" height="96" rx="12" />
-    <rect x="96" y="384" width="160" height="128" rx="12" />
+  <!-- 2. Dense Deep Shadow Crevices -->
+  <g fill="#000000">
+    <polygon points="0,64 96,64 128,128 32,160 0,128" />
+    <polygon points="160,0 224,32 224,96 160,64" />
+    <polygon points="352,32 448,0 480,64 416,96" />
+    <polygon points="64,224 160,192 192,256 96,288" />
+    <polygon points="256,128 352,160 320,224 224,192" />
+    <polygon points="416,192 512,160 512,256 448,288" />
+    <polygon points="0,352 96,320 128,384 32,416" />
+    <polygon points="192,320 288,352 256,416 160,384" />
+    <polygon points="352,288 448,320 416,384 320,352" />
+    <polygon points="64,448 160,480 128,512 32,512" />
+    <polygon points="288,448 384,416 416,480 320,512" />
+    <polygon points="480,384 512,416 512,512 448,480" />
+    <polygon points="480,0 512,0 512,64 448,32" />
   </g>
 
-  <!-- 3. Mid-Slate Metamorphic Tectonic Plates (16x16 Quantized Macro Shapes) -->
-  <g fill="#464646">
-    <!-- Plate Alpha (Top Left Toroidal, wraps y=0 and y=512) -->
-    <path d="M 0 0 L 160 0 L 160 64 L 64 64 L 64 160 L 0 160 Z" />
-    <path d="M 0 448 L 64 448 L 64 512 L 0 512 Z" />
-    <path d="M 448 448 L 512 448 L 512 512 L 448 512 Z" />
-    <path d="M 448 0 L 512 0 L 512 64 L 448 64 Z" />
-
-    <!-- Plate Beta (Top Center / Right) -->
-    <path d="M 224 0 L 416 0 L 416 96 L 352 96 L 352 160 L 224 160 Z" />
-
-    <!-- Plate Gamma (Center Massive Rock) -->
-    <path d="M 128 128 L 288 128 L 288 192 L 352 192 L 352 320 L 224 320 L 224 256 L 128 256 Z" />
-
-    <!-- Plate Delta (Mid Left) -->
-    <path d="M 0 192 L 96 192 L 96 288 L 0 288 Z" />
-
-    <!-- Plate Epsilon (Right Toroidal, wraps x=512 and x=0) -->
-    <path d="M 416 160 L 512 160 L 512 320 L 448 320 L 448 256 L 416 256 Z" />
-    <path d="M 0 160 L 32 160 L 32 256 L 0 256 Z" />
-
-    <!-- Plate Zeta (Bottom Left) -->
-    <path d="M 32 320 L 192 320 L 192 448 L 96 448 L 96 480 L 32 480 Z" />
-
-    <!-- Plate Eta (Bottom Center / Right) -->
-    <path d="M 256 320 L 384 320 L 384 416 L 480 416 L 480 512 L 256 512 Z" />
+  <!-- 3. Dark Slate Tectonic Matrices -->
+  <g fill="#2a2a2a">
+    <!-- Macro Plate Clusters -->
+    <polygon points="0,0 128,0 160,64 96,128 0,96" />
+    <polygon points="224,0 352,0 384,64 320,128 192,96" />
+    <polygon points="448,0 512,0 512,128 416,128 384,64" />
+    <polygon points="96,128 224,96 256,192 160,224 64,160" />
+    <polygon points="320,128 448,96 480,192 384,224 288,160" />
+    <polygon points="0,160 64,160 96,256 0,288" />
+    <polygon points="480,160 512,160 512,288 448,256" />
+    <polygon points="160,224 288,192 320,288 224,320 128,256" />
+    <polygon points="384,224 512,192 512,320 416,320 352,256" />
+    <polygon points="0,288 128,256 160,352 64,384 0,320" />
+    <polygon points="224,288 352,256 384,352 288,384 192,320" />
+    <polygon points="96,352 224,320 256,416 160,448 64,384" />
+    <polygon points="320,352 448,320 480,416 384,448 288,384" />
+    <polygon points="0,416 64,384 96,480 0,512" />
+    <polygon points="480,416 512,416 512,512 448,480" />
+    <polygon points="160,416 288,384 320,480 224,512 128,480" />
+    <polygon points="384,416 512,384 512,512 416,512 352,448" />
   </g>
 
-  <!-- 4. Raised Slate Cores & Inner Chamfers -->
-  <g fill="#585858">
-    <rect x="16" y="16" width="112" height="96" rx="8" />
-    <rect x="256" y="16" width="128" height="64" rx="8" />
-    <rect x="160" y="144" width="112" height="96" rx="8" />
-    <rect x="256" y="208" width="80" height="96" rx="8" />
-    <rect x="16" y="208" width="64" height="64" rx="8" />
-    <rect x="448" y="176" width="48" height="128" rx="8" />
-    <rect x="48" y="336" width="128" height="96" rx="8" />
-    <rect x="288" y="336" width="80" height="80" rx="8" />
-    <rect x="288" y="432" width="160" height="64" rx="8" />
-    <rect x="464" y="464" width="48" height="48" rx="6" />
-    <rect x="464" y="0" width="48" height="48" rx="6" />
+  <!-- 4. Mid-Slate Angular Raised Facets -->
+  <g fill="#525252">
+    <polygon points="16,16 96,16 128,64 64,96 16,64" />
+    <polygon points="240,16 336,16 352,64 288,96 208,64" />
+    <polygon points="464,16 512,16 512,96 448,96 416,48" />
+    <polygon points="112,144 208,112 224,176 144,192 80,160" />
+    <polygon points="336,144 432,112 448,176 368,192 304,160" />
+    <polygon points="16,176 64,176 80,240 16,256" />
+    <polygon points="496,176 512,176 512,256 464,240" />
+    <polygon points="176,240 272,208 288,272 208,288 144,256" />
+    <polygon points="400,240 496,208 512,272 432,288 368,256" />
+    <polygon points="16,304 96,272 128,336 48,352 16,320" />
+    <polygon points="240,304 336,272 352,336 272,352 208,320" />
+    <polygon points="112,368 208,336 224,400 144,416 80,384" />
+    <polygon points="336,368 432,336 448,400 368,416 304,384" />
+    <polygon points="16,432 64,400 80,464 16,480" />
+    <polygon points="496,432 512,400 512,480 464,464" />
+    <polygon points="176,432 272,400 288,464 208,496 144,464" />
+    <polygon points="400,432 496,400 512,464 432,496 368,464" />
   </g>
 
-  <!-- 5. Primordial Mineral Highlights & Facet Glints -->
-  <g fill="#828282">
-    <rect x="32" y="32" width="80" height="32" rx="4" />
-    <rect x="288" y="32" width="80" height="32" rx="4" />
-    <rect x="176" y="160" width="80" height="32" rx="4" />
-    <rect x="272" y="224" width="48" height="48" rx="4" />
-    <rect x="32" y="224" width="32" height="32" rx="4" />
-    <rect x="464" y="192" width="32" height="80" rx="4" />
-    <rect x="64" y="352" width="96" height="32" rx="4" />
-    <rect x="304" y="352" width="48" height="48" rx="4" />
-    <rect x="320" y="448" width="96" height="32" rx="4" />
-    <rect x="480" y="480" width="32" height="32" rx="4" />
-    <rect x="480" y="0" width="32" height="32" rx="4" />
+  <!-- 5. Hard Metamorphic Raised Plates -->
+  <g fill="#787878">
+    <polygon points="32,24 80,24 104,56 48,72 24,48" />
+    <polygon points="256,24 320,24 328,56 272,72 224,48" />
+    <polygon points="480,24 512,24 512,72 464,72 432,40" />
+    <polygon points="128,144 192,120 200,160 136,176 96,152" />
+    <polygon points="352,144 416,120 424,160 360,176 320,152" />
+    <polygon points="24,184 56,184 64,224 24,232" />
+    <polygon points="192,232 256,208 264,248 200,264 160,240" />
+    <polygon points="416,232 480,208 488,248 424,264 384,240" />
+    <polygon points="32,296 80,272 104,312 40,328 24,304" />
+    <polygon points="256,296 320,272 328,312 264,328 224,304" />
+    <polygon points="128,360 192,336 200,376 136,392 96,368" />
+    <polygon points="352,360 416,336 424,376 360,392 320,368" />
+    <polygon points="24,424 56,400 64,440 24,448" />
+    <polygon points="192,424 256,400 264,440 200,456 160,432" />
+    <polygon points="416,424 480,400 488,440 424,456 384,432" />
   </g>
 
-  <!-- 6. Crisp Specular Crystal Glints -->
-  <g fill="#9c9c9c">
-    <rect x="48" y="36" width="48" height="12" rx="2" />
-    <rect x="304" y="36" width="48" height="12" rx="2" />
-    <rect x="192" y="164" width="48" height="12" rx="2" />
-    <rect x="280" y="228" width="24" height="24" rx="2" />
-    <rect x="472" y="200" width="16" height="48" rx="2" />
-    <rect x="80" y="356" width="64" height="12" rx="2" />
-    <rect x="336" y="452" width="64" height="12" rx="2" />
+  <!-- 6. Sharp High-Contrast Mineral Highlights (Dense Sparkling Distribution) -->
+  <g fill="#b0b0b0">
+    <polygon points="40,28 72,28 88,48 48,56 32,40" />
+    <polygon points="264,28 304,28 312,48 272,56 240,40" />
+    <polygon points="488,28 512,28 512,56 480,56 456,36" />
+    <polygon points="136,140 176,124 184,148 144,160 112,144" />
+    <polygon points="360,140 400,124 408,148 368,160 336,144" />
+    <polygon points="28,188 48,188 56,212 28,216" />
+    <polygon points="200,228 240,212 248,236 208,248 176,232" />
+    <polygon points="424,228 464,212 472,236 432,248 400,232" />
+    <polygon points="40,288 72,272 88,296 48,308 32,292" />
+    <polygon points="264,288 304,272 312,296 272,308 240,292" />
+    <polygon points="136,352 176,336 184,360 144,372 112,356" />
+    <polygon points="360,352 400,336 408,360 368,372 336,356" />
+    <polygon points="28,420 48,404 56,428 28,432" />
+    <polygon points="200,420 240,404 248,428 208,440 176,424" />
+    <polygon points="424,420 464,404 472,428 432,440 400,424" />
+  </g>
+
+  <!-- 7. Diamond-Hard Specular Spark Glints -->
+  <g fill="#dedede">
+    <rect x="44" y="30" width="24" height="12" rx="2" />
+    <rect x="268" y="30" width="24" height="12" rx="2" />
+    <rect x="492" y="30" width="20" height="12" rx="2" />
+    <rect x="140" y="136" width="24" height="12" rx="2" />
+    <rect x="364" y="136" width="24" height="12" rx="2" />
+    <rect x="204" y="224" width="24" height="12" rx="2" />
+    <rect x="428" y="224" width="24" height="12" rx="2" />
+    <rect x="44" y="284" width="24" height="12" rx="2" />
+    <rect x="268" y="284" width="24" height="12" rx="2" />
+    <rect x="140" y="348" width="24" height="12" rx="2" />
+    <rect x="364" y="348" width="24" height="12" rx="2" />
+    <rect x="204" y="416" width="24" height="12" rx="2" />
+    <rect x="428" y="416" width="24" height="12" rx="2" />
   </g>
 </svg>
