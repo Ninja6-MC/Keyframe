@@ -1,0 +1,12 @@
+# The checks live in Ninja6-MC/.github and are maintained in one place; this file is
+# only the caller. Copied from that repo's templates/standards-stub.yml.
+name: Standards
+
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  standards:
+    uses: Ninja6-MC/.github/.github/workflows/standards.yml@main

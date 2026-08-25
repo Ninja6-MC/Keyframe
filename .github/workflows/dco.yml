@@ -1,0 +1,12 @@
+# The check itself lives in Ninja6-MC/.github and is maintained in one place; this file
+# is only the caller. Copied from that repo's templates/dco-stub.yml.
+name: DCO
+
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  dco:
+    uses: Ninja6-MC/.github/.github/workflows/dco.yml@main
