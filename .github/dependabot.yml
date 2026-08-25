@@ -1,0 +1,66 @@
+# This repository's copy of Ninja6-MC/.github templates/dependabot.template.
+#
+# THE PATH IS LOAD-BEARING. Dependabot reads this file only at .github/dependabot.yml.
+# A copy at the repository root parses fine, shows up in review and never runs; the
+# symptom is silence, not a red check. Do not move it up a level.
+#
+# It exists because release.yml pins three third-party actions to commit SHAs and
+# publishes the pack zips users download. A pin with no updater is worse than no pin.
+#
+# WHY THIS EXISTS. Workflow actions in this org are pinned to commit SHAs, not tags:
+# a tag can be repointed at new code with no diff, no review and no notification. The
+# pin closes that, and opens the opposite hole - it goes stale in silence, because
+# nothing tells you the pinned version was superseded. This file is the other half of
+# the trade. A repository that pins without it is worse off than one that never pinned.
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # GROUPED, and that is load-bearing rather than tidiness. Ungrouped, Dependabot
+    # opens one pull request per action, and paired actions drift apart: on 2026-08-20
+    # in SpiralGenesis it proposed `upload-artifact` 7.0.1 while `download-artifact`
+    # stayed on 4.3.0, and split `gradle/actions/setup-gradle` from
+    # `.../wrapper-validation` - the same repository, wanting the same commit.
+    #
+    # Worse, a per-action pull request goes GREEN on that split, because its own run
+    # uses the version under test at both ends. The incompatibility only appears once
+    # it merges beside the stale pin. Grouping removes the failure; CI will not catch it.
+    #
+    # Majors are separated because Dependabot goes to the newest version regardless of
+    # major, so a first run proposes jumps that need their release notes read. Keeping
+    # them out of the routine group means a licence change or a removed parameter is
+    # never buried in a patch bump.
+    groups:
+      actions:
+        applies-to: version-updates
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+      actions-major:
+        applies-to: version-updates
+        patterns:
+          - '*'
+        update-types:
+          - major
+    commit-message:
+      # Conventional Commits, per CONTRIBUTING.md 3.5. Dependabot signs off its own
+      # commits - `Signed-off-by: dependabot[bot] <support@github.com>` - so its pull
+      # requests pass the DCO check unaided. Verified 2026-08-20.
+      prefix: ci
+    labels:
+      - dependencies
+    # One pull request per group, so this is a backstop rather than a limit that shapes
+    # anything. Ungrouped, it is what split the first batch.
+    open-pull-requests-limit: 5
+
+# ADDING THE BUILD'S OWN ECOSYSTEM is a separate decision, deliberately not made here.
+# Actions are infrastructure and a bump is a security question. A compile-time
+# dependency is not: a Minecraft plugin is built against a specific server API, and a
+# bot raising that version is a compatibility change wearing a security change's
+# clothes. Add `gradle`, `npm` or whatever applies only when someone owns the review.

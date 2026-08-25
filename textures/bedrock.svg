@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- 1. Deep Primordial Mantle Crust Base -->
+  <rect width="512" height="512" fill="#141414" />
+
+  <!-- 2. Dark Crevice Fault Channels (Asymmetrical Organic Fractures) -->
+  <g fill="#080808">
+    <rect x="32" y="64" width="160" height="96" rx="12" />
+    <rect x="256" y="160" width="160" height="96" rx="12" />
+    <rect x="96" y="384" width="160" height="128" rx="12" />
+
+    <!-- Toroidal Wrapped Channels (Seamless x=0 to x=512) -->
+    <path d="M 0 256 L 96 256 L 96 320 L 0 320 Z" />
+    <path d="M 512 256 L 416 256 L 416 320 L 512 320 Z" />
+
+    <!-- Toroidal Wrapped Channels (Seamless y=0 to y=512) -->
+    <path d="M 384 0 L 448 0 L 448 64 L 384 64 Z" />
+    <path d="M 384 512 L 448 512 L 448 448 L 384 448 Z" />
+  </g>
+
+  <!-- 3. Mid-Slate Metamorphic Tectonic Plates (Authentic Chaotic Bedrock Layout) -->
+  <g fill="#3e3e3e">
+    <!-- Plate Alpha (Corner Plate - Wraps seamlessly at all 4 corners with zero corner dots) -->
+    <path d="M 0 0 L 160 0 L 160 64 L 64 64 L 64 160 L 0 160 Z" />
+    <path d="M 512 0 L 448 0 L 448 64 L 512 64 Z" />
+    <path d="M 0 512 L 160 512 L 160 448 L 64 448 L 64 512 Z" />
+    <path d="M 512 512 L 448 512 L 448 448 L 512 448 Z" />
+
+    <!-- Plate Beta / Eta (Seamless Top/Bottom Wrap at x=224..384) -->
+    <path d="M 224 0 L 384 0 L 384 96 L 320 96 L 320 160 L 224 160 Z" />
+    <path d="M 224 512 L 384 512 L 384 416 L 256 416 L 256 448 L 224 448 Z" />
+
+    <!-- Plate Delta / Epsilon (Seamless Left/Right Wrap at y=160..256) -->
+    <path d="M 0 160 L 96 160 L 96 256 L 0 256 Z" />
+    <path d="M 512 160 L 416 160 L 416 256 L 512 256 Z" />
+
+    <!-- Interior Organic Plates (Authentic Chaotic Stone Bodies) -->
+    <!-- Center Massive Stone Slab -->
+    <path d="M 128 128 L 288 128 L 288 192 L 352 192 L 352 320 L 224 320 L 224 256 L 128 256 Z" />
+
+    <!-- Right Center Plate -->
+    <path d="M 384 192 L 480 192 L 480 320 L 384 320 Z" />
+
+    <!-- Lower Left Plate -->
+    <path d="M 32 320 L 192 320 L 192 448 L 96 448 L 96 480 L 32 480 Z" />
+
+    <!-- Lower Right Plate -->
+    <path d="M 288 320 L 416 320 L 416 416 L 288 416 Z" />
+  </g>
+
+  <!-- 4. Raised Slate Cores (Completely in Interior of Plates) -->
+  <g fill="#545454">
+    <rect x="24" y="16" width="112" height="48" rx="8" />
+    <rect x="256" y="16" width="104" height="64" rx="8" />
+    <rect x="160" y="144" width="112" height="96" rx="8" />
+    <rect x="256" y="208" width="80" height="96" rx="8" />
+    <rect x="16" y="176" width="64" height="64" rx="8" />
+    <rect x="432" y="208" width="64" height="96" rx="8" />
+    <rect x="48" y="336" width="128" height="96" rx="8" />
+    <rect x="304" y="336" width="96" height="64" rx="8" />
+    <rect x="256" y="448" width="112" height="48" rx="8" />
+  </g>
+
+  <!-- 5. Crisp Mineral Highlights (Positioned Naturally in Plate Interiors - Zero Corner Dots) -->
+  <g fill="#a8a8a8">
+    <rect x="40" y="24" width="80" height="24" rx="4" />
+    <rect x="272" y="24" width="72" height="28" rx="4" />
+    <rect x="176" y="160" width="80" height="32" rx="4" />
+    <rect x="272" y="224" width="48" height="48" rx="4" />
+    <rect x="28" y="188" width="40" height="32" rx="4" />
+    <rect x="444" y="220" width="40" height="64" rx="4" />
+    <rect x="64" y="352" width="96" height="32" rx="4" />
+    <rect x="320" y="348" width="64" height="32" rx="4" />
+    <rect x="272" y="456" width="80" height="24" rx="4" />
+  </g>
+
+  <!-- 6. Crisp Bright Specular Glints -->
+  <g fill="#dedede">
+    <rect x="56" y="28" width="48" height="12" rx="2" />
+    <rect x="288" y="28" width="40" height="12" rx="2" />
+    <rect x="192" y="164" width="48" height="12" rx="2" />
+    <rect x="280" y="228" width="24" height="24" rx="2" />
+    <rect x="452" y="228" width="20" height="36" rx="2" />
+    <rect x="80" y="356" width="64" height="12" rx="2" />
+    <rect x="336" y="352" width="32" height="12" rx="2" />
+    <rect x="288" y="460" width="48" height="12" rx="2" />
+  </g>
+</svg>

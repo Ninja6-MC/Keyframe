@@ -1,42 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 512 512" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
-  <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: RED SAND (BADLANDS / MESA)              -->
   <!-- Accurate single-block pattern from perspective-unwarped reference frame:  -->
-  <!-- - #bump: Raised light grain (highlight bevel + body + drop shadow)        -->
-  <!-- - #hole: Recessed dark grain (body + inner shadow + sunlit reflection)    -->
+  <!-- - #bump: Raised terracotta grain (highlight bevel + body + drop shadow)   -->
+  <!-- - #hole: Recessed clay grain (body + inner shadow + sunlit reflection)    -->
   <!-- ========================================================================= -->
 
   <defs>
     <!-- Light Bump Component (32x32 Footprint) -->
     <g id="bump" shape-rendering="crispEdges">
       <!-- Bottom-Right Drop Shadow (3px) -->
-      <rect y="29" width="32" height="3" fill="#c8b982" />
-      <rect x="29" width="3" height="32" fill="#c8b982" />
+      <rect y="29" width="32" height="3" fill="#9d4c10" />
+      <rect x="29" width="3" height="32" fill="#9d4c10" />
       <!-- Raised Body (29x29) -->
-      <rect width="29" height="29" fill="#e7e4bb" />
+      <rect width="29" height="29" fill="#d2752b" />
       <!-- Top-Left Sunlit Highlight Bevel (3px) -->
-      <rect width="29" height="3" fill="#f4f0d4" />
-      <rect width="3" height="29" fill="#f4f0d4" />
+      <rect width="29" height="3" fill="#df8840" />
+      <rect width="3" height="29" fill="#df8840" />
     </g>
 
     <!-- Small Hole Component (32x32 Footprint) -->
     <g id="hole" shape-rendering="crispEdges">
       <!-- Hole Body (32x32) -->
-      <rect width="32" height="32" fill="#d1ba8a" />
+      <rect width="32" height="32" fill="#ac5712" />
       <!-- Top-Left Inner Shadow (3px) -->
-      <rect width="32" height="3" fill="#b89d66" />
-      <rect width="3" height="32" fill="#b89d66" />
+      <rect width="32" height="3" fill="#8c3e07" />
+      <rect width="3" height="32" fill="#8c3e07" />
       <!-- Bottom-Right Sunlit Reflection (3px) -->
-      <rect y="29" width="32" height="3" fill="#e7e4bb" />
-      <rect x="29" width="3" height="32" fill="#e7e4bb" />
+      <rect y="29" width="32" height="3" fill="#d2752b" />
+      <rect x="29" width="3" height="32" fill="#d2752b" />
     </g>
   </defs>
 
-  <!-- 1. Base Warm Beach Sand -->
-  <rect width="512" height="512" fill="#dacfa3" />
+  <!-- 1. Base Badlands Terracotta Red -->
+  <rect width="512" height="512" fill="#bf6721" />
 
-  <!-- 2. Light Bumps (Raised Mineral Grains from Reference Block) -->
+  <!-- 2. Light Bumps (Raised Golden Terracotta Grains) -->
   <g id="light_bumps">
     <use href="#bump" x="256" y="0" />
     <use href="#bump" x="128" y="64" />
@@ -47,7 +46,7 @@
     <use href="#bump" x="480" y="480" />
   </g>
 
-  <!-- 3. Small Holes (Recessed Surface Dimples from Reference Block) -->
+  <!-- 3. Small Holes (Recessed Surface Dimples) -->
   <g id="small_holes">
     <use href="#hole" x="96" y="32" />
     <use href="#hole" x="448" y="160" />
