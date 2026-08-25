@@ -1,78 +1,78 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
-  <!-- Full opposite-side 3D directional lighting (sun from top-left):           -->
-  <!-- - Light bumps (outset): top-left highlight (#f4f0d4), bottom-right shadow (#c8b982) -->
-  <!-- - Small holes (inset): top-left shadow (#b89d66), bottom-right catch (#ddd0a8) -->
+  <!-- Identical 32x32 footprint for both Light Bumps and Small Holes:           -->
+  <!-- - Light Bumps: 29x29 body + 3px bottom-right shadow (total 32x32)         -->
+  <!-- - Small Holes: 32x32 body with 3px inner shadow & catch (total 32x32)     -->
   <!-- ========================================================================= -->
 
   <!-- 1. Base Warm Beach Sand -->
   <rect width="512" height="512" fill="#dacfa3" />
 
   <!-- ================================================================== -->
-  <!-- 2. LIGHT BUMPS (OUTSET): Sunlit Top-Left + Shadowed Bottom-Right    -->
+  <!-- 2. LIGHT BUMPS: 32x32 TOTAL FOOTPRINT (29x29 body + 3px shadow)    -->
   <!-- ================================================================== -->
 
-  <!-- Outset Bottom-Right Drop Shadows (3px underline & right vertical) -->
+  <!-- Bump Bottom-Right Drop Shadows (3px bottom & right, within 32x32) -->
   <g id="light_bump_shadows" fill="#c8b982" shape-rendering="crispEdges">
     <!-- Bottom 3px -->
-    <rect x="416" y="32" width="32" height="3" />
-    <rect x="256" y="64" width="32" height="3" />
-    <rect x="480" y="96" width="32" height="3" />
-    <rect x="128" y="160" width="32" height="3" />
-    <rect x="320" y="224" width="32" height="3" />
-    <rect x="160" y="256" width="32" height="3" />
-    <rect x="448" y="328" width="32" height="3" />
-    <rect x="288" y="416" width="32" height="3" />
+    <rect x="416" y="29" width="32" height="3" />
+    <rect x="256" y="61" width="32" height="3" />
+    <rect x="480" y="93" width="32" height="3" />
+    <rect x="128" y="157" width="32" height="3" />
+    <rect x="320" y="221" width="32" height="3" />
+    <rect x="160" y="253" width="32" height="3" />
+    <rect x="448" y="325" width="32" height="3" />
+    <rect x="288" y="413" width="32" height="3" />
 
-    <!-- Right 3px (with toroidal wrap at x=512 -> x=0) -->
-    <rect x="448" y="0" width="3" height="35" />
-    <rect x="288" y="32" width="3" height="35" />
-    <rect x="0" y="64" width="3" height="35" />
-    <rect x="160" y="128" width="3" height="35" />
-    <rect x="352" y="192" width="3" height="35" />
-    <rect x="192" y="224" width="3" height="35" />
-    <rect x="480" y="296" width="3" height="35" />
-    <rect x="320" y="384" width="3" height="35" />
+    <!-- Right 3px -->
+    <rect x="445" y="0" width="3" height="32" />
+    <rect x="285" y="32" width="3" height="32" />
+    <rect x="509" y="64" width="3" height="32" />
+    <rect x="157" y="128" width="3" height="32" />
+    <rect x="349" y="192" width="3" height="32" />
+    <rect x="189" y="224" width="3" height="32" />
+    <rect x="477" y="296" width="3" height="32" />
+    <rect x="317" y="384" width="3" height="32" />
   </g>
 
-  <!-- Bump 32x32 Bodies -->
+  <!-- Bump 29x29 Raised Bodies -->
   <g id="light_bump_bodies" fill="#e7e4bb" shape-rendering="crispEdges">
-    <rect x="416" y="0" width="32" height="32" />
-    <rect x="256" y="32" width="32" height="32" />
-    <rect x="480" y="64" width="32" height="32" />
-    <rect x="128" y="128" width="32" height="32" />
-    <rect x="320" y="192" width="32" height="32" />
-    <rect x="160" y="224" width="32" height="32" />
-    <rect x="448" y="296" width="32" height="32" />
-    <rect x="288" y="384" width="32" height="32" />
+    <rect x="416" y="0" width="29" height="29" />
+    <rect x="256" y="32" width="29" height="29" />
+    <rect x="480" y="64" width="29" height="29" />
+    <rect x="128" y="128" width="29" height="29" />
+    <rect x="320" y="192" width="29" height="29" />
+    <rect x="160" y="224" width="29" height="29" />
+    <rect x="448" y="296" width="29" height="29" />
+    <rect x="288" y="384" width="29" height="29" />
   </g>
 
-  <!-- Bump Top-Left Sunlit Highlights (3px top & left inner bevel) -->
+  <!-- Bump Top-Left Sunlit Highlights (3px top & left on 29x29 body) -->
   <g id="light_bump_highlights" fill="#f4f0d4" shape-rendering="crispEdges">
     <!-- Top 3px -->
-    <rect x="416" y="0" width="32" height="3" />
-    <rect x="256" y="32" width="32" height="3" />
-    <rect x="480" y="64" width="32" height="3" />
-    <rect x="128" y="128" width="32" height="3" />
-    <rect x="320" y="192" width="32" height="3" />
-    <rect x="160" y="224" width="32" height="3" />
-    <rect x="448" y="296" width="32" height="3" />
-    <rect x="288" y="384" width="32" height="3" />
+    <rect x="416" y="0" width="29" height="3" />
+    <rect x="256" y="32" width="29" height="3" />
+    <rect x="480" y="64" width="29" height="3" />
+    <rect x="128" y="128" width="29" height="3" />
+    <rect x="320" y="192" width="29" height="3" />
+    <rect x="160" y="224" width="29" height="3" />
+    <rect x="448" y="296" width="29" height="3" />
+    <rect x="288" y="384" width="29" height="3" />
 
     <!-- Left 3px -->
-    <rect x="416" y="0" width="3" height="32" />
-    <rect x="256" y="32" width="3" height="32" />
-    <rect x="480" y="64" width="3" height="32" />
-    <rect x="128" y="128" width="3" height="32" />
-    <rect x="320" y="192" width="3" height="32" />
-    <rect x="160" y="224" width="3" height="32" />
-    <rect x="448" y="296" width="3" height="32" />
-    <rect x="288" y="384" width="3" height="32" />
+    <rect x="416" y="0" width="3" height="29" />
+    <rect x="256" y="32" width="3" height="29" />
+    <rect x="480" y="64" width="3" height="29" />
+    <rect x="128" y="128" width="3" height="29" />
+    <rect x="320" y="192" width="3" height="29" />
+    <rect x="160" y="224" width="3" height="29" />
+    <rect x="448" y="296" width="3" height="29" />
+    <rect x="288" y="384" width="3" height="29" />
   </g>
 
   <!-- ================================================================== -->
-  <!-- 3. SMALL HOLES (INSET): Shadowed Top-Left + Sunlit Bottom-Right    -->
+  <!-- 3. SMALL HOLES: 32x32 TOTAL FOOTPRINT (with 3px inner shadow/catch) -->
   <!-- ================================================================== -->
 
   <!-- Small Hole at (32, 64) -->
