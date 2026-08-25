@@ -1,19 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- Base Translucent Flowing Water -->
-  <rect width="512" height="512" fill="#ffffff" fill-opacity="0.70" />
+  <rect width="512" height="512" fill="#ffffff" fill-opacity="0.72" />
 
-  <!-- Directional Downstream Flow Currents -->
-  <g id="flow_currents" stroke="#ffffff" stroke-opacity="0.40" stroke-width="12" stroke-linecap="round" fill="none">
-    <path d="M 64 0 C 64 128, 96 256, 64 512" />
-    <path d="M 192 0 C 224 128, 160 256, 192 512" />
-    <path d="M 320 0 C 304 128, 352 256, 320 512" />
-    <path d="M 448 0 C 464 128, 432 256, 448 512" />
-  </g>
-
-  <!-- Moving Wave Crests -->
-  <g id="wave_crests" fill="#ffffff" fill-opacity="0.30">
-    <path d="M 32 96 Q 128 128, 224 96 Q 320 64, 480 96 L 480 128 Q 320 96, 224 128 Q 128 160, 32 128 Z" />
-    <path d="M 32 288 Q 128 320, 224 288 Q 320 256, 480 288 L 480 320 Q 320 288, 224 320 Q 128 352, 32 320 Z" />
-    <path d="M 32 448 Q 128 480, 224 448 Q 320 416, 480 448 L 480 480 Q 320 448, 224 480 Q 128 512, 32 480 Z" />
+  <!-- Smooth Directional Downstream Currents -->
+  <g id="flow_currents" stroke="#ffffff" stroke-opacity="0.30" stroke-width="16" stroke-linecap="round" fill="none">
+    <path d="M 96 0 C 96 128, 128 256, 96 512" />
+    <path d="M 224 0 C 256 128, 192 256, 224 512" />
+    <path d="M 352 0 C 336 128, 384 256, 352 512" />
+    <path d="M 464 0 C 480 128, 448 256, 464 512" />
   </g>
 </svg>
