@@ -1,11 +1,11 @@
 # Keyframe
 
 <p align="center">
-  <b>The official cinematic trailer aesthetic for Minecraft, rendered in infinite vector clarity.</b>
+  <b>The cinematic trailer aesthetic for Minecraft, rendered in infinite vector clarity.</b>
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-CC--BY--NC--SA--4.0-lightgrey.svg" alt="License: CC BY-NC-SA 4.0" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Community%20ARR-blue.svg" alt="License: Keyframe Community License" /></a>
   <img src="https://img.shields.io/badge/Minecraft-1.20%20--%201.21.4%2B-brightgreen.svg" alt="Minecraft: 1.20 - 1.21.4+" />
   <img src="https://img.shields.io/badge/Resolutions-512x%20%7C%20256x%20%7C%20128x%20%7C%2064x%20%7C%2032x-orange.svg" alt="Resolutions: 512x to 32x" />
 </p>
@@ -22,7 +22,7 @@ Part of the [Ninja6-MC](https://github.com/Ninja6-MC) suite. Designed with [Text
 
 ## The Keyframe Vision
 
-Ever wanted Minecraft to look just like the **official Mojang animated update trailers and cinematics**?
+Ever wanted Minecraft to look just like the **cinematic animated update trailers and promotional cinematics**?
 
 **Keyframe** brings that warm, joyful, clean art direction to life. Unlike standard pixel-art packs that are locked to low-resolution grids or noisy dithering, Keyframe is authored natively in **infinite-scale vector (SVG) masters** and compiled cleanly into pixel-perfect PNG textures at every resolution tier.
 
@@ -49,14 +49,14 @@ Ever wanted Minecraft to look just like the **official Mojang animated update tr
 ## Recommended Synergy
 
 For the ultimate cinematic Minecraft experience, pair **Keyframe** with:
-* **[Fresh Animations](https://modrinth.com/resourcepack/fresh-animations)** — For fluid, expressive creature animations matching Mojang's promotional shorts.
+* **[Fresh Animations](https://modrinth.com/resourcepack/fresh-animations)** — For fluid, expressive creature animations matching the trailer aesthetic.
 * **[Complementary Shaders](https://modrinth.com/shader/complementary-reimagined)** — For warm golden-hour sunlight and ambient bounce.
 
 ---
 
 ## Compiling from Source
 
-Keyframe includes a built-in headless compiler powered by `@resvg/resvg-js`:
+Keyframe includes a built-in headless compiler powered by `@resvg/resvg-js` and `archiver`:
 
 ```bash
 # Clone the repository
@@ -86,6 +86,9 @@ Contributions are welcome! Please ensure:
 
 ---
 
-## License
+## License & Disclaimer
 
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](LICENSE) (CC BY-NC-SA 4.0).
+**Keyframe Community License** (All Rights Reserved with Permitted Use Grants).  
+Free for personal gameplay, YouTube/Twitch content creation, multiplayer servers, and public modpacks. Third-party mirroring, texture ripping, and commercial resale are prohibited. See [LICENSE](LICENSE) for details.
+
+> **NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.**

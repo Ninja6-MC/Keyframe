@@ -1,22 +1,43 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 import { Resvg } from "@resvg/resvg-js";
+
+const require = createRequire(import.meta.url);
+const archiver = require("archiver");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, "..");
 const TEXTURES_DIR = path.join(ROOT_DIR, "textures");
-const ASSETS_SRC = path.join(ROOT_DIR, "assets");
+const TEMPLATE_DIR = path.join(ROOT_DIR, "pack_template");
 const DIST_DIR = path.join(ROOT_DIR, "dist");
-const ZIP_SCRIPT = path.join(__dirname, "zip.ps1");
+
+/**
+ * Creates a clean POSIX zip archive using pure Node.js (cross-platform Linux/Win/macOS)
+ */
+function createZipArchive(sourceDir, outPath) {
+  return new Promise((resolve, reject) => {
+    const output = fs.createWriteStream(outPath);
+    const archive = new archiver.ZipArchive({
+      zlib: { level: 9 }
+    });
+
+    output.on("close", () => resolve());
+    archive.on("error", (err) => reject(err));
+
+    archive.pipe(output);
+    archive.directory(sourceDir, false);
+    archive.finalize();
+  });
+}
 
 /**
  * Keyframe Resource Pack Compiler
  */
-export function buildResourcePack(targetRes = 512) {
+export async function buildResourcePack(targetRes = 512) {
   console.log(`\n======================================================`);
   console.log(`  Keyframe Resource Pack Compiler`);
   console.log(`  Target Resolution: ${targetRes}×${targetRes}`);
@@ -80,10 +101,11 @@ export function buildResourcePack(targetRes = 512) {
     console.log(`  ✓ ${isItem ? "item" : "block"}/${stem}.png`);
   }
 
-  // 3. Bundle custom assets/blockstates
-  if (fs.existsSync(ASSETS_SRC)) {
-    fs.cpSync(ASSETS_SRC, path.join(BUILD_TMP, "assets"), { recursive: true });
-    console.log(`[3/5] Bundled assets/ and un-rotated blockstates`);
+  // 3. Bundle custom pack_template/assets (blockstates, models)
+  const templateAssets = path.join(TEMPLATE_DIR, "assets");
+  if (fs.existsSync(templateAssets)) {
+    fs.cpSync(templateAssets, path.join(BUILD_TMP, "assets"), { recursive: true });
+    console.log(`[3/5] Bundled pack_template/assets (un-rotated blockstates)`);
   }
 
   // 4. Generate pack.png (128x128 pack icon)
@@ -94,7 +116,7 @@ export function buildResourcePack(targetRes = 512) {
   }
   console.log(`[4/5] Generated pack.png (128×128 icon)`);
 
-  // 5. Package into clean Minecraft-compliant .ZIP with strict POSIX '/' separators
+  // 5. Package into clean Minecraft-compliant .ZIP (pure Node.js archiver)
   const zipFileName = `Keyframe-${targetRes}x.zip`;
   const zipOutputPath = path.join(DIST_DIR, zipFileName);
 
@@ -102,9 +124,8 @@ export function buildResourcePack(targetRes = 512) {
     fs.unlinkSync(zipOutputPath);
   }
 
-  console.log(`[4/4] Creating ZIP archive with strict POSIX path separators: ${zipFileName}...`);
-
-  execSync(`powershell -ExecutionPolicy Bypass -File "${ZIP_SCRIPT}" -SourceDir "${BUILD_TMP}" -ZipFile "${zipOutputPath}"`, { stdio: "ignore" });
+  console.log(`[4/4] Creating pure cross-platform ZIP archive: ${zipFileName}...`);
+  await createZipArchive(BUILD_TMP, zipOutputPath);
 
   // 6. Auto-sync clean .zip archive to local .minecraft/resourcepacks if present
   const mcResourcePacks = path.join(process.env.APPDATA || "", ".minecraft", "resourcepacks");
@@ -140,7 +161,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   if (process.argv.includes("--all")) {
     const resolutions = [512, 256, 128, 64, 32];
     for (const res of resolutions) {
-      buildResourcePack(res);
+      await buildResourcePack(res);
     }
   } else {
     let targetRes = 512;
@@ -152,6 +173,6 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
         targetRes = parseInt(process.argv[i], 10);
       }
     }
-    buildResourcePack(targetRes);
+    await buildResourcePack(targetRes);
   }
 }
