@@ -72,43 +72,6 @@ export async function buildResourcePack(targetRes = 512) {
   fs.writeFileSync(path.join(BUILD_TMP, "pack.mcmeta"), JSON.stringify(mcmeta, null, 2), "utf-8");
   console.log(`[1/4] Created pack.mcmeta (Supported Formats: 1.20 - 1.21.4+)`);
 
-function generateWaterStillStripSvg(frameCount = 16) {
-  const frames = [];
-  for (let f = 0; f < frameCount; f++) {
-    const phi = (2 * Math.PI * f) / frameCount;
-    const dx1 = Math.sin(phi) * 16;
-    const dy1 = Math.cos(phi) * 12;
-    const dx2 = Math.cos(phi) * 20;
-    const dy2 = Math.sin(phi) * 14;
-    const dx3 = Math.sin(phi + 1.2) * 15;
-    const dy3 = Math.cos(phi + 1.2) * 18;
-
-    frames.push(`
-    <g transform="translate(0, ${f * 512})">
-      <!-- Frame ${f} Base Translucent Water Volume -->
-      <rect width="512" height="512" fill="#ffffff" fill-opacity="0.75" />
-
-      <!-- Smooth Harmonic Caustics & Refractive Wave Facets -->
-      <g fill="#ffffff" fill-opacity="0.35">
-        <path d="M ${64 + dx1} ${96 + dy1} C ${96 + dx2} ${64 + dy2}, ${160 + dx1} ${80 + dy1}, ${192 + dx2} ${128 + dy2} C ${224 + dx1} ${176 + dy1}, ${176 + dx2} ${224 + dy2}, ${128 + dx1} ${208 + dy1} C ${80 + dx2} ${192 + dy2}, ${32 + dx1} ${128 + dy1}, ${64 + dx1} ${96 + dy1} Z" />
-        <path d="M ${320 + dx2} ${64 + dy2} C ${368 + dx3} ${48 + dy3}, ${432 + dx2} ${80 + dy2}, ${448 + dx3} ${144 + dy3} C ${464 + dx2} ${208 + dy2}, ${400 + dx3} ${240 + dy3}, ${352 + dx2} ${208 + dy2} C ${304 + dx3} ${176 + dy3}, ${272 + dx2} ${80 + dy2}, ${320 + dx2} ${64 + dy2} Z" />
-        <path d="M ${208 + dx3} ${256 + dy3} C ${256 + dx1} ${224 + dy1}, ${320 + dx3} ${240 + dy3}, ${336 + dx1} ${304 + dy1} C ${352 + dx3} ${368 + dy3}, ${288 + dx1} ${416 + dy1}, ${240 + dx3} ${384 + dy3} C ${192 + dx1} ${352 + dy1}, ${160 + dx3} ${288 + dy3}, ${208 + dx3} ${256 + dy3} Z" />
-        <path d="M ${80 + dx1} ${352 + dy1} C ${128 + dx2} ${320 + dy2}, ${176 + dx1} ${352 + dy1}, ${160 + dx2} ${416 + dy2} C ${144 + dx1} ${480 + dy1}, ${80 + dx2} ${496 + dy2}, ${48 + dx1} ${448 + dy1} C ${16 + dx2} ${400 + dy2}, ${32 + dx1} ${384 + dy1}, ${80 + dx1} ${352 + dy1} Z" />
-        <path d="M ${384 + dx2} ${352 + dy2} C ${432 + dx3} ${320 + dy3}, ${496 + dx2} ${368 + dy2}, ${480 + dx3} ${432 + dy3} C ${464 + dx2} ${496 + dy2}, ${400 + dx3} ${496 + dy3}, ${368 + dx2} ${448 + dy2} C ${336 + dx3} ${400 + dy3}, ${336 + dx2} ${384 + dy2}, ${384 + dx2} ${352 + dy2} Z" />
-      </g>
-
-      <!-- Soft Wave Ripples -->
-      <g stroke="#ffffff" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round" fill="none">
-        <path d="M 0 ${160 + dy1} Q 128 ${128 + dy2}, 256 ${160 + dy1} T 512 ${160 + dy1}" />
-        <path d="M 0 ${320 + dy2} Q 128 ${288 + dy3}, 256 ${320 + dy2} T 512 ${320 + dy2}" />
-        <path d="M 0 ${480 + dy3} Q 128 ${448 + dy1}, 256 ${480 + dy3} T 512 ${480 + dy3}" />
-      </g>
-    </g>`);
-  }
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 ${512 * frameCount}" width="512" height="${512 * frameCount}">${frames.join("\n")}</svg>`;
-}
-
 function generateWaterFlowStripSvg(frameCount = 16) {
   const frames = [];
   const W = 1024;
@@ -118,20 +81,14 @@ function generateWaterFlowStripSvg(frameCount = 16) {
     frames.push(`
     <g transform="translate(0, ${f * W})">
       <!-- Frame ${f} Base Translucent Flowing Water -->
-      <rect width="${W}" height="${W}" fill="#ffffff" fill-opacity="0.70" />
+      <rect width="${W}" height="${W}" fill="#ffffff" fill-opacity="0.72" />
 
-      <!-- Directional Downstream Flow Currents -->
-      <g id="flow_currents_${f}" stroke="#ffffff" stroke-opacity="0.40" stroke-width="24" stroke-linecap="round" fill="none">
+      <!-- Smooth Directional Downstream Currents -->
+      <g id="flow_currents_${f}" stroke="#ffffff" stroke-opacity="0.30" stroke-width="20" stroke-linecap="round" fill="none">
         <path d="M 128 0 C 128 256, 192 512, 128 1024" />
         <path d="M 384 0 C 448 256, 320 512, 384 1024" />
         <path d="M 640 0 C 608 256, 704 512, 640 1024" />
         <path d="M 896 0 C 928 256, 864 512, 896 1024" />
-      </g>
-
-      <!-- Moving Wave Crests shifted downwards -->
-      <g id="wave_crests_${f}" fill="#ffffff" fill-opacity="0.30">
-        <path d="M 0 ${(shiftY + 192) % W} Q 256 ${(shiftY + 256) % W}, 512 ${(shiftY + 192) % W} Q 768 ${(shiftY + 128) % W}, 1024 ${(shiftY + 192) % W} L 1024 ${(shiftY + 256) % W} Q 768 ${(shiftY + 192) % W}, 512 ${(shiftY + 256) % W} Q 256 ${(shiftY + 320) % W}, 0 ${(shiftY + 256) % W} Z" />
-        <path d="M 0 ${(shiftY + 704) % W} Q 256 ${(shiftY + 768) % W}, 512 ${(shiftY + 704) % W} Q 768 ${(shiftY + 640) % W}, 1024 ${(shiftY + 704) % W} L 1024 ${(shiftY + 768) % W} Q 768 ${(shiftY + 704) % W}, 512 ${(shiftY + 768) % W} Q 256 ${(shiftY + 832) % W}, 0 ${(shiftY + 768) % W} Z" />
       </g>
     </g>`);
   }
@@ -164,12 +121,7 @@ function generateWaterFlowStripSvg(frameCount = 16) {
     const destPng = path.join(targetDir, `${stem}.png`);
     const srcSvg = path.join(TEXTURES_DIR, svgFile);
 
-    if (stem === "water_still") {
-      // Generate 16-frame animated vertical sprite strip
-      const stripSvg = generateWaterStillStripSvg(16);
-      rasterize(stripSvg, destPng, targetRes);
-      console.log(`  ✓ block/water_still.png (16-Frame Animated Strip, ${targetRes}×${targetRes * 16})`);
-    } else if (stem === "water_flow") {
+    if (stem === "water_flow") {
       // Flowing water in Minecraft is 2x width (e.g. targetRes * 2)
       const flowRes = targetRes * 2;
       const stripSvg = generateWaterFlowStripSvg(16);
