@@ -99,6 +99,13 @@ export async function buildResourcePack(targetRes = 512) {
 
     rasterize(srcSvg, destPng, targetRes);
     console.log(`  ✓ ${isItem ? "item" : "block"}/${stem}.png`);
+
+    // Backwards-compatibility alias for 1.20 - 1.20.2 (grass.png)
+    if (stem === "short_grass") {
+      const grassPng = path.join(BLOCKS_DIR, "grass.png");
+      fs.copyFileSync(destPng, grassPng);
+      console.log(`  ✓ block/grass.png (alias)`);
+    }
   }
 
   // 3. Bundle custom pack_template/assets (blockstates, models)
