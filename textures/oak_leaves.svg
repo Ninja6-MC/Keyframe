@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Vertical Sunlit-to-Shadow Canopy Gradient (Brighter sunlit top, deeper shadowed bottom) -->
+    <linearGradient id="leaf_vert_shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="60%" stop-color="#f0f0f0" />
+      <stop offset="100%" stop-color="#bebebe" />
+    </linearGradient>
+
+    <!-- Corner Ambient Occlusion Depth (Soft vignette in corners like 3D animation) -->
+    <radialGradient id="corner_ao_tl" cx="0%" cy="0%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+    </radialGradient>
+    <radialGradient id="corner_ao_tr" cx="100%" cy="0%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+    </radialGradient>
+    <radialGradient id="corner_ao_bl" cx="0%" cy="100%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.11" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+    </radialGradient>
+    <radialGradient id="corner_ao_br" cx="100%" cy="100%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.11" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base Vertical Sunlight-to-Shadow Leaf Shading -->
+  <rect width="512" height="512" fill="url(#leaf_vert_shade)" />
+
+  <!-- Corner Ambient Occlusion & Volumetric Depth -->
+  <rect width="512" height="512" fill="url(#corner_ao_tl)" />
+  <rect width="512" height="512" fill="url(#corner_ao_tr)" />
+  <rect width="512" height="512" fill="url(#corner_ao_bl)" />
+  <rect width="512" height="512" fill="url(#corner_ao_br)" />
+</svg>
