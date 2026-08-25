@@ -1,3 +1,9 @@
+# Third-party actions are pinned to commit SHAs, not tags: a tag can be repointed at new
+# code with no diff, no review and no notification. This workflow holds `contents: write`
+# and publishes the zips users download, so it is the one that matters most.
+#
+# The pin goes stale in silence, so .github/dependabot.yml is the other half of the trade.
+# Do not add a pin here without checking that file still covers this workflow.
 name: Release
 
 on:
@@ -6,18 +12,27 @@ on:
       - "v*"
   workflow_dispatch:
 
+# Read-only by default. The one job that needs to write does so explicitly below; on a
+# normal (non-reusable) run a job's `permissions:` REPLACES this rather than being capped
+# by it, so narrowing here costs the release step nothing.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # creates the release and uploads the pack zips
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          # Nothing here does an authenticated git operation, so the token does not need
+          # to be left behind in .git/config for later steps or actions to find.
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 20
           cache: "npm"
@@ -29,7 +44,7 @@ jobs:
         run: node tools/build.mjs --all
 
       - name: Create GitHub Release & Attach Resource Packs
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
