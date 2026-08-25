@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
-  <!-- Modular container architecture with reusable 32x32 component definitions: -->
+  <!-- Accurate trailer grid placement from reference analysis:                  -->
   <!-- - #bump: Raised light grain (highlight bevel + body + drop shadow)        -->
   <!-- - #hole: Recessed dark grain (body + inner shadow + sunlit reflection)    -->
   <!-- ========================================================================= -->
@@ -35,27 +35,35 @@
   <!-- 1. Base Warm Beach Sand -->
   <rect width="512" height="512" fill="#dacfa3" />
 
-  <!-- 2. Light Bumps (Raised Mineral Grains) -->
+  <!-- 2. Light Bumps (Raised Mineral Grains from Reference Grid) -->
   <g id="light_bumps">
-    <use href="#bump" x="416" y="0" />
-    <use href="#bump" x="256" y="32" />
-    <use href="#bump" x="480" y="64" />
-    <use href="#bump" x="128" y="128" />
-    <use href="#bump" x="320" y="192" />
-    <use href="#bump" x="160" y="224" />
-    <use href="#bump" x="448" y="296" />
-    <use href="#bump" x="288" y="384" />
+    <use href="#bump" x="288" y="32" />
+    <use href="#bump" x="352" y="32" />
+    <use href="#bump" x="160" y="96" />
+    <use href="#bump" x="192" y="96" />
+    <use href="#bump" x="352" y="96" />
+    <use href="#bump" x="384" y="160" />
+    <use href="#bump" x="96" y="288" />
+    <use href="#bump" x="128" y="288" />
+    <use href="#bump" x="288" y="288" />
+    <use href="#bump" x="320" y="256" />
+    <use href="#bump" x="416" y="288" />
+    <use href="#bump" x="224" y="384" />
+    <use href="#bump" x="352" y="384" />
+    <use href="#bump" x="256" y="480" />
   </g>
 
-  <!-- 3. Small Holes (Recessed Surface Dimples) -->
+  <!-- 3. Small Holes (Recessed Surface Dimples from Reference Grid) -->
   <g id="small_holes">
-    <use href="#hole" x="32" y="64" />
+    <use href="#hole" x="0" y="160" />
+    <use href="#hole" x="96" y="256" />
+    <use href="#hole" x="224" y="96" />
     <use href="#hole" x="224" y="160" />
-    <use href="#hole" x="384" y="224" />
-    <use href="#hole" x="96" y="296" />
-    <use href="#hole" x="288" y="352" />
-    <use href="#hole" x="0" y="384" />
-    <use href="#hole" x="192" y="480" />
-    <use href="#hole" x="480" y="448" />
+    <use href="#hole" x="352" y="256" />
+    <use href="#hole" x="352" y="160" />
+    <use href="#hole" x="416" y="160" />
+    <use href="#hole" x="256" y="416" />
+    <use href="#hole" x="256" y="448" />
+    <use href="#hole" x="448" y="480" />
   </g>
 </svg>
