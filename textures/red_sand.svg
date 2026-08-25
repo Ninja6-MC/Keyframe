@@ -3,7 +3,7 @@
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: RED SAND (BADLANDS / MESA)              -->
   <!-- Modular container architecture with reusable 32x32 component definitions: -->
   <!-- - #bump: Raised terracotta grain (highlight bevel + body + drop shadow)   -->
-  <!-- - #hole: Recessed clay grain (body + inner shadow + light catch)          -->
+  <!-- - #hole: Recessed clay grain (body + inner shadow + sunlit reflection)    -->
   <!-- ========================================================================= -->
 
   <defs>
@@ -26,9 +26,9 @@
       <!-- Top-Left Inner Shadow (3px) -->
       <rect width="32" height="3" fill="#8c3e07" />
       <rect width="3" height="32" fill="#8c3e07" />
-      <!-- Bottom-Right Inner Catch (3px) -->
-      <rect y="29" width="32" height="3" fill="#b86520" />
-      <rect x="29" width="3" height="32" fill="#b86520" />
+      <!-- Bottom-Right Sunlit Reflection (3px) -->
+      <rect y="29" width="32" height="3" fill="#d2752b" />
+      <rect x="29" width="3" height="32" fill="#d2752b" />
     </g>
   </defs>
 

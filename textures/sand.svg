@@ -3,7 +3,7 @@
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
   <!-- Modular container architecture with reusable 32x32 component definitions: -->
   <!-- - #bump: Raised light grain (highlight bevel + body + drop shadow)        -->
-  <!-- - #hole: Recessed dark grain (body + inner shadow + light catch)          -->
+  <!-- - #hole: Recessed dark grain (body + inner shadow + sunlit reflection)    -->
   <!-- ========================================================================= -->
 
   <defs>
@@ -26,9 +26,9 @@
       <!-- Top-Left Inner Shadow (3px) -->
       <rect width="32" height="3" fill="#b89d66" />
       <rect width="3" height="32" fill="#b89d66" />
-      <!-- Bottom-Right Inner Catch (3px) -->
-      <rect y="29" width="32" height="3" fill="#ddd0a8" />
-      <rect x="29" width="3" height="32" fill="#ddd0a8" />
+      <!-- Bottom-Right Sunlit Reflection (3px) -->
+      <rect y="29" width="32" height="3" fill="#e7e4bb" />
+      <rect x="29" width="3" height="32" fill="#e7e4bb" />
     </g>
   </defs>
 
