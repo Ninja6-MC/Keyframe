@@ -72,26 +72,12 @@ export async function buildResourcePack(targetRes = 512) {
   fs.writeFileSync(path.join(BUILD_TMP, "pack.mcmeta"), JSON.stringify(mcmeta, null, 2), "utf-8");
   console.log(`[1/4] Created pack.mcmeta (Supported Formats: 1.20 - 1.21.4+)`);
 
-function generateWaterFlowStripSvg(frameCount = 16) {
-  const frames = [];
-  const W = 1024;
-  for (let f = 0; f < frameCount; f++) {
-    frames.push(`
-    <g transform="translate(0, ${f * W})">
-      <!-- Frame ${f} Base Translucent Flowing Water (30% opacity, zero scratch lines) -->
-      <rect width="${W}" height="${W}" fill="#ffffff" fill-opacity="0.30" />
-    </g>`);
-  }
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${W * frameCount}" width="${W}" height="${W * frameCount}">${frames.join("\n")}</svg>`;
-}
-
   // 2. High-Speed Rust Resvg Rasterization
   const svgFiles = fs.readdirSync(TEXTURES_DIR).filter((f) => f.endsWith(".svg"));
   const ITEM_IDS = new Set(["cooked_beef", "golden_apple", "compass_nexus", "plot_compass", "spiral_core", "ninja6_token"]);
 
-  function rasterize(srcSvgTextOrPath, destPngPath, size) {
-    const svgText = srcSvgTextOrPath.startsWith("<svg") ? srcSvgTextOrPath : fs.readFileSync(srcSvgTextOrPath, "utf-8");
+  function rasterize(srcSvgPath, destPngPath, size) {
+    const svgText = fs.readFileSync(srcSvgPath, "utf-8");
     const resvg = new Resvg(svgText, {
       fitTo: {
         mode: "width",
@@ -111,16 +97,8 @@ function generateWaterFlowStripSvg(frameCount = 16) {
     const destPng = path.join(targetDir, `${stem}.png`);
     const srcSvg = path.join(TEXTURES_DIR, svgFile);
 
-    if (stem === "water_flow") {
-      // Flowing water in Minecraft is 2x width (e.g. targetRes * 2)
-      const flowRes = targetRes * 2;
-      const stripSvg = generateWaterFlowStripSvg(16);
-      rasterize(stripSvg, destPng, flowRes);
-      console.log(`  ✓ block/water_flow.png (16-Frame Flow Strip, ${flowRes}×${flowRes * 16})`);
-    } else {
-      rasterize(srcSvg, destPng, targetRes);
-      console.log(`  ✓ ${isItem ? "item" : "block"}/${stem}.png`);
-    }
+    rasterize(srcSvg, destPng, targetRes);
+    console.log(`  ✓ ${isItem ? "item" : "block"}/${stem}.png`);
   }
 
   // 3. Bundle custom pack_template/assets (blockstates, models)
