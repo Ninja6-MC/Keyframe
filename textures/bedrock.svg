@@ -2,82 +2,86 @@
   <!-- 1. Deep Primordial Mantle Crust Base -->
   <rect width="512" height="512" fill="#141414" />
 
-  <!-- 2. Dark Crevice Fault Channels -->
+  <!-- 2. Dark Crevice Fault Channels (Asymmetrical Organic Fractures) -->
   <g fill="#080808">
     <rect x="32" y="64" width="160" height="96" rx="12" />
-    <rect x="0" y="256" width="128" height="96" rx="12" />
-    <rect x="384" y="0" width="128" height="96" rx="12" />
     <rect x="256" y="160" width="160" height="96" rx="12" />
-    <rect x="320" y="320" width="192" height="96" rx="12" />
     <rect x="96" y="384" width="160" height="128" rx="12" />
+
+    <!-- Toroidal Wrapped Channels (Seamless x=0 to x=512) -->
+    <path d="M 0 256 L 96 256 L 96 320 L 0 320 Z" />
+    <path d="M 512 256 L 416 256 L 416 320 L 512 320 Z" />
+
+    <!-- Toroidal Wrapped Channels (Seamless y=0 to y=512) -->
+    <path d="M 384 0 L 448 0 L 448 64 L 384 64 Z" />
+    <path d="M 384 512 L 448 512 L 448 448 L 384 448 Z" />
   </g>
 
-  <!-- 3. Mid-Slate Metamorphic Tectonic Plates (Previous Beloved Shape Structure) -->
+  <!-- 3. Mid-Slate Metamorphic Tectonic Plates (Authentic Chaotic Bedrock Layout) -->
   <g fill="#3e3e3e">
-    <!-- Plate Alpha (Top Left Toroidal, wraps y=0 and y=512) -->
+    <!-- Plate Alpha (Corner Plate - Wraps seamlessly at all 4 corners with zero corner dots) -->
     <path d="M 0 0 L 160 0 L 160 64 L 64 64 L 64 160 L 0 160 Z" />
-    <path d="M 0 448 L 64 448 L 64 512 L 0 512 Z" />
-    <path d="M 448 448 L 512 448 L 512 512 L 448 512 Z" />
-    <path d="M 448 0 L 512 0 L 512 64 L 448 64 Z" />
+    <path d="M 512 0 L 448 0 L 448 64 L 512 64 Z" />
+    <path d="M 0 512 L 160 512 L 160 448 L 64 448 L 64 512 Z" />
+    <path d="M 512 512 L 448 512 L 448 448 L 512 448 Z" />
 
-    <!-- Plate Beta (Top Center / Right) -->
-    <path d="M 224 0 L 416 0 L 416 96 L 352 96 L 352 160 L 224 160 Z" />
+    <!-- Plate Beta / Eta (Seamless Top/Bottom Wrap at x=224..384) -->
+    <path d="M 224 0 L 384 0 L 384 96 L 320 96 L 320 160 L 224 160 Z" />
+    <path d="M 224 512 L 384 512 L 384 416 L 256 416 L 256 448 L 224 448 Z" />
 
-    <!-- Plate Gamma (Center Massive Rock) -->
+    <!-- Plate Delta / Epsilon (Seamless Left/Right Wrap at y=160..256) -->
+    <path d="M 0 160 L 96 160 L 96 256 L 0 256 Z" />
+    <path d="M 512 160 L 416 160 L 416 256 L 512 256 Z" />
+
+    <!-- Interior Organic Plates (Authentic Chaotic Stone Bodies) -->
+    <!-- Center Massive Stone Slab -->
     <path d="M 128 128 L 288 128 L 288 192 L 352 192 L 352 320 L 224 320 L 224 256 L 128 256 Z" />
 
-    <!-- Plate Delta (Mid Left) -->
-    <path d="M 0 192 L 96 192 L 96 288 L 0 288 Z" />
+    <!-- Right Center Plate -->
+    <path d="M 384 192 L 480 192 L 480 320 L 384 320 Z" />
 
-    <!-- Plate Epsilon (Right Toroidal, wraps x=512 and x=0) -->
-    <path d="M 416 160 L 512 160 L 512 320 L 448 320 L 448 256 L 416 256 Z" />
-    <path d="M 0 160 L 32 160 L 32 256 L 0 256 Z" />
-
-    <!-- Plate Zeta (Bottom Left) -->
+    <!-- Lower Left Plate -->
     <path d="M 32 320 L 192 320 L 192 448 L 96 448 L 96 480 L 32 480 Z" />
 
-    <!-- Plate Eta (Bottom Center / Right) -->
-    <path d="M 256 320 L 384 320 L 384 416 L 480 416 L 480 512 L 256 512 Z" />
+    <!-- Lower Right Plate -->
+    <path d="M 288 320 L 416 320 L 416 416 L 288 416 Z" />
   </g>
 
-  <!-- 4. Raised Slate Cores & Inner Chamfers -->
+  <!-- 4. Raised Slate Cores (Completely in Interior of Plates) -->
   <g fill="#545454">
-    <rect x="16" y="16" width="112" height="96" rx="8" />
-    <rect x="256" y="16" width="128" height="64" rx="8" />
+    <rect x="24" y="16" width="112" height="48" rx="8" />
+    <rect x="256" y="16" width="104" height="64" rx="8" />
     <rect x="160" y="144" width="112" height="96" rx="8" />
     <rect x="256" y="208" width="80" height="96" rx="8" />
-    <rect x="16" y="208" width="64" height="64" rx="8" />
-    <rect x="448" y="176" width="48" height="128" rx="8" />
+    <rect x="16" y="176" width="64" height="64" rx="8" />
+    <rect x="432" y="208" width="64" height="96" rx="8" />
     <rect x="48" y="336" width="128" height="96" rx="8" />
-    <rect x="288" y="336" width="80" height="80" rx="8" />
-    <rect x="288" y="432" width="160" height="64" rx="8" />
-    <rect x="464" y="464" width="48" height="48" rx="6" />
-    <rect x="464" y="0" width="48" height="48" rx="6" />
+    <rect x="304" y="336" width="96" height="64" rx="8" />
+    <rect x="256" y="448" width="112" height="48" rx="8" />
   </g>
 
-  <!-- 5. High-Contrast Mineral Highlights (Bright & Crisp) -->
+  <!-- 5. Crisp Mineral Highlights (Positioned Naturally in Plate Interiors - Zero Corner Dots) -->
   <g fill="#a8a8a8">
-    <rect x="32" y="32" width="80" height="32" rx="4" />
-    <rect x="288" y="32" width="80" height="32" rx="4" />
+    <rect x="40" y="24" width="80" height="24" rx="4" />
+    <rect x="272" y="24" width="72" height="28" rx="4" />
     <rect x="176" y="160" width="80" height="32" rx="4" />
     <rect x="272" y="224" width="48" height="48" rx="4" />
-    <rect x="32" y="224" width="32" height="32" rx="4" />
-    <rect x="464" y="192" width="32" height="80" rx="4" />
+    <rect x="28" y="188" width="40" height="32" rx="4" />
+    <rect x="444" y="220" width="40" height="64" rx="4" />
     <rect x="64" y="352" width="96" height="32" rx="4" />
-    <rect x="304" y="352" width="48" height="48" rx="4" />
-    <rect x="320" y="448" width="96" height="32" rx="4" />
-    <rect x="480" y="480" width="32" height="32" rx="4" />
-    <rect x="480" y="0" width="32" height="32" rx="4" />
+    <rect x="320" y="348" width="64" height="32" rx="4" />
+    <rect x="272" y="456" width="80" height="24" rx="4" />
   </g>
 
   <!-- 6. Crisp Bright Specular Glints -->
   <g fill="#dedede">
-    <rect x="48" y="36" width="48" height="12" rx="2" />
-    <rect x="304" y="36" width="48" height="12" rx="2" />
+    <rect x="56" y="28" width="48" height="12" rx="2" />
+    <rect x="288" y="28" width="40" height="12" rx="2" />
     <rect x="192" y="164" width="48" height="12" rx="2" />
     <rect x="280" y="228" width="24" height="24" rx="2" />
-    <rect x="472" y="200" width="16" height="48" rx="2" />
+    <rect x="452" y="228" width="20" height="36" rx="2" />
     <rect x="80" y="356" width="64" height="12" rx="2" />
-    <rect x="336" y="452" width="64" height="12" rx="2" />
+    <rect x="336" y="352" width="32" height="12" rx="2" />
+    <rect x="288" y="460" width="48" height="12" rx="2" />
   </g>
 </svg>
