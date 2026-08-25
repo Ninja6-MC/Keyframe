@@ -1,58 +1,100 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: RED SAND (BADLANDS / MESA)              -->
-  <!-- Terracotta sand with 3D bottom-right cast shadows on mineral flecks       -->
+  <!-- Terracotta sand with recessed mineral grains (inset 3D shadow)            -->
+  <!-- Each grain is a concave dimple: dark top-band, grain body, lit bottom-band -->
   <!-- ========================================================================= -->
 
-  <!-- 1. Base Badlands Terracotta Red (#bf6721) -->
+  <!-- 1. Base Badlands Terracotta Red -->
   <rect width="512" height="512" fill="#bf6721" />
 
-  <!-- 2. 3D Bottom-Right Drop Shadows for Shaded Red Grains (#6d2e04, Toroidal Wrap) -->
-  <g id="shaded_grain_shadows" fill="#6d2e04" shape-rendering="crispEdges">
-    <rect x="36" y="72" width="32" height="32" />
-    <rect x="228" y="168" width="32" height="32" />
-    <rect x="388" y="232" width="32" height="32" />
-    <rect x="292" y="360" width="32" height="32" />
-    <rect x="4" y="392" width="32" height="32" />
-    <rect x="196" y="488" width="32" height="32" />
-    <rect x="196" y="0" width="32" height="8" />
-    <rect x="484" y="488" width="28" height="32" />
-    <rect x="0" y="488" width="4" height="32" />
-    <rect x="484" y="0" width="28" height="8" />
-    <rect x="0" y="0" width="4" height="8" />
-  </g>
+  <!-- ================================================================== -->
+  <!-- 2. SHADED GRAINS — deep clay recessed flecks                       -->
+  <!--    Body: #ac5712 | Inset shadow (top): #8c3e07 | Highlight (bot): #b86520 -->
+  <!-- ================================================================== -->
 
-  <!-- 3. 3D Bottom-Right Drop Shadows for Highlight Grains (#7e3908, Toroidal Wrap) -->
-  <g id="highlight_grain_shadows" fill="#7e3908" shape-rendering="crispEdges">
-    <rect x="420" y="8" width="32" height="32" />
-    <rect x="260" y="40" width="32" height="32" />
-    <rect x="484" y="72" width="28" height="32" />
-    <rect x="0" y="72" width="4" height="32" />
-    <rect x="132" y="136" width="32" height="32" />
-    <rect x="324" y="200" width="32" height="32" />
-    <rect x="164" y="232" width="32" height="32" />
-    <rect x="292" y="392" width="32" height="32" />
-  </g>
+  <!-- Grain at (32, 64) -->
+  <rect x="32" y="64"  width="32" height="32" fill="#ac5712" />
+  <rect x="32" y="64"  width="32" height="8"  fill="#8c3e07" />
+  <rect x="32" y="88"  width="32" height="8"  fill="#b86520" />
 
-  <!-- 4. Shaded Red Sand Grains / Deep Clay Accents (#ac5712) -->
-  <g id="shaded_grains" fill="#ac5712" shape-rendering="crispEdges">
-    <rect x="32" y="64" width="32" height="32" />
-    <rect x="224" y="160" width="32" height="32" />
-    <rect x="384" y="224" width="32" height="32" />
-    <rect x="288" y="352" width="32" height="32" />
-    <rect x="0" y="384" width="32" height="32" />
-    <rect x="192" y="480" width="32" height="32" />
-    <rect x="480" y="480" width="32" height="32" />
-  </g>
+  <!-- Grain at (224, 160) -->
+  <rect x="224" y="160" width="32" height="32" fill="#ac5712" />
+  <rect x="224" y="160" width="32" height="8"  fill="#8c3e07" />
+  <rect x="224" y="184" width="32" height="8"  fill="#b86520" />
 
-  <!-- 5. Sparkling Highlight Flecks / Golden Terracotta Grains (#d2752b) -->
-  <g id="highlight_grains" fill="#d2752b" shape-rendering="crispEdges">
-    <rect x="416" y="0" width="32" height="32" />
-    <rect x="256" y="32" width="32" height="32" />
-    <rect x="480" y="64" width="32" height="32" />
-    <rect x="128" y="128" width="32" height="32" />
-    <rect x="320" y="192" width="32" height="32" />
-    <rect x="160" y="224" width="32" height="32" />
-    <rect x="288" y="384" width="32" height="32" />
-  </g>
+  <!-- Grain at (384, 224) -->
+  <rect x="384" y="224" width="32" height="32" fill="#ac5712" />
+  <rect x="384" y="224" width="32" height="8"  fill="#8c3e07" />
+  <rect x="384" y="248" width="32" height="8"  fill="#b86520" />
+
+  <!-- Grain at (96, 296) -->
+  <rect x="96" y="296"  width="32" height="32" fill="#ac5712" />
+  <rect x="96" y="296"  width="32" height="8"  fill="#8c3e07" />
+  <rect x="96" y="320"  width="32" height="8"  fill="#b86520" />
+
+  <!-- Grain at (288, 352) -->
+  <rect x="288" y="352" width="32" height="32" fill="#ac5712" />
+  <rect x="288" y="352" width="32" height="8"  fill="#8c3e07" />
+  <rect x="288" y="376" width="32" height="8"  fill="#b86520" />
+
+  <!-- Grain at (0, 384) -->
+  <rect x="0" y="384"   width="32" height="32" fill="#ac5712" />
+  <rect x="0" y="384"   width="32" height="8"  fill="#8c3e07" />
+  <rect x="0" y="408"   width="32" height="8"  fill="#b86520" />
+
+  <!-- Grain at (192, 480) -->
+  <rect x="192" y="480" width="32" height="32" fill="#ac5712" />
+  <rect x="192" y="480" width="32" height="8"  fill="#8c3e07" />
+  <rect x="192" y="504" width="32" height="8"  fill="#b86520" />
+
+  <!-- Grain at (480, 448) -->
+  <rect x="480" y="448" width="32" height="32" fill="#ac5712" />
+  <rect x="480" y="448" width="32" height="8"  fill="#8c3e07" />
+  <rect x="480" y="472" width="32" height="8"  fill="#b86520" />
+
+  <!-- ================================================================== -->
+  <!-- 3. HIGHLIGHT GRAINS — golden terracotta recessed flecks            -->
+  <!--    Body: #d2752b | Inset shadow (top): #9d4c10 | Highlight (bot): #de8a42 -->
+  <!-- ================================================================== -->
+
+  <!-- Grain at (416, 0) -->
+  <rect x="416" y="0"   width="32" height="32" fill="#d2752b" />
+  <rect x="416" y="0"   width="32" height="8"  fill="#9d4c10" />
+  <rect x="416" y="24"  width="32" height="8"  fill="#de8a42" />
+
+  <!-- Grain at (256, 32) -->
+  <rect x="256" y="32"  width="32" height="32" fill="#d2752b" />
+  <rect x="256" y="32"  width="32" height="8"  fill="#9d4c10" />
+  <rect x="256" y="56"  width="32" height="8"  fill="#de8a42" />
+
+  <!-- Grain at (480, 64) -->
+  <rect x="480" y="64"  width="32" height="32" fill="#d2752b" />
+  <rect x="480" y="64"  width="32" height="8"  fill="#9d4c10" />
+  <rect x="480" y="88"  width="32" height="8"  fill="#de8a42" />
+
+  <!-- Grain at (128, 128) -->
+  <rect x="128" y="128" width="32" height="32" fill="#d2752b" />
+  <rect x="128" y="128" width="32" height="8"  fill="#9d4c10" />
+  <rect x="128" y="152" width="32" height="8"  fill="#de8a42" />
+
+  <!-- Grain at (320, 192) -->
+  <rect x="320" y="192" width="32" height="32" fill="#d2752b" />
+  <rect x="320" y="192" width="32" height="8"  fill="#9d4c10" />
+  <rect x="320" y="216" width="32" height="8"  fill="#de8a42" />
+
+  <!-- Grain at (160, 224) -->
+  <rect x="160" y="224" width="32" height="32" fill="#d2752b" />
+  <rect x="160" y="224" width="32" height="8"  fill="#9d4c10" />
+  <rect x="160" y="248" width="32" height="8"  fill="#de8a42" />
+
+  <!-- Grain at (448, 296) -->
+  <rect x="448" y="296" width="32" height="32" fill="#d2752b" />
+  <rect x="448" y="296" width="32" height="8"  fill="#9d4c10" />
+  <rect x="448" y="320" width="32" height="8"  fill="#de8a42" />
+
+  <!-- Grain at (288, 384) -->
+  <rect x="288" y="384" width="32" height="32" fill="#d2752b" />
+  <rect x="288" y="384" width="32" height="8"  fill="#9d4c10" />
+  <rect x="288" y="408" width="32" height="8"  fill="#de8a42" />
 </svg>
