@@ -1,144 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <defs>
-    <!-- Subtle Ambient Occlusion Vignette -->
-    <linearGradient id="slate_ao" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#41434c" />
-      <stop offset="100%" stop-color="#34353d" />
-    </linearGradient>
-  </defs>
+  <!-- Solid Bedrock Slate Body -->
+  <rect width="512" height="512" fill="#3d3d43" />
 
-  <!-- Base Bedrock Slate Mass -->
-  <rect width="512" height="512" fill="url(#slate_ao)" />
-
-  <!-- Metamorphic Crevice Depth Layer -->
-  <g id="crevice_shadows">
-    <rect x="0" y="6" width="192" height="32" fill="#262730" opacity="0.8" />
-    <rect x="256" y="6" width="160" height="32" fill="#262730" opacity="0.8" />
-    <rect x="448" y="6" width="64" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="38" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="256" y="38" width="128" height="32" fill="#262730" opacity="0.8" />
-    <rect x="448" y="38" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="70" width="224" height="32" fill="#262730" opacity="0.8" />
-    <rect x="32" y="102" width="128" height="32" fill="#262730" opacity="0.8" />
-    <rect x="256" y="102" width="256" height="32" fill="#262730" opacity="0.8" />
-    <rect x="64" y="134" width="64" height="32" fill="#262730" opacity="0.8" />
-    <rect x="224" y="134" width="256" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="166" width="192" height="32" fill="#262730" opacity="0.8" />
-    <rect x="224" y="166" width="288" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="198" width="160" height="32" fill="#262730" opacity="0.8" />
-    <rect x="256" y="198" width="64" height="32" fill="#262730" opacity="0.8" />
-    <rect x="480" y="198" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="230" width="64" height="32" fill="#262730" opacity="0.8" />
-    <rect x="192" y="230" width="160" height="32" fill="#262730" opacity="0.8" />
-    <rect x="448" y="230" width="64" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="262" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="64" y="262" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="192" y="262" width="192" height="32" fill="#262730" opacity="0.8" />
-    <rect x="480" y="262" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="128" y="294" width="192" height="32" fill="#262730" opacity="0.8" />
-    <rect x="352" y="294" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="326" width="128" height="32" fill="#262730" opacity="0.8" />
-    <rect x="160" y="326" width="64" height="32" fill="#262730" opacity="0.8" />
-    <rect x="384" y="326" width="128" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="358" width="96" height="32" fill="#262730" opacity="0.8" />
-    <rect x="128" y="358" width="160" height="32" fill="#262730" opacity="0.8" />
-    <rect x="320" y="358" width="32" height="32" fill="#262730" opacity="0.8" />
-    <rect x="416" y="358" width="96" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="390" width="64" height="32" fill="#262730" opacity="0.8" />
-    <rect x="128" y="390" width="192" height="32" fill="#262730" opacity="0.8" />
-    <rect x="416" y="390" width="96" height="32" fill="#262730" opacity="0.8" />
-    <rect x="160" y="422" width="128" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="454" width="160" height="32" fill="#262730" opacity="0.8" />
-    <rect x="288" y="454" width="224" height="32" fill="#262730" opacity="0.8" />
-    <rect x="0" y="486" width="224" height="32" fill="#262730" opacity="0.8" />
-    <rect x="256" y="486" width="256" height="32" fill="#262730" opacity="0.8" />
-  </g>
-
-  <!-- Metamorphic Strata Plates -->
-  <g id="strata_plates">
-    <rect x="0" y="0" width="192" height="32" fill="#5c5f6a" />
-    <rect x="256" y="0" width="160" height="32" fill="#5c5f6a" />
-    <rect x="448" y="0" width="64" height="32" fill="#5c5f6a" />
-    <rect x="0" y="32" width="32" height="32" fill="#5c5f6a" />
-    <rect x="256" y="32" width="128" height="32" fill="#5c5f6a" />
-    <rect x="448" y="32" width="32" height="32" fill="#5c5f6a" />
-    <rect x="0" y="64" width="224" height="32" fill="#5c5f6a" />
-    <rect x="32" y="96" width="128" height="32" fill="#5c5f6a" />
-    <rect x="256" y="96" width="256" height="32" fill="#5c5f6a" />
-    <rect x="64" y="128" width="64" height="32" fill="#5c5f6a" />
-    <rect x="224" y="128" width="256" height="32" fill="#5c5f6a" />
-    <rect x="0" y="160" width="192" height="32" fill="#5c5f6a" />
-    <rect x="224" y="160" width="288" height="32" fill="#5c5f6a" />
-    <rect x="0" y="192" width="160" height="32" fill="#5c5f6a" />
-    <rect x="256" y="192" width="64" height="32" fill="#5c5f6a" />
-    <rect x="480" y="192" width="32" height="32" fill="#5c5f6a" />
-    <rect x="0" y="224" width="64" height="32" fill="#5c5f6a" />
-    <rect x="192" y="224" width="160" height="32" fill="#5c5f6a" />
-    <rect x="448" y="224" width="64" height="32" fill="#5c5f6a" />
-    <rect x="0" y="256" width="32" height="32" fill="#5c5f6a" />
-    <rect x="64" y="256" width="32" height="32" fill="#5c5f6a" />
-    <rect x="192" y="256" width="192" height="32" fill="#5c5f6a" />
-    <rect x="480" y="256" width="32" height="32" fill="#5c5f6a" />
-    <rect x="128" y="288" width="192" height="32" fill="#5c5f6a" />
-    <rect x="352" y="288" width="32" height="32" fill="#5c5f6a" />
-    <rect x="0" y="320" width="128" height="32" fill="#5c5f6a" />
-    <rect x="160" y="320" width="64" height="32" fill="#5c5f6a" />
-    <rect x="384" y="320" width="128" height="32" fill="#5c5f6a" />
-    <rect x="0" y="352" width="96" height="32" fill="#5c5f6a" />
-    <rect x="128" y="352" width="160" height="32" fill="#5c5f6a" />
-    <rect x="320" y="352" width="32" height="32" fill="#5c5f6a" />
-    <rect x="416" y="352" width="96" height="32" fill="#5c5f6a" />
-    <rect x="0" y="384" width="64" height="32" fill="#5c5f6a" />
-    <rect x="128" y="384" width="192" height="32" fill="#5c5f6a" />
-    <rect x="416" y="384" width="96" height="32" fill="#5c5f6a" />
-    <rect x="160" y="416" width="128" height="32" fill="#5c5f6a" />
-    <rect x="0" y="448" width="160" height="32" fill="#5c5f6a" />
-    <rect x="288" y="448" width="224" height="32" fill="#5c5f6a" />
-    <rect x="0" y="480" width="224" height="32" fill="#5c5f6a" />
-    <rect x="256" y="480" width="256" height="32" fill="#5c5f6a" />
-  </g>
-
-  <!-- Crystalline Ridge Highlights -->
-  <g id="ridge_highlights">
-    <rect x="0" y="0" width="192" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="256" y="0" width="160" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="448" y="0" width="64" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="32" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="256" y="32" width="128" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="448" y="32" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="64" width="224" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="32" y="96" width="128" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="256" y="96" width="256" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="64" y="128" width="64" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="224" y="128" width="256" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="160" width="192" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="224" y="160" width="288" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="192" width="160" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="256" y="192" width="64" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="480" y="192" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="224" width="64" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="192" y="224" width="160" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="448" y="224" width="64" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="256" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="64" y="256" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="192" y="256" width="192" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="480" y="256" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="128" y="288" width="192" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="352" y="288" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="320" width="128" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="160" y="320" width="64" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="384" y="320" width="128" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="352" width="96" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="128" y="352" width="160" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="320" y="352" width="32" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="416" y="352" width="96" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="384" width="64" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="128" y="384" width="192" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="416" y="384" width="96" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="160" y="416" width="128" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="448" width="160" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="288" y="448" width="224" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="0" y="480" width="224" height="4" fill="#787c88" opacity="0.9" />
-    <rect x="256" y="480" width="256" height="4" fill="#787c88" opacity="0.9" />
+  <!-- Clean Metamorphic Strata Layers (Zero Seam Artifacts) -->
+  <g id="strata_layers" shape-rendering="crispEdges">
+    <rect x="0" y="0" width="192" height="32" fill="#646464" />
+    <rect x="256" y="0" width="160" height="32" fill="#646464" />
+    <rect x="448" y="0" width="64" height="32" fill="#646464" />
+    <rect x="0" y="32" width="32" height="32" fill="#646464" />
+    <rect x="256" y="32" width="128" height="32" fill="#646464" />
+    <rect x="448" y="32" width="32" height="32" fill="#646464" />
+    <rect x="0" y="64" width="224" height="32" fill="#646464" />
+    <rect x="32" y="96" width="128" height="32" fill="#646464" />
+    <rect x="256" y="96" width="256" height="32" fill="#646464" />
+    <rect x="64" y="128" width="64" height="32" fill="#646464" />
+    <rect x="224" y="128" width="256" height="32" fill="#646464" />
+    <rect x="0" y="160" width="192" height="32" fill="#646464" />
+    <rect x="224" y="160" width="288" height="32" fill="#646464" />
+    <rect x="0" y="192" width="160" height="32" fill="#646464" />
+    <rect x="256" y="192" width="64" height="32" fill="#646464" />
+    <rect x="480" y="192" width="32" height="32" fill="#646464" />
+    <rect x="0" y="224" width="64" height="32" fill="#646464" />
+    <rect x="192" y="224" width="160" height="32" fill="#646464" />
+    <rect x="448" y="224" width="64" height="32" fill="#646464" />
+    <rect x="0" y="256" width="32" height="32" fill="#646464" />
+    <rect x="64" y="256" width="32" height="32" fill="#646464" />
+    <rect x="192" y="256" width="192" height="32" fill="#646464" />
+    <rect x="480" y="256" width="32" height="32" fill="#646464" />
+    <rect x="128" y="288" width="192" height="32" fill="#646464" />
+    <rect x="352" y="288" width="32" height="32" fill="#646464" />
+    <rect x="0" y="320" width="128" height="32" fill="#646464" />
+    <rect x="160" y="320" width="64" height="32" fill="#646464" />
+    <rect x="384" y="320" width="128" height="32" fill="#646464" />
+    <rect x="0" y="352" width="96" height="32" fill="#646464" />
+    <rect x="128" y="352" width="160" height="32" fill="#646464" />
+    <rect x="320" y="352" width="32" height="32" fill="#646464" />
+    <rect x="416" y="352" width="96" height="32" fill="#646464" />
+    <rect x="0" y="384" width="64" height="32" fill="#646464" />
+    <rect x="128" y="384" width="192" height="32" fill="#646464" />
+    <rect x="416" y="384" width="96" height="32" fill="#646464" />
+    <rect x="160" y="416" width="128" height="32" fill="#646464" />
+    <rect x="0" y="448" width="160" height="32" fill="#646464" />
+    <rect x="288" y="448" width="224" height="32" fill="#646464" />
+    <rect x="0" y="480" width="224" height="32" fill="#646464" />
+    <rect x="256" y="480" width="256" height="32" fill="#646464" />
   </g>
 </svg>
