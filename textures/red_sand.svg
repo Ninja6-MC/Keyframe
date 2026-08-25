@@ -1,13 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: RED SAND (BADLANDS / MESA)              -->
-  <!-- Rich warm terracotta badlands sand with minimal scattered mineral flecks  -->
+  <!-- Rich terracotta sand with 3D grounded drop-shadowed mineral flecks        -->
   <!-- ========================================================================= -->
 
   <!-- 1. Base Badlands Terracotta Red (#bf6721) -->
   <rect width="512" height="512" fill="#bf6721" />
 
-  <!-- 2. Shaded Red Sand Grains / Deep Clay Accents (#ac5712) -->
+  <!-- 2. 3D Drop Shadows for Shaded Red Grains (#8c3e07, Toroidal Wrap) -->
+  <g id="shaded_grain_shadows" fill="#8c3e07" shape-rendering="crispEdges">
+    <rect x="32" y="72" width="32" height="32" />
+    <rect x="224" y="168" width="32" height="32" />
+    <rect x="384" y="232" width="32" height="32" />
+    <rect x="288" y="360" width="32" height="32" />
+    <rect x="0" y="392" width="32" height="32" />
+    <rect x="192" y="488" width="32" height="32" />
+    <rect x="192" y="0" width="32" height="8" />
+    <rect x="480" y="488" width="32" height="32" />
+    <rect x="480" y="0" width="32" height="8" />
+  </g>
+
+  <!-- 3. 3D Drop Shadows for Highlight Grains (#9d4c10) -->
+  <g id="highlight_grain_shadows" fill="#9d4c10" shape-rendering="crispEdges">
+    <rect x="416" y="8" width="32" height="32" />
+    <rect x="256" y="40" width="32" height="32" />
+    <rect x="480" y="72" width="32" height="32" />
+    <rect x="128" y="136" width="32" height="32" />
+    <rect x="320" y="200" width="32" height="32" />
+    <rect x="160" y="232" width="32" height="32" />
+    <rect x="288" y="392" width="32" height="32" />
+  </g>
+
+  <!-- 4. Shaded Red Sand Grains / Deep Clay Accents (#ac5712) -->
   <g id="shaded_grains" fill="#ac5712" shape-rendering="crispEdges">
     <rect x="32" y="64" width="32" height="32" />
     <rect x="224" y="160" width="32" height="32" />
@@ -18,7 +42,7 @@
     <rect x="480" y="480" width="32" height="32" />
   </g>
 
-  <!-- 3. Sparkling Highlight Flecks / Golden Terracotta Grains (#d2752b) -->
+  <!-- 5. Sparkling Highlight Flecks / Golden Terracotta Grains (#d2752b) -->
   <g id="highlight_grains" fill="#d2752b" shape-rendering="crispEdges">
     <rect x="416" y="0" width="32" height="32" />
     <rect x="256" y="32" width="32" height="32" />
