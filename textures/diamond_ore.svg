@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: DIAMOND ORE                             -->
+  <!-- 1:1 Pixel-Matched 2-Tone Diamond Crystals (Light Cyan & Deep Teal)        -->
+  <!-- ========================================================================= -->
+
+  <!-- Cool Slate Stone Base (#6f7887) -->
+  <rect width="512" height="512" fill="#6f7887" />
+
+  <!-- ========================================================================= -->
+  <!-- STONE BACKGROUND DETAILS & STRIATION BARS (#9ba4b2)                       -->
+  <!-- ========================================================================= -->
+  <g id="stone-striations" fill="#9ba4b2">
+    <!-- Row 1 (Top Area) -->
+    <rect x="288" y="32" width="96" height="32" rx="4" />
+    <rect x="64" y="64" width="64" height="32" rx="4" />
+
+    <!-- Row 4 (Upper-Mid Area) -->
+    <rect x="32" y="128" width="96" height="32" rx="4" />
+    <rect x="320" y="128" width="96" height="32" rx="4" />
+
+    <!-- Row 7 (Mid Area) -->
+    <rect x="32" y="224" width="64" height="32" rx="4" />
+    <rect x="416" y="256" width="96" height="32" rx="4" />
+
+    <!-- Row 10 (Lower-Mid Area) -->
+    <rect x="96" y="320" width="128" height="32" rx="4" />
+    <rect x="256" y="352" width="96" height="32" rx="4" />
+
+    <!-- Row 13 (Bottom Area) -->
+    <rect x="32" y="416" width="64" height="32" rx="4" />
+    <rect x="320" y="448" width="96" height="32" rx="4" />
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- DEEP CYAN / TEAL DIAMOND CRYSTAL SHADOWS (#199589)                        -->
+  <!-- ========================================================================= -->
+  <g id="diamond-deep-teal" fill="#199589">
+    <!-- Upper-Mid Lower-Right Gem (Y=6, X=5..7) -->
+    <rect x="160" y="192" width="96" height="32" />
+
+    <!-- Upper-Mid Right Bottom (Y=6, X=10..11) -->
+    <rect x="320" y="192" width="64" height="32" />
+
+    <!-- Center Lower-Right Gem (Y=9, X=9..10) -->
+    <rect x="288" y="288" width="64" height="32" />
+
+    <!-- Lower-Left Accent Spark (Y=10, X=4) -->
+    <rect x="128" y="320" width="32" height="32" />
+
+    <!-- Bottom-Right Upper Tip (Y=11, X=13) -->
+    <rect x="416" y="352" width="32" height="32" />
+
+    <!-- Bottom-Right Main Shadow (Y=12, X=11..13) -->
+    <rect x="352" y="384" width="96" height="32" />
+
+    <!-- Bottom-Right Lower Drop (Y=13, X=9..10) -->
+    <rect x="288" y="416" width="64" height="32" />
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- LIGHT VIBRANT CYAN DIAMOND CRYSTAL HIGHLIGHTS (#3be0d0)                   -->
+  <!-- ========================================================================= -->
+  <g id="diamond-light-cyan" fill="#3be0d0">
+    <!-- Top-Left Spark (Y=2, X=4) -->
+    <rect x="128" y="64" width="32" height="32" />
+
+    <!-- Top-Center-Right (Y=3, X=7..8) -->
+    <rect x="224" y="96" width="64" height="32" />
+
+    <!-- Top-Right (Y=2, X=12..13) -->
+    <rect x="384" y="64" width="64" height="32" />
+
+    <!-- Upper-Mid Top Cap (Y=5, X=5..6) -->
+    <rect x="160" y="160" width="64" height="32" />
+
+    <!-- Upper-Mid Left (Y=6, X=3..4) -->
+    <rect x="96" y="192" width="64" height="32" />
+
+    <!-- Upper-Mid Right Top (Y=5, X=10..11) -->
+    <rect x="320" y="160" width="64" height="32" />
+
+    <!-- Mid-Left (Y=8, X=1..2) -->
+    <rect x="32" y="256" width="64" height="32" />
+
+    <!-- Center Top (Y=8, X=8..9) -->
+    <rect x="256" y="256" width="64" height="32" />
+
+    <!-- Center Left (Y=9, X=7..8) -->
+    <rect x="224" y="288" width="64" height="32" />
+
+    <!-- Bottom-Right Upper (Y=11, X=11..12) -->
+    <rect x="352" y="352" width="64" height="32" />
+
+    <!-- Bottom-Right Main (Y=12, X=8..10) -->
+    <rect x="256" y="384" width="96" height="32" />
+
+    <!-- Bottom-Left (Y=13, X=3..4) -->
+    <rect x="96" y="416" width="64" height="32" />
+  </g>
+</svg>
