@@ -76,49 +76,38 @@ function generateWaterStillStripSvg(frameCount = 16) {
   const frames = [];
   for (let f = 0; f < frameCount; f++) {
     const phi = (2 * Math.PI * f) / frameCount;
-    const dx1 = Math.sin(phi) * 16;
-    const dy1 = Math.cos(phi) * 12;
-    const dx2 = Math.cos(phi) * 20;
-    const dy2 = Math.sin(phi) * 14;
-    const dx3 = Math.sin(phi + 1.2) * 15;
-    const dy3 = Math.cos(phi + 1.2) * 18;
-    const dx4 = Math.cos(phi + 2.1) * 18;
-    const dy4 = Math.sin(phi + 2.1) * 16;
+    const dy1 = Math.sin(phi) * 18;
+    const dx1 = Math.cos(phi) * 22;
+    const dy2 = Math.sin(phi + 1.6) * 16;
+    const dx2 = Math.cos(phi + 1.6) * 20;
 
     frames.push(`
     <g transform="translate(0, ${f * 512})">
-      <!-- Frame ${f} Base Translucent Aquatic Volume (48% opacity, crystal clear) -->
-      <rect width="512" height="512" fill="#c8c8c8" fill-opacity="0.48" />
+      <defs>
+        <radialGradient id="caustic_g1_${f}" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.20" />
+          <stop offset="60%" stop-color="#ffffff" stop-opacity="0.08" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+        </radialGradient>
+        <radialGradient id="caustic_g2_${f}" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18" />
+          <stop offset="70%" stop-color="#ffffff" stop-opacity="0.06" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+        </radialGradient>
+      </defs>
 
-      <!-- Seamless Toroidal Caustic Lattice Web with Harmonic Phase Shift -->
-      <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <!-- Horizontal Web Struts -->
-        <path d="M 0 ${128 + dy1} C ${64 + dx1} ${140 + dy1}, ${112 + dx2} ${96 + dy2}, ${176 + dx1} ${112 + dy1} C ${240 + dx2} ${128 + dy2}, ${272 + dx3} ${192 + dy3}, ${336 + dx2} ${176 + dy2} C ${400 + dx1} ${160 + dy1}, ${448 + dx2} ${112 + dy2}, 512 ${128 + dy1}" />
-        <path d="M 0 ${384 + dy3} C ${64 + dx3} ${368 + dy3}, ${128 + dx4} ${416 + dy4}, ${192 + dx3} ${384 + dy3} C ${256 + dx4} ${352 + dy4}, ${304 + dx1} ${416 + dy1}, ${384 + dx4} ${400 + dy4} C ${448 + dx3} ${384 + dy3}, ${480 + dx4} ${368 + dy4}, 512 ${384 + dy3}" />
-        
-        <!-- Vertical Struts -->
-        <path d="M ${128 + dx1} 0 C ${144 + dx2} ${64 + dy1}, ${160 + dx1} ${112 + dy2}, ${176 + dx2} ${192 + dy1} C ${192 + dx1} ${272 + dy2}, ${160 + dx2} ${336 + dy1}, ${192 + dx1} ${384 + dy2} C ${208 + dx2} ${432 + dy1}, ${176 + dx1} ${480 + dy2}, ${128 + dx1} 512" />
-        <path d="M ${384 + dx3} 0 C ${368 + dx4} ${64 + dy3}, ${352 + dx3} ${128 + dy4}, ${336 + dx4} ${176 + dy3} C ${320 + dx3} ${256 + dy4}, ${368 + dx4} ${320 + dy3}, ${384 + dx3} ${400 + dy4} C ${400 + dx4} ${448 + dy3}, ${384 + dx3} ${480 + dy4}, ${384 + dx3} 512" />
+      <!-- Base Translucent Aquatic Surface (48% opacity, crystal clear) -->
+      <rect width="512" height="512" fill="#b6b6b6" fill-opacity="0.48" />
 
-        <!-- Interior Caustic Connectors -->
-        <path d="M ${176 + dx1} ${112 + dy1} C ${208 + dx2} ${160 + dy2}, ${288 + dx3} ${144 + dy3}, ${336 + dx2} ${176 + dy2}" />
-        <path d="M ${176 + dx2} ${192 + dy1} C ${240 + dx3} ${224 + dy2}, ${272 + dx4} ${240 + dy3}, ${336 + dx2} ${176 + dy2}" />
-        <path d="M ${176 + dx2} ${192 + dy1} C ${208 + dx1} ${272 + dy2}, ${288 + dx2} ${288 + dy3}, ${320 + dx3} ${256 + dy4} C ${352 + dx2} ${224 + dy3}, ${368 + dx3} ${320 + dy2}, ${384 + dx4} ${400 + dy4}" />
-        <path d="M ${176 + dx2} ${192 + dy1} C ${144 + dx1} ${256 + dy2}, ${160 + dx2} ${320 + dy3}, ${192 + dx3} ${384 + dy3}" />
-        <path d="M ${192 + dx3} ${384 + dy3} C ${256 + dx4} ${368 + dy4}, ${320 + dx1} ${352 + dy1}, ${384 + dx4} ${400 + dy4}" />
+      <!-- Broad Soft Toroidal Rolling Wave Swells (Zero wireframe lines) -->
+      <path d="M 0 ${160 + dy1} C 128 ${110 + dy1}, 256 ${190 + dy2}, 384 ${140 + dy1} C 448 ${115 + dy2}, 480 ${135 + dy1}, 512 ${160 + dy1} L 512 ${220 + dy1} C 480 ${195 + dy1}, 448 ${175 + dy2}, 384 ${200 + dy1} C 256 ${250 + dy2}, 128 ${170 + dy1}, 0 ${220 + dy1} Z" fill="url(#caustic_g1_${f})" />
 
-        <!-- Toroidal Corner Bridges -->
-        <path d="M 0 ${256 + dy2} C ${48 + dx1} ${240 + dy2}, ${96 + dx2} ${224 + dy1}, ${176 + dx2} ${192 + dy1}" />
-        <path d="M 512 ${256 + dy2} C ${464 + dx3} ${240 + dy2}, ${416 + dx4} ${224 + dy1}, ${336 + dx2} ${176 + dy2}" />
-      </g>
+      <path d="M 0 ${390 + dy2} C 128 ${340 + dy2}, 256 ${420 + dy1}, 384 ${370 + dy2} C 448 ${345 + dy1}, 480 ${365 + dy2}, 512 ${390 + dy2} L 512 ${450 + dy2} C 480 ${425 + dy2}, 448 ${405 + dy1}, 384 ${430 + dy2} C 256 ${480 + dy1}, 128 ${400 + dy2}, 0 ${450 + dy2} Z" fill="url(#caustic_g2_${f})" />
 
-      <!-- Crisp Sunlit Glints -->
-      <g stroke="#ffffff" stroke-opacity="0.80" stroke-width="5" stroke-linecap="round" fill="none">
-        <path d="M ${176 + dx1} ${112 + dy1} C ${240 + dx2} ${128 + dy2}, ${272 + dx3} ${192 + dy3}, ${336 + dx2} ${176 + dy2}" />
-        <path d="M ${192 + dx3} ${384 + dy3} C ${256 + dx4} ${352 + dy4}, ${304 + dx1} ${416 + dy1}, ${384 + dx4} ${400 + dy4}" />
-        <path d="M 0 ${128 + dy1} C ${48 + dx1} ${136 + dy1}, ${96 + dx2} ${104 + dy2}, ${140 + dx1} ${108 + dy1}" />
-        <path d="M 512 ${128 + dy1} C ${464 + dx3} ${120 + dy1}, ${432 + dx4} ${144 + dy2}, ${384 + dx3} ${140 + dy1}" />
-      </g>
+      <!-- Diffuse Sunlit Shimmer Patches -->
+      <ellipse cx="${160 + dx1}" cy="${120 + dy1}" rx="100" ry="55" fill="url(#caustic_g1_${f})" />
+      <ellipse cx="${390 + dx2}" cy="${270 + dy2}" rx="110" ry="60" fill="url(#caustic_g2_${f})" />
+      <ellipse cx="${210 + dx1}" cy="${420 + dy1}" rx="105" ry="55" fill="url(#caustic_g1_${f})" />
     </g>`);
   }
 

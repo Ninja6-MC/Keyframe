@@ -1,47 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <!-- Subtle Ambient Sky Reflectance -->
-    <linearGradient id="water_sheen" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
-      <stop offset="100%" stop-color="#b6b6b6" stop-opacity="0.0" />
-    </linearGradient>
+    <!-- Soft diffuse radial glow for caustic facet centers -->
+    <radialGradient id="caustic_soft_1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+    </radialGradient>
+    <radialGradient id="caustic_soft_2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18" />
+      <stop offset="70%" stop-color="#ffffff" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+    </radialGradient>
   </defs>
 
-  <!-- Base Translucent Aquatic Volume (52% opacity) -->
-  <rect width="512" height="512" fill="#b6b6b6" fill-opacity="0.52" />
+  <!-- Base Translucent Aquatic Surface (48% opacity, crystal clear) -->
+  <rect width="512" height="512" fill="#b6b6b6" fill-opacity="0.48" />
 
-  <!-- Top Ambient Sheen -->
-  <rect width="512" height="512" fill="url(#water_sheen)" />
+  <!-- Broad Soft Toroidal Wave Crests & Diffuse Refractive Facets (Zero Sharp Wireframes) -->
+  <!-- Wave Swell 1 (Upper Horizontal Organic Rolling Facet, wraps x=0 to 512) -->
+  <path d="M 0 160 C 128 110, 256 190, 384 140 C 448 115, 480 135, 512 160 L 512 210 C 480 185, 448 165, 384 190 C 256 240, 128 160, 0 210 Z" fill="url(#caustic_soft_1)" />
 
-  <!-- Stylized Geometric Beach Caustic Lattice Network -->
-  <!-- Interlocking refractive sunlit webbing with 100% toroidal seamless wrap -->
-  <g stroke="#ffffff" stroke-opacity="0.38" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <!-- Web Node A -> Node B -> Wraps -->
-    <path d="M 0 128 C 64 140, 112 96, 176 112 C 240 128, 272 192, 336 176 C 400 160, 448 112, 512 128" />
-    <path d="M 0 384 C 64 368, 128 416, 192 384 C 256 352, 304 416, 384 400 C 448 384, 480 368, 512 384" />
-    
-    <!-- Vertical Cross-Struts (wrapping y=0 to y=512) -->
-    <path d="M 128 0 C 144 64, 160 112, 176 192 C 192 272, 160 336, 192 384 C 208 432, 176 480, 128 512" />
-    <path d="M 384 0 C 368 64, 352 128, 336 176 C 320 256, 368 320, 384 400 C 400 448, 384 480, 384 512" />
+  <!-- Wave Swell 2 (Lower Horizontal Organic Rolling Facet, wraps x=0 to 512) -->
+  <path d="M 0 390 C 128 340, 256 420, 384 370 C 448 345, 480 365, 512 390 L 512 440 C 480 415, 448 395, 384 420 C 256 470, 128 390, 0 440 Z" fill="url(#caustic_soft_2)" />
 
-    <!-- Interior Caustic Cell Struts -->
-    <path d="M 176 112 C 208 160, 288 144, 336 176" />
-    <path d="M 176 192 C 240 224, 272 240, 336 176" />
-    <path d="M 176 192 C 208 272, 288 288, 320 256 C 352 224, 368 320, 384 400" />
-    <path d="M 176 192 C 144 256, 160 320, 192 384" />
-    <path d="M 192 384 C 256 368, 320 352, 384 400" />
-
-    <!-- Corner Wrap Bridges -->
-    <path d="M 0 256 C 48 240, 96 224, 176 192" />
-    <path d="M 512 256 C 464 240, 416 224, 336 176" />
-  </g>
-
-  <!-- Fine Sunlit Caustic Shimmer Accents (Crisp Inner Core Highlights) -->
-  <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="5" stroke-linecap="round" fill="none">
-    <path d="M 176 112 C 240 128, 272 192, 336 176" />
-    <path d="M 192 384 C 256 352, 304 416, 384 400" />
-    <path d="M 176 192 C 240 224, 272 240, 336 176" />
-    <path d="M 0 128 C 48 136, 96 104, 140 108" />
-    <path d="M 512 128 C 464 120, 432 144, 384 140" />
-  </g>
+  <!-- Large Soft Diffuse Sunlit Patches (No hard stroke outlines) -->
+  <ellipse cx="160" cy="120" rx="90" ry="50" fill="url(#caustic_soft_1)" />
+  <ellipse cx="400" cy="270" rx="100" ry="55" fill="url(#caustic_soft_2)" />
+  <ellipse cx="200" cy="420" rx="95" ry="50" fill="url(#caustic_soft_1)" />
 </svg>
