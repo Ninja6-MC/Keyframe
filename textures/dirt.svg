@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- TRAILER STYLE: DIRT (EXPERIMENT: WITH STYLIZED PEBBLES)                   -->
+  <!-- To rollback: simply remove the <g id="stylized-stone-pebbles"> block below -->
+  <!-- ========================================================================= -->
+
+  <!-- Warm Golden-Terracotta Soil Base (#d98827) -->
+  <rect width="512" height="512" fill="#d98827" />
+
+  <!-- Soil Clods & Pebbles (Toroidal Seamless) -->
+  <rect x="48" y="32" width="96" height="64" rx="8" fill="#b36615" />
+  <rect x="56" y="40" width="48" height="32" rx="4" fill="#944e0a" />
+
+  <rect x="320" y="120" width="112" height="80" rx="10" fill="#b36615" />
+  <rect x="336" y="136" width="64" height="40" rx="6" fill="#944e0a" />
+
+  <rect x="140" y="340" width="128" height="72" rx="10" fill="#b36615" />
+  <rect x="156" y="356" width="64" height="36" rx="4" fill="#944e0a" />
+
+  <rect x="380" y="380" width="88" height="64" rx="8" fill="#b36615" />
+
+  <!-- Warm Golden Highlights -->
+  <rect x="220" y="48" width="64" height="48" rx="6" fill="#f0a346" />
+  <rect x="232" y="56" width="32" height="24" rx="3" fill="#fcae52" />
+
+  <rect x="48" y="220" width="72" height="56" rx="8" fill="#f0a346" />
+  <rect x="60" y="232" width="40" height="28" rx="4" fill="#fcae52" />
+
+  <rect x="240" y="220" width="56" height="48" rx="6" fill="#b36615" />
+
+  <rect x="320" y="280" width="72" height="52" rx="6" fill="#f0a346" />
+  <rect x="332" y="292" width="40" height="24" rx="3" fill="#fcae52" />
+
+  <rect x="40" y="420" width="64" height="48" rx="6" fill="#f0a346" />
+
+  <!-- ========================================================================= -->
+  <!-- EXPERIMENTAL LAYER: STYLIZED SLATE STONE PEBBLES (90% OPACITY)            -->
+  <!-- ========================================================================= -->
+  <g id="stylized-stone-pebbles" opacity="0.7">
+    <!-- Pebble 1 (Upper Left) -->
+    <rect x="180" y="100" width="28" height="20" rx="4" fill="#6f7887" />
+    <path d="M 180 100 L 208 100 L 204 103 L 184 103 Z" fill="#9ba4b2" />
+    <path d="M 180 120 L 208 120 L 204 117 L 184 117 Z" fill="#4d5562" />
+
+    <!-- Pebble 2 (Mid Left) -->
+    <rect x="110" y="260" width="30" height="22" rx="4" fill="#6f7887" />
+    <path d="M 110 260 L 140 260 L 136 264 L 114 264 Z" fill="#9ba4b2" />
+    <path d="M 110 282 L 140 282 L 136 278 L 114 278 Z" fill="#4d5562" />
+
+    <!-- Pebble 3 (Upper Right) -->
+    <rect x="360" y="220" width="24" height="18" rx="4" fill="#6f7887" />
+    <path d="M 360 220 L 384 220 L 380 223 L 364 223 Z" fill="#9ba4b2" />
+    <path d="M 360 238 L 384 238 L 380 235 L 364 235 Z" fill="#4d5562" />
+
+    <!-- Pebble 4 (Lower Center) -->
+    <rect x="220" y="410" width="32" height="24" rx="5" fill="#6f7887" />
+    <path d="M 220 410 L 252 410 L 248 414 L 224 414 Z" fill="#9ba4b2" />
+    <path d="M 220 434 L 252 434 L 248 430 L 224 430 Z" fill="#4d5562" />
+
+    <!-- Pebble 5 (Lower Right) -->
+    <rect x="420" y="440" width="22" height="16" rx="4" fill="#6f7887" />
+    <path d="M 420 440 L 442 440 L 439 443 L 423 443 Z" fill="#9ba4b2" />
+  </g>
+</svg>

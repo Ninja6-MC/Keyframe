@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- 100% Transparent Overlay                                                  -->
+  <!-- Prevents Minecraft Vanilla 16x biome overlay from blending on top of our  -->
+  <!-- pre-baked trailer-colored grass_block_side.svg overhang                   -->
+  <!-- ========================================================================= -->
+</svg>

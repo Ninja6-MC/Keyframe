@@ -1,0 +1,35 @@
+{
+  "name": "@ninja6-mc/keyframe",
+  "version": "1.0.0-alpha.1",
+  "description": "The cinematic trailer aesthetic for Minecraft, authored in infinite-resolution vector masters.",
+  "type": "module",
+  "main": "tools/build.mjs",
+  "scripts": {
+    "build": "node tools/build.mjs --res 512",
+    "build:256": "node tools/build.mjs --res 256",
+    "build:128": "node tools/build.mjs --res 128",
+    "build:64": "node tools/build.mjs --res 64",
+    "build:32": "node tools/build.mjs --res 32",
+    "build:all": "node tools/build.mjs --all"
+  },
+  "keywords": [
+    "minecraft",
+    "texture-pack",
+    "resource-pack",
+    "vector",
+    "svg",
+    "cinematic",
+    "trailer",
+    "keyframe",
+    "ninja6"
+  ],
+  "author": "Ninja6-MC",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "archiver": "^7.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: OAK LOG TOP (ANNUAL GROWTH RINGS)       -->
+  <!-- With Matching Outer Bark Furrow Notches (#1d0a00 on #4d331b border)       -->
+  <!-- ========================================================================= -->
+
+  <!-- Outer Bark Base (1 texel = 32px border, #4d331b) -->
+  <rect width="512" height="512" fill="#4d331b" />
+
+  <!-- Outer Bark Furrows (Matching Side Face Furrows in Outer 32px Layer) -->
+  <g id="outer-bark-furrows" fill="#1d0a00">
+    <!-- Top Edge (Y=0..32) -->
+    <rect x="0" y="0" width="32" height="32" />
+    <rect x="96" y="0" width="32" height="32" />
+    <rect x="192" y="0" width="32" height="32" />
+    <rect x="320" y="0" width="32" height="32" />
+    <rect x="448" y="0" width="32" height="32" />
+
+    <!-- Bottom Edge (Y=480..512) -->
+    <rect x="32" y="480" width="32" height="32" />
+    <rect x="160" y="480" width="32" height="32" />
+    <rect x="288" y="480" width="32" height="32" />
+    <rect x="384" y="480" width="32" height="32" />
+    <rect x="480" y="480" width="32" height="32" />
+
+    <!-- Left Edge (X=0..32) -->
+    <rect x="0" y="32" width="32" height="32" />
+    <rect x="0" y="160" width="32" height="32" />
+    <rect x="0" y="288" width="32" height="32" />
+    <rect x="0" y="384" width="32" height="32" />
+    <rect x="0" y="480" width="32" height="32" />
+
+    <!-- Right Edge (X=480..512) -->
+    <rect x="480" y="0" width="32" height="32" />
+    <rect x="480" y="96" width="32" height="32" />
+    <rect x="480" y="192" width="32" height="32" />
+    <rect x="480" y="320" width="32" height="32" />
+    <rect x="480" y="448" width="32" height="32" />
+  </g>
+
+  <!-- Heartwood Base (14x14 texels, #bfa068) -->
+  <rect x="32" y="32" width="448" height="448" fill="#bfa068" />
+
+  <!-- Outer Dark Growth Ring (12x12 texels, #9e7e48) -->
+  <rect x="64" y="64" width="384" height="384" fill="#9e7e48" />
+
+  <!-- Middle Light Ring (10x10 texels, #bfa068) -->
+  <rect x="96" y="96" width="320" height="320" fill="#bfa068" />
+
+  <!-- Inner Dark Growth Ring (6x6 texels, #9e7e48) -->
+  <rect x="160" y="160" width="192" height="192" fill="#9e7e48" />
+
+  <!-- Center Pith Core (4x4 texels, #bfa068) -->
+  <rect x="192" y="192" width="128" height="128" fill="#bfa068" />
+</svg>

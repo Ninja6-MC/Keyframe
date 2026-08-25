@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: OAK PLANKS                              -->
+  <!-- User-Approved Knot Layout with Official Bare Bones Palette                -->
+  <!-- ========================================================================= -->
+
+  <!-- Base Warm Golden Oak Planks (Bare Bones Base #b8945f) -->
+  <rect width="512" height="512" fill="#b8945f" />
+
+  <!-- ========================================================================= -->
+  <!-- WOOD KNOTS & GRAIN ACCENTS (Bare Bones Accent #967441)                    -->
+  <!-- ========================================================================= -->
+  <g id="plank-knots-and-accents" fill="#967441">
+    <!-- Plank 1 Accents (Y = 0..96) -->
+    <rect x="96" y="32" width="32" height="32" />
+    <rect x="256" y="64" width="32" height="32" />
+    <rect x="480" y="0" width="32" height="96" />
+
+    <!-- Plank 2 Accents (Y = 128..224) -->
+    <rect x="64" y="160" width="32" height="32" />
+    <rect x="224" y="128" width="32" height="96" />
+    <rect x="320" y="192" width="32" height="32" />
+    <rect x="352" y="128" width="32" height="32" />
+
+    <!-- Plank 3 Accents (Y = 256..352) -->
+    <rect x="160" y="256" width="32" height="32" />
+    <rect x="192" y="320" width="32" height="32" />
+    <rect x="352" y="288" width="32" height="32" />
+    <rect x="480" y="256" width="32" height="96" />
+
+    <!-- Plank 4 Accents (Y = 384..480) -->
+    <rect x="64" y="416" width="32" height="32" />
+    <rect x="224" y="384" width="32" height="96" />
+    <rect x="288" y="384" width="32" height="32" />
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- DARK HORIZONTAL SEAMS (Bare Bones Groove #67502c, 1 texel = 32px height)  -->
+  <!-- ========================================================================= -->
+  <g id="plank-grooves" fill="#67502c">
+    <!-- Groove 1 (Y = 96..128) -->
+    <rect x="0" y="96" width="512" height="32" />
+
+    <!-- Groove 2 (Y = 224..256) -->
+    <rect x="0" y="224" width="512" height="32" />
+
+    <!-- Groove 3 (Y = 352..384) -->
+    <rect x="0" y="352" width="512" height="32" />
+
+    <!-- Groove 4 (Y = 480..512) -->
+    <rect x="0" y="480" width="512" height="32" />
+  </g>
+</svg>

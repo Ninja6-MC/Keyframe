@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Compile Multi-Resolution Resource Packs
+        run: node tools/build.mjs --all
+
+      - name: Create GitHub Release & Attach Resource Packs
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            dist/Keyframe-512x.zip
+            dist/Keyframe-256x.zip
+            dist/Keyframe-128x.zip
+            dist/Keyframe-64x.zip
+            dist/Keyframe-32x.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
