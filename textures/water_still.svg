@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Subtle Water Transparency Gradient -->
+    <linearGradient id="water_grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#eaeaea" stop-opacity="0.65" />
+    </linearGradient>
+  </defs>
+
+  <!-- Base Translucent Water Volume -->
+  <rect width="512" height="512" fill="url(#water_grad)" />
+
+  <!-- Smooth Harmonic Caustics & Refractive Wave Facets -->
+  <g id="caustics" fill="#ffffff" fill-opacity="0.35">
+    <!-- Caustic Cell 1 -->
+    <path d="M 64 96 C 96 64, 160 80, 192 128 C 224 176, 176 224, 128 208 C 80 192, 32 128, 64 96 Z" />
+    <!-- Caustic Cell 2 -->
+    <path d="M 320 64 C 368 48, 432 80, 448 144 C 464 208, 400 240, 352 208 C 304 176, 272 80, 320 64 Z" />
+    <!-- Caustic Cell 3 (Center) -->
+    <path d="M 208 256 C 256 224, 320 240, 336 304 C 352 368, 288 416, 240 384 C 192 352, 160 288, 208 256 Z" />
+    <!-- Caustic Cell 4 (Lower Left) -->
+    <path d="M 80 352 C 128 320, 176 352, 160 416 C 144 480, 80 496, 48 448 C 16 400, 32 384, 80 352 Z" />
+    <!-- Caustic Cell 5 (Lower Right) -->
+    <path d="M 384 352 C 432 320, 496 368, 480 432 C 464 496, 400 496, 368 448 C 336 400, 336 384, 384 352 Z" />
+  </g>
+
+  <!-- Fine Sunlit Ripple Ribbons -->
+  <g id="ripples" stroke="#ffffff" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round" fill="none">
+    <path d="M 0 160 Q 128 128, 256 160 T 512 160" />
+    <path d="M 0 320 Q 128 288, 256 320 T 512 320" />
+    <path d="M 0 480 Q 128 448, 256 480 T 512 480" />
+  </g>
+</svg>
