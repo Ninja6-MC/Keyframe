@@ -1,36 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
-  <!-- Original palette restored:                                                -->
-  <!-- Base: #dacfa3 | Shaded grain: #d1ba8a | Highlight grain: #e7e4bb          -->
-  <!-- - Small holes: 32x32 square (#d1ba8a) with thin (4px) inset top (#b89d66)  -->
-  <!-- - Light bumps: 32x32 square (#e7e4bb) with thin (4px) outset under (#c8b982) -->
+  <!-- Full opposite-side 3D directional lighting (sun from top-left):           -->
+  <!-- - Light bumps (outset): top-left highlight (#f4f0d4), bottom-right shadow (#c8b982) -->
+  <!-- - Small holes (inset): top-left shadow (#b89d66), bottom-right catch (#ddd0a8) -->
   <!-- ========================================================================= -->
 
   <!-- 1. Base Warm Beach Sand -->
   <rect width="512" height="512" fill="#dacfa3" />
 
   <!-- ================================================================== -->
-  <!-- 2. LIGHT BUMPS: 32x32 SQUARE (#e7e4bb) + THIN OUTSET SHADOW (#c8b982) -->
+  <!-- 2. LIGHT BUMPS (OUTSET): Sunlit Top-Left + Shadowed Bottom-Right    -->
   <!-- ================================================================== -->
 
-  <!-- Thin Outset Shadows (32x4 underline at y+32) -->
+  <!-- Outset Bottom-Right Drop Shadows (3px underline & right vertical) -->
   <g id="light_bump_shadows" fill="#c8b982" shape-rendering="crispEdges">
-    <rect x="416" y="32"  width="32" height="4" />
-    <rect x="256" y="64"  width="32" height="4" />
-    <rect x="480" y="96"  width="32" height="4" />
-    <rect x="128" y="160" width="32" height="4" />
-    <rect x="320" y="224" width="32" height="4" />
-    <rect x="160" y="256" width="32" height="4" />
-    <rect x="448" y="328" width="32" height="4" />
-    <rect x="288" y="416" width="32" height="4" />
+    <!-- Bottom 3px -->
+    <rect x="416" y="32" width="32" height="3" />
+    <rect x="256" y="64" width="32" height="3" />
+    <rect x="480" y="96" width="32" height="3" />
+    <rect x="128" y="160" width="32" height="3" />
+    <rect x="320" y="224" width="32" height="3" />
+    <rect x="160" y="256" width="32" height="3" />
+    <rect x="448" y="328" width="32" height="3" />
+    <rect x="288" y="416" width="32" height="3" />
+
+    <!-- Right 3px (with toroidal wrap at x=512 -> x=0) -->
+    <rect x="448" y="0" width="3" height="35" />
+    <rect x="288" y="32" width="3" height="35" />
+    <rect x="0" y="64" width="3" height="35" />
+    <rect x="160" y="128" width="3" height="35" />
+    <rect x="352" y="192" width="3" height="35" />
+    <rect x="192" y="224" width="3" height="35" />
+    <rect x="480" y="296" width="3" height="35" />
+    <rect x="320" y="384" width="3" height="35" />
   </g>
 
-  <!-- Light Bump 32x32 Square Bodies -->
+  <!-- Bump 32x32 Bodies -->
   <g id="light_bump_bodies" fill="#e7e4bb" shape-rendering="crispEdges">
-    <rect x="416" y="0"   width="32" height="32" />
-    <rect x="256" y="32"  width="32" height="32" />
-    <rect x="480" y="64"  width="32" height="32" />
+    <rect x="416" y="0" width="32" height="32" />
+    <rect x="256" y="32" width="32" height="32" />
+    <rect x="480" y="64" width="32" height="32" />
     <rect x="128" y="128" width="32" height="32" />
     <rect x="320" y="192" width="32" height="32" />
     <rect x="160" y="224" width="32" height="32" />
@@ -38,39 +48,86 @@
     <rect x="288" y="384" width="32" height="32" />
   </g>
 
+  <!-- Bump Top-Left Sunlit Highlights (3px top & left inner bevel) -->
+  <g id="light_bump_highlights" fill="#f4f0d4" shape-rendering="crispEdges">
+    <!-- Top 3px -->
+    <rect x="416" y="0" width="32" height="3" />
+    <rect x="256" y="32" width="32" height="3" />
+    <rect x="480" y="64" width="32" height="3" />
+    <rect x="128" y="128" width="32" height="3" />
+    <rect x="320" y="192" width="32" height="3" />
+    <rect x="160" y="224" width="32" height="3" />
+    <rect x="448" y="296" width="32" height="3" />
+    <rect x="288" y="384" width="32" height="3" />
+
+    <!-- Left 3px -->
+    <rect x="416" y="0" width="3" height="32" />
+    <rect x="256" y="32" width="3" height="32" />
+    <rect x="480" y="64" width="3" height="32" />
+    <rect x="128" y="128" width="3" height="32" />
+    <rect x="320" y="192" width="3" height="32" />
+    <rect x="160" y="224" width="3" height="32" />
+    <rect x="448" y="296" width="3" height="32" />
+    <rect x="288" y="384" width="3" height="32" />
+  </g>
+
   <!-- ================================================================== -->
-  <!-- 3. SMALL HOLES: 32x32 SQUARE (#d1ba8a) + THIN INSET TOP (#b89d66)  -->
+  <!-- 3. SMALL HOLES (INSET): Shadowed Top-Left + Sunlit Bottom-Right    -->
   <!-- ================================================================== -->
 
   <!-- Small Hole at (32, 64) -->
-  <rect x="32" y="64"  width="32" height="32" fill="#d1ba8a" />
-  <rect x="32" y="64"  width="32" height="4"  fill="#b89d66" />
+  <rect x="32" y="64" width="32" height="32" fill="#d1ba8a" />
+  <rect x="32" y="64" width="32" height="3" fill="#b89d66" />
+  <rect x="32" y="64" width="3" height="32" fill="#b89d66" />
+  <rect x="32" y="93" width="32" height="3" fill="#ddd0a8" />
+  <rect x="61" y="64" width="3" height="32" fill="#ddd0a8" />
 
   <!-- Small Hole at (224, 160) -->
   <rect x="224" y="160" width="32" height="32" fill="#d1ba8a" />
-  <rect x="224" y="160" width="32" height="4"  fill="#b89d66" />
+  <rect x="224" y="160" width="32" height="3" fill="#b89d66" />
+  <rect x="224" y="160" width="3" height="32" fill="#b89d66" />
+  <rect x="224" y="189" width="32" height="3" fill="#ddd0a8" />
+  <rect x="253" y="160" width="3" height="32" fill="#ddd0a8" />
 
   <!-- Small Hole at (384, 224) -->
   <rect x="384" y="224" width="32" height="32" fill="#d1ba8a" />
-  <rect x="384" y="224" width="32" height="4"  fill="#b89d66" />
+  <rect x="384" y="224" width="32" height="3" fill="#b89d66" />
+  <rect x="384" y="224" width="3" height="32" fill="#b89d66" />
+  <rect x="384" y="253" width="32" height="3" fill="#ddd0a8" />
+  <rect x="413" y="224" width="3" height="32" fill="#ddd0a8" />
 
   <!-- Small Hole at (96, 296) -->
-  <rect x="96" y="296"  width="32" height="32" fill="#d1ba8a" />
-  <rect x="96" y="296"  width="32" height="4"  fill="#b89d66" />
+  <rect x="96" y="296" width="32" height="32" fill="#d1ba8a" />
+  <rect x="96" y="296" width="32" height="3" fill="#b89d66" />
+  <rect x="96" y="296" width="3" height="32" fill="#b89d66" />
+  <rect x="96" y="325" width="32" height="3" fill="#ddd0a8" />
+  <rect x="125" y="296" width="3" height="32" fill="#ddd0a8" />
 
   <!-- Small Hole at (288, 352) -->
   <rect x="288" y="352" width="32" height="32" fill="#d1ba8a" />
-  <rect x="288" y="352" width="32" height="4"  fill="#b89d66" />
+  <rect x="288" y="352" width="32" height="3" fill="#b89d66" />
+  <rect x="288" y="352" width="3" height="32" fill="#b89d66" />
+  <rect x="288" y="381" width="32" height="3" fill="#ddd0a8" />
+  <rect x="317" y="352" width="3" height="32" fill="#ddd0a8" />
 
   <!-- Small Hole at (0, 384) -->
-  <rect x="0" y="384"   width="32" height="32" fill="#d1ba8a" />
-  <rect x="0" y="384"   width="32" height="4"  fill="#b89d66" />
+  <rect x="0" y="384" width="32" height="32" fill="#d1ba8a" />
+  <rect x="0" y="384" width="32" height="3" fill="#b89d66" />
+  <rect x="0" y="384" width="3" height="32" fill="#b89d66" />
+  <rect x="0" y="413" width="32" height="3" fill="#ddd0a8" />
+  <rect x="29" y="384" width="3" height="32" fill="#ddd0a8" />
 
   <!-- Small Hole at (192, 480) -->
   <rect x="192" y="480" width="32" height="32" fill="#d1ba8a" />
-  <rect x="192" y="480" width="32" height="4"  fill="#b89d66" />
+  <rect x="192" y="480" width="32" height="3" fill="#b89d66" />
+  <rect x="192" y="480" width="3" height="32" fill="#b89d66" />
+  <rect x="192" y="509" width="32" height="3" fill="#ddd0a8" />
+  <rect x="221" y="480" width="3" height="32" fill="#ddd0a8" />
 
   <!-- Small Hole at (480, 448) -->
   <rect x="480" y="448" width="32" height="32" fill="#d1ba8a" />
-  <rect x="480" y="448" width="32" height="4"  fill="#b89d66" />
+  <rect x="480" y="448" width="32" height="3" fill="#b89d66" />
+  <rect x="480" y="448" width="3" height="32" fill="#b89d66" />
+  <rect x="480" y="477" width="32" height="3" fill="#ddd0a8" />
+  <rect x="509" y="448" width="3" height="32" fill="#ddd0a8" />
 </svg>
