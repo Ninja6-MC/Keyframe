@@ -72,72 +72,14 @@ export async function buildResourcePack(targetRes = 512) {
   fs.writeFileSync(path.join(BUILD_TMP, "pack.mcmeta"), JSON.stringify(mcmeta, null, 2), "utf-8");
   console.log(`[1/4] Created pack.mcmeta (Supported Formats: 1.20 - 1.21.4+)`);
 
-function generateWaterStillStripSvg(frameCount = 16) {
-  const frames = [];
-  for (let f = 0; f < frameCount; f++) {
-    const phi = (2 * Math.PI * f) / frameCount;
-    const dy1 = Math.sin(phi) * 18;
-    const dx1 = Math.cos(phi) * 22;
-    const dy2 = Math.sin(phi + 1.6) * 16;
-    const dx2 = Math.cos(phi + 1.6) * 20;
-
-    frames.push(`
-    <g transform="translate(0, ${f * 512})">
-      <defs>
-        <radialGradient id="caustic_g1_${f}" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
-          <stop offset="60%" stop-color="#d8fbff" stop-opacity="0.14" />
-          <stop offset="100%" stop-color="#38d5ec" stop-opacity="0.0" />
-        </radialGradient>
-        <radialGradient id="caustic_g2_${f}" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28" />
-          <stop offset="70%" stop-color="#d8fbff" stop-opacity="0.12" />
-          <stop offset="100%" stop-color="#38d5ec" stop-opacity="0.0" />
-        </radialGradient>
-      </defs>
-
-      <!-- Base Radiant BSL Aqua Sky-Blue Aquatic Surface -->
-      <rect width="512" height="512" fill="#38d5ec" fill-opacity="0.45" />
-
-      <!-- Broad Soft Toroidal Rolling Wave Swells -->
-      <path d="M 0 ${160 + dy1} C 128 ${110 + dy1}, 256 ${190 + dy2}, 384 ${140 + dy1} C 448 ${115 + dy2}, 480 ${135 + dy1}, 512 ${160 + dy1} L 512 ${220 + dy1} C 480 ${195 + dy1}, 448 ${175 + dy2}, 384 ${200 + dy1} C 256 ${250 + dy2}, 128 ${170 + dy1}, 0 ${220 + dy1} Z" fill="url(#caustic_g1_${f})" />
-
-      <path d="M 0 ${390 + dy2} C 128 ${340 + dy2}, 256 ${420 + dy1}, 384 ${370 + dy2} C 448 ${345 + dy1}, 480 ${365 + dy2}, 512 ${390 + dy2} L 512 ${450 + dy2} C 480 ${425 + dy2}, 448 ${405 + dy1}, 384 ${430 + dy2} C 256 ${480 + dy1}, 128 ${400 + dy2}, 0 ${450 + dy2} Z" fill="url(#caustic_g2_${f})" />
-
-      <!-- Diffuse Sunlit Shimmer Patches -->
-      <ellipse cx="${160 + dx1}" cy="${120 + dy1}" rx="100" ry="55" fill="url(#caustic_g1_${f})" />
-      <ellipse cx="${390 + dx2}" cy="${270 + dy2}" rx="110" ry="60" fill="url(#caustic_g2_${f})" />
-      <ellipse cx="${210 + dx1}" cy="${420 + dy1}" rx="105" ry="55" fill="url(#caustic_g1_${f})" />
-    </g>`);
-  }
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 ${512 * frameCount}" width="512" height="${512 * frameCount}">${frames.join("\n")}</svg>`;
-}
-
 function generateWaterFlowStripSvg(frameCount = 16) {
   const frames = [];
   const W = 1024;
   for (let f = 0; f < frameCount; f++) {
-    const shiftY = (W * f) / frameCount;
-
     frames.push(`
     <g transform="translate(0, ${f * W})">
-      <!-- Frame ${f} Base Radiant BSL Aqua Flowing Water -->
-      <rect width="${W}" height="${W}" fill="#38d5ec" fill-opacity="0.42" />
-
-      <!-- Smooth Directional Downstream Currents -->
-      <g id="flow_currents_${f}" stroke="#ffffff" stroke-opacity="0.32" stroke-width="24" stroke-linecap="round" fill="none">
-        <path d="M 128 0 C 128 256, 192 512, 128 1024" />
-        <path d="M 384 0 C 448 256, 320 512, 384 1024" />
-        <path d="M 640 0 C 608 256, 704 512, 640 1024" />
-        <path d="M 896 0 C 928 256, 864 512, 896 1024" />
-      </g>
-
-      <!-- Downstream Ripple Crests -->
-      <g stroke="#ffffff" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round" fill="none">
-        <path d="M 0 ${(shiftY + 256) % W} Q 256 ${(shiftY + 320) % W}, 512 ${(shiftY + 256) % W} T 1024 ${(shiftY + 256) % W}" />
-        <path d="M 0 ${(shiftY + 768) % W} Q 256 ${(shiftY + 832) % W}, 512 ${(shiftY + 768) % W} T 1024 ${(shiftY + 768) % W}" />
-      </g>
+      <!-- Frame ${f} Base Translucent Flowing Water (30% opacity, zero scratch lines) -->
+      <rect width="${W}" height="${W}" fill="#ffffff" fill-opacity="0.30" />
     </g>`);
   }
 
@@ -169,12 +111,7 @@ function generateWaterFlowStripSvg(frameCount = 16) {
     const destPng = path.join(targetDir, `${stem}.png`);
     const srcSvg = path.join(TEXTURES_DIR, svgFile);
 
-    if (stem === "water_still") {
-      // 16-frame animated vertical sprite strip with smooth 60fps interpolation
-      const stripSvg = generateWaterStillStripSvg(16);
-      rasterize(stripSvg, destPng, targetRes);
-      console.log(`  ✓ block/water_still.png (16-Frame Animated Strip, ${targetRes}×${targetRes * 16})`);
-    } else if (stem === "water_flow") {
+    if (stem === "water_flow") {
       // Flowing water in Minecraft is 2x width (e.g. targetRes * 2)
       const flowRes = targetRes * 2;
       const stripSvg = generateWaterFlowStripSvg(16);
