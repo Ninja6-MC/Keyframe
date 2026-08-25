@@ -1,78 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: RED SAND (BADLANDS / MESA)              -->
-  <!-- Dual-depth surface:                                                       -->
-  <!-- - Dark grains = INSET (recessed clay dimples with top inner shadow)       -->
-  <!-- - Light grains = OUTSET (raised terracotta pebbles with bottom shadow)    -->
+  <!-- Proper 32x32 square dots with crisp, thin shadows:                        -->
+  <!-- - Small holes: dark 32x32 square with thin (4px) inset top shadow line    -->
+  <!-- - Light bumps: light 32x32 square with thin (4px) outset shadow underline -->
   <!-- ========================================================================= -->
 
   <!-- 1. Base Badlands Terracotta Red -->
   <rect width="512" height="512" fill="#bf6721" />
 
   <!-- ================================================================== -->
-  <!-- 2. DARK GRAINS: INSET SHADOW (Recessed Dimples)                    -->
-  <!--    Body: #ac5712 | Inset Top Shadow: #7e3908 | Bottom Bounce: #b86520 -->
+  <!-- 2. LIGHT BUMPS: 32x32 SQUARE + THIN (4px) UNDERLINE OUTSET SHADOW  -->
   <!-- ================================================================== -->
 
-  <!-- Inset Dimple at (32, 64) -->
-  <rect x="32" y="64"  width="32" height="32" fill="#ac5712" />
-  <rect x="32" y="64"  width="32" height="8"  fill="#7e3908" />
-  <rect x="32" y="88"  width="32" height="8"  fill="#b86520" />
-
-  <!-- Inset Dimple at (224, 160) -->
-  <rect x="224" y="160" width="32" height="32" fill="#ac5712" />
-  <rect x="224" y="160" width="32" height="8"  fill="#7e3908" />
-  <rect x="224" y="184" width="32" height="8"  fill="#b86520" />
-
-  <!-- Inset Dimple at (384, 224) -->
-  <rect x="384" y="224" width="32" height="32" fill="#ac5712" />
-  <rect x="384" y="224" width="32" height="8"  fill="#7e3908" />
-  <rect x="384" y="248" width="32" height="8"  fill="#b86520" />
-
-  <!-- Inset Dimple at (96, 296) -->
-  <rect x="96" y="296"  width="32" height="32" fill="#ac5712" />
-  <rect x="96" y="296"  width="32" height="8"  fill="#7e3908" />
-  <rect x="96" y="320"  width="32" height="8"  fill="#b86520" />
-
-  <!-- Inset Dimple at (288, 352) -->
-  <rect x="288" y="352" width="32" height="32" fill="#ac5712" />
-  <rect x="288" y="352" width="32" height="8"  fill="#7e3908" />
-  <rect x="288" y="376" width="32" height="8"  fill="#b86520" />
-
-  <!-- Inset Dimple at (0, 384) -->
-  <rect x="0" y="384"   width="32" height="32" fill="#ac5712" />
-  <rect x="0" y="384"   width="32" height="8"  fill="#7e3908" />
-  <rect x="0" y="408"   width="32" height="8"  fill="#b86520" />
-
-  <!-- Inset Dimple at (192, 480) -->
-  <rect x="192" y="480" width="32" height="32" fill="#ac5712" />
-  <rect x="192" y="480" width="32" height="8"  fill="#7e3908" />
-  <rect x="192" y="504" width="32" height="8"  fill="#b86520" />
-
-  <!-- Inset Dimple at (480, 448) -->
-  <rect x="480" y="448" width="32" height="32" fill="#ac5712" />
-  <rect x="480" y="448" width="32" height="8"  fill="#7e3908" />
-  <rect x="480" y="472" width="32" height="8"  fill="#b86520" />
-
-  <!-- ================================================================== -->
-  <!-- 3. LIGHT GRAINS: OUTSET SHADOW (Raised Golden Terracotta Pebbles)  -->
-  <!--    Cast Shadow: #7e3908 (downward offset +8px) | Body: #d2752b      -->
-  <!-- ================================================================== -->
-
-  <!-- Outset Drop Shadows (underneath raised light grains) -->
-  <g id="outset_pebble_shadows" fill="#7e3908" shape-rendering="crispEdges">
-    <rect x="416" y="8"   width="32" height="32" />
-    <rect x="256" y="40"  width="32" height="32" />
-    <rect x="480" y="72"  width="32" height="32" />
-    <rect x="128" y="136" width="32" height="32" />
-    <rect x="320" y="200" width="32" height="32" />
-    <rect x="160" y="232" width="32" height="32" />
-    <rect x="448" y="304" width="32" height="32" />
-    <rect x="288" y="392" width="32" height="32" />
+  <!-- Thin Outset Shadows (32x4 underline at y+32) -->
+  <g id="light_bump_shadows" fill="#7e3908" shape-rendering="crispEdges">
+    <rect x="416" y="32"  width="32" height="4" />
+    <rect x="256" y="64"  width="32" height="4" />
+    <rect x="480" y="96"  width="32" height="4" />
+    <rect x="128" y="160" width="32" height="4" />
+    <rect x="320" y="224" width="32" height="4" />
+    <rect x="160" y="256" width="32" height="4" />
+    <rect x="448" y="328" width="32" height="4" />
+    <rect x="288" y="416" width="32" height="4" />
   </g>
 
-  <!-- Raised Light Pebble Bodies -->
-  <g id="outset_pebble_bodies" fill="#d2752b" shape-rendering="crispEdges">
+  <!-- Light Bump 32x32 Square Bodies -->
+  <g id="light_bump_bodies" fill="#d2752b" shape-rendering="crispEdges">
     <rect x="416" y="0"   width="32" height="32" />
     <rect x="256" y="32"  width="32" height="32" />
     <rect x="480" y="64"  width="32" height="32" />
@@ -82,4 +36,40 @@
     <rect x="448" y="296" width="32" height="32" />
     <rect x="288" y="384" width="32" height="32" />
   </g>
+
+  <!-- ================================================================== -->
+  <!-- 3. SMALL HOLES: 32x32 SQUARE + THIN (4px) INSET TOP SHADOW LINE   -->
+  <!-- ================================================================== -->
+
+  <!-- Small Hole at (32, 64) -->
+  <rect x="32" y="64"  width="32" height="32" fill="#b05b18" />
+  <rect x="32" y="64"  width="32" height="4"  fill="#7e3908" />
+
+  <!-- Small Hole at (224, 160) -->
+  <rect x="224" y="160" width="32" height="32" fill="#b05b18" />
+  <rect x="224" y="160" width="32" height="4"  fill="#7e3908" />
+
+  <!-- Small Hole at (384, 224) -->
+  <rect x="384" y="224" width="32" height="32" fill="#b05b18" />
+  <rect x="384" y="224" width="32" height="4"  fill="#7e3908" />
+
+  <!-- Small Hole at (96, 296) -->
+  <rect x="96" y="296"  width="32" height="32" fill="#b05b18" />
+  <rect x="96" y="296"  width="32" height="4"  fill="#7e3908" />
+
+  <!-- Small Hole at (288, 352) -->
+  <rect x="288" y="352" width="32" height="32" fill="#b05b18" />
+  <rect x="288" y="352" width="32" height="4"  fill="#7e3908" />
+
+  <!-- Small Hole at (0, 384) -->
+  <rect x="0" y="384"   width="32" height="32" fill="#b05b18" />
+  <rect x="0" y="384"   width="32" height="4"  fill="#7e3908" />
+
+  <!-- Small Hole at (192, 480) -->
+  <rect x="192" y="480" width="32" height="32" fill="#b05b18" />
+  <rect x="192" y="480" width="32" height="4"  fill="#7e3908" />
+
+  <!-- Small Hole at (480, 448) -->
+  <rect x="480" y="448" width="32" height="32" fill="#b05b18" />
+  <rect x="480" y="448" width="32" height="4"  fill="#7e3908" />
 </svg>
