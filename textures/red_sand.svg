@@ -1,34 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: RED SAND (BADLANDS / MESA)              -->
-  <!-- Rich terracotta sand with 3D grounded drop-shadowed mineral flecks        -->
+  <!-- Terracotta sand with 3D bottom-right cast shadows on mineral flecks       -->
   <!-- ========================================================================= -->
 
   <!-- 1. Base Badlands Terracotta Red (#bf6721) -->
   <rect width="512" height="512" fill="#bf6721" />
 
-  <!-- 2. 3D Drop Shadows for Shaded Red Grains (#8c3e07, Toroidal Wrap) -->
-  <g id="shaded_grain_shadows" fill="#8c3e07" shape-rendering="crispEdges">
-    <rect x="32" y="72" width="32" height="32" />
-    <rect x="224" y="168" width="32" height="32" />
-    <rect x="384" y="232" width="32" height="32" />
-    <rect x="288" y="360" width="32" height="32" />
-    <rect x="0" y="392" width="32" height="32" />
-    <rect x="192" y="488" width="32" height="32" />
-    <rect x="192" y="0" width="32" height="8" />
-    <rect x="480" y="488" width="32" height="32" />
-    <rect x="480" y="0" width="32" height="8" />
+  <!-- 2. 3D Bottom-Right Drop Shadows for Shaded Red Grains (#6d2e04, Toroidal Wrap) -->
+  <g id="shaded_grain_shadows" fill="#6d2e04" shape-rendering="crispEdges">
+    <rect x="36" y="72" width="32" height="32" />
+    <rect x="228" y="168" width="32" height="32" />
+    <rect x="388" y="232" width="32" height="32" />
+    <rect x="292" y="360" width="32" height="32" />
+    <rect x="4" y="392" width="32" height="32" />
+    <rect x="196" y="488" width="32" height="32" />
+    <rect x="196" y="0" width="32" height="8" />
+    <rect x="484" y="488" width="28" height="32" />
+    <rect x="0" y="488" width="4" height="32" />
+    <rect x="484" y="0" width="28" height="8" />
+    <rect x="0" y="0" width="4" height="8" />
   </g>
 
-  <!-- 3. 3D Drop Shadows for Highlight Grains (#9d4c10) -->
-  <g id="highlight_grain_shadows" fill="#9d4c10" shape-rendering="crispEdges">
-    <rect x="416" y="8" width="32" height="32" />
-    <rect x="256" y="40" width="32" height="32" />
-    <rect x="480" y="72" width="32" height="32" />
-    <rect x="128" y="136" width="32" height="32" />
-    <rect x="320" y="200" width="32" height="32" />
-    <rect x="160" y="232" width="32" height="32" />
-    <rect x="288" y="392" width="32" height="32" />
+  <!-- 3. 3D Bottom-Right Drop Shadows for Highlight Grains (#7e3908, Toroidal Wrap) -->
+  <g id="highlight_grain_shadows" fill="#7e3908" shape-rendering="crispEdges">
+    <rect x="420" y="8" width="32" height="32" />
+    <rect x="260" y="40" width="32" height="32" />
+    <rect x="484" y="72" width="28" height="32" />
+    <rect x="0" y="72" width="4" height="32" />
+    <rect x="132" y="136" width="32" height="32" />
+    <rect x="324" y="200" width="32" height="32" />
+    <rect x="164" y="232" width="32" height="32" />
+    <rect x="292" y="392" width="32" height="32" />
   </g>
 
   <!-- 4. Shaded Red Sand Grains / Deep Clay Accents (#ac5712) -->

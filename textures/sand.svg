@@ -1,34 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
-  <!-- Warm golden-buff beach sand with 3D grounded drop-shadowed mineral flecks -->
+  <!-- Pristine golden sand with 3D bottom-right cast shadows on mineral flecks  -->
   <!-- ========================================================================= -->
 
   <!-- 1. Base Warm Beach Sand (#dacfa3) -->
   <rect width="512" height="512" fill="#dacfa3" />
 
-  <!-- 2. 3D Drop Shadows for Shaded Grains (#b89d66, Toroidal Wrap) -->
-  <g id="shaded_grain_shadows" fill="#b89d66" shape-rendering="crispEdges">
-    <rect x="32" y="72" width="32" height="32" />
-    <rect x="224" y="168" width="32" height="32" />
-    <rect x="384" y="232" width="32" height="32" />
-    <rect x="288" y="360" width="32" height="32" />
-    <rect x="0" y="392" width="32" height="32" />
-    <rect x="192" y="488" width="32" height="32" />
-    <rect x="192" y="0" width="32" height="8" />
-    <rect x="480" y="488" width="32" height="32" />
-    <rect x="480" y="0" width="32" height="8" />
+  <!-- 2. 3D Bottom-Right Drop Shadows for Shaded Grains (#8a6f35, Toroidal Wrap) -->
+  <g id="shaded_grain_shadows" fill="#8a6f35" shape-rendering="crispEdges">
+    <rect x="36" y="72" width="32" height="32" />
+    <rect x="228" y="168" width="32" height="32" />
+    <rect x="388" y="232" width="32" height="32" />
+    <rect x="292" y="360" width="32" height="32" />
+    <rect x="4" y="392" width="32" height="32" />
+    <rect x="196" y="488" width="32" height="32" />
+    <rect x="196" y="0" width="32" height="8" />
+    <rect x="484" y="488" width="28" height="32" />
+    <rect x="0" y="488" width="4" height="32" />
+    <rect x="484" y="0" width="28" height="8" />
+    <rect x="0" y="0" width="4" height="8" />
   </g>
 
-  <!-- 3. 3D Drop Shadows for Highlight Grains (#c8b982) -->
-  <g id="highlight_grain_shadows" fill="#c8b982" shape-rendering="crispEdges">
-    <rect x="416" y="8" width="32" height="32" />
-    <rect x="256" y="40" width="32" height="32" />
-    <rect x="480" y="72" width="32" height="32" />
-    <rect x="128" y="136" width="32" height="32" />
-    <rect x="320" y="200" width="32" height="32" />
-    <rect x="160" y="232" width="32" height="32" />
-    <rect x="288" y="392" width="32" height="32" />
+  <!-- 3. 3D Bottom-Right Drop Shadows for Highlight Grains (#a48c50, Toroidal Wrap) -->
+  <g id="highlight_grain_shadows" fill="#a48c50" shape-rendering="crispEdges">
+    <rect x="420" y="8" width="32" height="32" />
+    <rect x="260" y="40" width="32" height="32" />
+    <rect x="484" y="72" width="28" height="32" />
+    <rect x="0" y="72" width="4" height="32" />
+    <rect x="132" y="136" width="32" height="32" />
+    <rect x="324" y="200" width="32" height="32" />
+    <rect x="164" y="232" width="32" height="32" />
+    <rect x="292" y="392" width="32" height="32" />
   </g>
 
   <!-- 4. Shaded Sand Grains / Warm Tan Accents (#d1ba8a) -->
