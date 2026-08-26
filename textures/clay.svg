@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: CLAY                                    -->
+  <!-- Smooth, matte, silky slate-blue riverbed sediment                         -->
+  <!-- Features subtle raised silt swells (#bump) and soft hollow dimples (#hole) -->
+  <!-- ========================================================================= -->
+
+  <defs>
+    <!-- Raised Silky Silt Swell (32x32 Footprint) -->
+    <g id="bump" shape-rendering="crispEdges">
+      <!-- Bottom-Right Soft Shadow (3px) -->
+      <rect y="29" width="32" height="3" fill="#888f9c" />
+      <rect x="29" width="3" height="32" fill="#888f9c" />
+      <!-- Raised Silky Body (29x29) -->
+      <rect width="29" height="29" fill="#afb9d6" />
+      <!-- Top-Left Sunlit Highlight Bevel (3px) -->
+      <rect width="29" height="3" fill="#cdd5ec" />
+      <rect width="3" height="29" fill="#cdd5ec" />
+    </g>
+
+    <!-- Oblong Raised Silt Swell (64x32 Footprint) -->
+    <g id="bump_oblong" shape-rendering="crispEdges">
+      <rect y="29" width="64" height="3" fill="#888f9c" />
+      <rect x="61" width="3" height="32" fill="#888f9c" />
+      <rect width="61" height="29" fill="#afb9d6" />
+      <rect width="61" height="3" fill="#cdd5ec" />
+      <rect width="3" height="29" fill="#cdd5ec" />
+    </g>
+
+    <!-- Recessed Silt Dimple (32x32 Footprint) -->
+    <g id="hole" shape-rendering="crispEdges">
+      <!-- Hollow Body (32x32) -->
+      <rect width="32" height="32" fill="#9096a2" />
+      <!-- Top-Left Soft Inner Shadow (3px) -->
+      <rect width="32" height="3" fill="#787e8a" />
+      <rect width="3" height="32" fill="#787e8a" />
+      <!-- Bottom-Right Reflection (3px) -->
+      <rect y="29" width="32" height="3" fill="#afb9d6" />
+      <rect x="29" width="3" height="32" fill="#afb9d6" />
+    </g>
+
+    <!-- Oblong Recessed Silt Dimple (64x32 Footprint) -->
+    <g id="hole_oblong" shape-rendering="crispEdges">
+      <rect width="64" height="32" fill="#9096a2" />
+      <rect width="64" height="3" fill="#787e8a" />
+      <rect width="3" height="32" fill="#787e8a" />
+      <rect y="29" width="64" height="3" fill="#afb9d6" />
+      <rect x="61" width="3" height="32" fill="#afb9d6" />
+    </g>
+  </defs>
+
+  <!-- 1. Smooth Matte Slate-Blue Clay Sediment Base (#9da4ae) -->
+  <rect width="512" height="512" fill="#9da4ae" />
+
+  <!-- 2. Raised Silky Silt Swells -->
+  <g id="light_bumps">
+    <use href="#bump" x="192" y="0" />
+    <use href="#bump" x="0" y="32" />
+    <use href="#bump_oblong" x="128" y="128" />
+    <use href="#bump" x="352" y="192" />
+    <use href="#bump" x="224" y="256" />
+    <use href="#bump_oblong" x="448" y="288" />
+    <use href="#bump" x="96" y="384" />
+    <use href="#bump" x="288" y="416" />
+    <use href="#bump" x="416" y="448" />
+  </g>
+
+  <!-- 3. Soft Recessed Hollow Dimples -->
+  <g id="soft_holes">
+    <use href="#hole" x="160" y="32" />
+    <use href="#hole_oblong" x="224" y="96" />
+    <use href="#hole" x="448" y="96" />
+    <use href="#hole" x="352" y="128" />
+    <use href="#hole" x="96" y="160" />
+    <use href="#hole" x="32" y="256" />
+    <use href="#hole_oblong" x="256" y="320" />
+    <use href="#hole" x="320" y="448" />
+    <use href="#hole" x="448" y="480" />
+  </g>
+
+  <!-- ==================== TOROIDAL SEAM WRAPPING ==================== -->
+  <!-- Top/Bottom Seam Wrap -->
+  <use href="#bump" x="192" y="512" />
+  <use href="#hole" x="448" y="-32" />
+
+  <!-- Left/Right Seam Wrap -->
+  <use href="#bump_oblong" x="-64" y="288" />
+  <use href="#bump" x="512" y="32" />
+</svg>

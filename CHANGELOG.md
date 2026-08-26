@@ -22,6 +22,9 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   `oak_pressure_plate`, `oak_sign`.
 - `short_grass` and `tall_grass` — 512×512 vector masters mapped to vanilla 16×16
   geometry, with three weighted blockstate variations and a seamless two-block junction.
+- Ground substrates batch: `gravel`, `coarse_dirt`, `clay`, and `suspicious_gravel`
+  (4 progressive archaeological dusting stages) with single-variant un-rotated blockstates
+  and seamless toroidal tiling.
 - Multi-resolution compiler: 512×, 256×, 128×, 64× and 32× packs built from one set of
   vector masters.
 
