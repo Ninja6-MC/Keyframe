@@ -1,6 +1,6 @@
 {
   "name": "@ninja6-mc/keyframe",
-  "version": "1.0.0-alpha.1",
+  "version": "0.1.0-alpha.1",
   "description": "The cinematic trailer aesthetic for Minecraft, authored in infinite-resolution vector masters.",
   "type": "module",
   "main": "tools/build.mjs",

@@ -43,6 +43,67 @@ jobs:
       - name: Compile Multi-Resolution Resource Packs
         run: node tools/build.mjs --all
 
+      # The tier is derived from the tag rather than chosen by hand. Any SemVer
+      # pre-release suffix - the hyphen in v0.1.0-alpha.1 - makes it a pre-release, which
+      # is what stops an alpha appearing as the download a casual visitor gets.
+      - name: Derive Version And Channel
+        id: vars
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          BASE_VERSION="${VERSION%%-*}"
+          case "$VERSION" in
+            *-*) PRERELEASE=true ;;
+            *)   PRERELEASE=false ;;
+          esac
+          {
+            echo "version=$VERSION"
+            echo "baseVersion=$BASE_VERSION"
+            echo "prerelease=$PRERELEASE"
+          } >> "$GITHUB_OUTPUT"
+
+      # A stable release tagged while CHANGELOG.md still says only [Unreleased] would
+      # otherwise publish five zips with no record of what changed and nobody noticing.
+      # Pre-releases may ship without a section; a stable release may not.
+      - name: Check Changelog And Collect Release Notes
+        id: notes
+        env:
+          VERSION: ${{ steps.vars.outputs.version }}
+          BASE_VERSION: ${{ steps.vars.outputs.baseVersion }}
+          PRERELEASE: ${{ steps.vars.outputs.prerelease }}
+        run: |
+          extract() {
+            awk -v header="## [$1]" '
+              index($0, header) == 1 { found = 1; next }
+              found && /^## / { exit }
+              found { print }
+            ' CHANGELOG.md
+          }
+
+          # An exact pre-release heading wins if one exists, otherwise the heading for the
+          # version being worked towards.
+          NOTES="$(extract "$VERSION")"
+          [ -z "${NOTES//[[:space:]]/}" ] && NOTES="$(extract "$BASE_VERSION")"
+
+          if [ -z "${NOTES//[[:space:]]/}" ]; then
+            if [ "$PRERELEASE" != "true" ]; then
+              echo "CHANGELOG.md has no '## [$BASE_VERSION]' section."
+              echo
+              echo "A stable release must document what changed. Move the [Unreleased]"
+              echo "entries under a '## [$BASE_VERSION]' heading, merge that to main,"
+              echo "and re-tag. See RELEASE_PROCESS.md section 3."
+              exit 1
+            fi
+            echo "No changelog section for $VERSION; pre-releases may ship without one."
+            NOTES="Pre-release. See CHANGELOG.md [Unreleased] for work in progress."
+          fi
+
+          {
+            echo "body<<KEYFRAME_NOTES_EOF"
+            echo "$NOTES"
+            echo "KEYFRAME_NOTES_EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release & Attach Resource Packs
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
         if: startsWith(github.ref, 'refs/tags/')
@@ -54,5 +115,7 @@ jobs:
             dist/Keyframe-64x.zip
             dist/Keyframe-32x.zip
           draft: false
-          prerelease: false
+          prerelease: ${{ steps.vars.outputs.prerelease }}
+          body: ${{ steps.notes.outputs.body }}
+          # Appended below the changelog body above, not instead of it.
           generate_release_notes: true
