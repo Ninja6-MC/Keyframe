@@ -90,6 +90,7 @@
   <!-- 1. Warm Earthy Slate Bed Base -->
   <rect width="512" height="512" fill="#807b85" />
 
+    <g id="gravel-pebbles" opacity="0.7">
   <!-- 2. Medium & Oblong Slate River Stones -->
   <!-- Top Row & Upper Sector (Densely Populated) -->
   <use href="#p_oblong_med" x="96" y="0" />
@@ -276,4 +277,5 @@
   <use href="#p_med" x="496" y="-16" />
   <use href="#p_med" x="-16" y="496" />
   <use href="#p_med" x="496" y="496" />
+  </g>
 </svg>
