@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: COARSE DIRT                             -->
+  <!-- Deep rich terracotta soil embedded with multi-scale river gravel pebbles  -->
+  <!-- ========================================================================= -->
+
+  <defs>
+    <!-- 1. Raised Light Quartz Pebble (32x32) -->
+    <g id="p_light" shape-rendering="crispEdges">
+      <rect y="29" width="32" height="3" fill="#2d1604" />
+      <rect x="29" width="3" height="32" fill="#2d1604" />
+      <rect width="29" height="29" rx="3" fill="#c0bcc8" />
+      <rect width="29" height="3" rx="2" fill="#ece8f2" />
+      <rect width="3" height="29" rx="2" fill="#ece8f2" />
+    </g>
+
+    <!-- 2. Raised Medium Slate Pebble (32x32) -->
+    <g id="p_med" shape-rendering="crispEdges">
+      <rect y="29" width="32" height="3" fill="#2d1604" />
+      <rect x="29" width="3" height="32" fill="#2d1604" />
+      <rect width="29" height="29" rx="3" fill="#6c6772" />
+      <rect width="29" height="3" rx="2" fill="#8c8792" />
+      <rect width="3" height="29" rx="2" fill="#8c8792" />
+    </g>
+
+    <!-- 3. Oblong Medium Slate Stone (64x32) -->
+    <g id="p_oblong_med" shape-rendering="crispEdges">
+      <rect y="29" width="64" height="3" fill="#2d1604" />
+      <rect x="61" width="3" height="32" fill="#2d1604" />
+      <rect width="61" height="29" rx="4" fill="#6c6772" />
+      <rect width="61" height="3" rx="2" fill="#8c8792" />
+      <rect width="3" height="29" rx="2" fill="#8c8792" />
+    </g>
+
+    <!-- 4. Oblong Light Quartz Stone (64x32) -->
+    <g id="p_oblong_light" shape-rendering="crispEdges">
+      <rect y="29" width="64" height="3" fill="#2d1604" />
+      <rect x="61" width="3" height="32" fill="#2d1604" />
+      <rect width="61" height="29" rx="4" fill="#c0bcc8" />
+      <rect width="61" height="3" rx="2" fill="#ece8f2" />
+      <rect width="3" height="29" rx="2" fill="#ece8f2" />
+    </g>
+
+    <!-- 5. Micro Mineral Chips (16x16) -->
+    <g id="f_light" shape-rendering="crispEdges">
+      <rect y="14" width="16" height="2" fill="#2d1604" />
+      <rect x="14" width="2" height="16" fill="#2d1604" />
+      <rect width="14" height="14" rx="2" fill="#c0bcc8" />
+      <rect width="14" height="2" rx="1" fill="#ece8f2" />
+      <rect width="2" height="14" rx="1" fill="#ece8f2" />
+    </g>
+
+    <g id="f_dark" shape-rendering="crispEdges">
+      <rect y="14" width="16" height="2" fill="#2d1604" />
+      <rect x="14" width="2" height="16" fill="#2d1604" />
+      <rect width="14" height="14" rx="2" fill="#46414c" />
+      <rect width="14" height="2" rx="1" fill="#6c6772" />
+      <rect width="2" height="14" rx="1" fill="#6c6772" />
+    </g>
+  </defs>
+
+  <!-- 1. Rich Deep Terracotta Soil Base (#9e5d22) -->
+  <rect width="512" height="512" fill="#9e5d22" />
+
+  <!-- 2. Dark Soil Clods & Humus Beds (Balanced & Toroidal) -->
+  <g fill="#703a0a">
+    <rect x="48" y="32" width="112" height="64" rx="10" />
+    <rect x="320" y="48" width="128" height="80" rx="12" />
+    <rect x="128" y="192" width="144" height="80" rx="12" />
+    <rect x="352" y="224" width="112" height="64" rx="10" />
+    <rect x="48" y="320" width="128" height="80" rx="12" />
+    <rect x="256" y="352" width="144" height="80" rx="12" />
+
+    <!-- Corner and Edge Wrap Soil Clods -->
+    <rect x="-32" y="224" width="80" height="64" rx="10" />
+    <rect x="480" y="224" width="80" height="64" rx="10" />
+
+    <rect x="224" y="-32" width="96" height="64" rx="10" />
+    <rect x="224" y="480" width="96" height="64" rx="10" />
+
+    <rect x="-32" y="-32" width="80" height="80" rx="12" />
+    <rect x="480" y="-32" width="80" height="80" rx="12" />
+    <rect x="-32" y="480" width="80" height="80" rx="12" />
+    <rect x="480" y="480" width="80" height="80" rx="12" />
+  </g>
+
+  <!-- Deep Humus Cavity Cores -->
+  <g fill="#4e2604">
+    <rect x="64" y="44" width="48" height="32" rx="6" />
+    <rect x="352" y="64" width="64" height="40" rx="6" />
+    <rect x="160" y="208" width="64" height="40" rx="6" />
+    <rect x="64" y="336" width="64" height="40" rx="6" />
+    <rect x="288" y="368" width="64" height="40" rx="6" />
+  </g>
+
+  <!-- 3. Warm Sunlit Soil Swells -->
+  <g fill="#bd732b">
+    <rect x="192" y="64" width="64" height="48" rx="8" />
+    <rect x="48" y="128" width="80" height="56" rx="8" />
+    <rect x="304" y="160" width="64" height="48" rx="8" />
+    <rect x="208" y="288" width="80" height="48" rx="8" />
+    <rect x="400" y="320" width="64" height="48" rx="8" />
+    <rect x="128" y="416" width="80" height="48" rx="8" />
+
+    <rect x="384" y="0" width="80" height="40" rx="8" />
+    <rect x="384" y="512" width="80" height="40" rx="8" />
+  </g>
+
+  <g id="embedded-pebbles" opacity="0.6">
+    <!-- 4. Prominent Embedded Gravel & River Stones -->
+    <!-- Oblong Stones -->
+    <use href="#p_oblong_med" x="192" y="112" />
+    <use href="#p_oblong_light" x="64" y="256" />
+    <use href="#p_oblong_med" x="320" y="288" />
+    <use href="#p_oblong_light" x="352" y="96" />
+    <use href="#p_oblong_med" x="96" y="0" />
+    <use href="#p_oblong_med" x="96" y="512" />
+
+    <!-- 1x1 River Pebbles -->
+    <use href="#p_light" x="96" y="64" />
+    <use href="#p_med" x="144" y="48" />
+    <use href="#p_med" x="288" y="48" />
+    <use href="#p_light" x="432" y="64" />
+    <use href="#p_light" x="256" y="0" />
+    <use href="#p_light" x="256" y="512" />
+
+    <use href="#p_med" x="48" y="160" />
+    <use href="#p_light" x="256" y="160" />
+    <use href="#p_med" x="384" y="160" />
+    <use href="#p_light" x="448" y="192" />
+
+    <use href="#p_med" x="160" y="240" />
+    <use href="#p_light" x="288" y="224" />
+    <use href="#p_med" x="224" y="320" />
+    <use href="#p_light" x="384" y="256" />
+
+    <use href="#p_light" x="48" y="352" />
+    <use href="#p_med" x="128" y="352" />
+    <use href="#p_light" x="224" y="416" />
+    <use href="#p_med" x="288" y="416" />
+    <use href="#p_light" x="432" y="384" />
+
+    <!-- Micro Mineral Chips -->
+    <use href="#f_light" x="48" y="96" />
+    <use href="#f_dark" x="240" y="32" />
+    <use href="#f_light" x="320" y="16" />
+    <use href="#f_dark" x="112" y="128" />
+    <use href="#f_light" x="160" y="160" />
+    <use href="#f_dark" x="336" y="208" />
+    <use href="#f_light" x="400" y="128" />
+    <use href="#f_dark" x="96" y="208" />
+    <use href="#f_light" x="192" y="304" />
+    <use href="#f_dark" x="272" y="272" />
+    <use href="#f_light" x="448" y="336" />
+    <use href="#f_dark" x="160" y="384" />
+    <use href="#f_light" x="368" y="368" />
+    <use href="#f_dark" x="368" y="448" />
+
+    <!-- ==================== TOROIDAL SEAM WRAPPING ==================== -->
+    <!-- Left/Right Border Wraps -->
+    <use href="#p_oblong_med" x="-32" y="192" />
+    <use href="#p_oblong_med" x="480" y="192" />
+
+    <use href="#p_light" x="-16" y="384" />
+    <use href="#p_light" x="496" y="384" />
+
+    <use href="#f_dark" x="-8" y="80" />
+    <use href="#f_dark" x="504" y="80" />
+
+    <!-- Top/Bottom Border Wraps -->
+    <use href="#p_oblong_light" x="128" y="-16" />
+    <use href="#p_oblong_light" x="128" y="496" />
+
+    <use href="#p_med" x="384" y="-16" />
+    <use href="#p_med" x="384" y="496" />
+
+    <use href="#f_light" x="48" y="-8" />
+    <use href="#f_light" x="48" y="504" />
+
+    <!-- Corner Wrap (all 4 corners) -->
+    <use href="#p_light" x="0" y="0" />
+    <use href="#p_light" x="512" y="0" />
+    <use href="#p_light" x="0" y="512" />
+    <use href="#p_light" x="512" y="512" />
+  </g>
+</svg>
