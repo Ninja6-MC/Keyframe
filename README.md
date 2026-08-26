@@ -79,10 +79,13 @@ Compiled `.zip` archives are automatically output to `dist/` and deployed to you
 
 ## Contributing
 
-Contributions are welcome! Please ensure:
-* New textures are authored as clean, standard SVG vector files in `textures/`.
-* Commits follow [Conventional Commits](https://www.conventionalcommits.org/).
-* Every commit is signed off (`git commit -s`) per the [Developer Certificate of Origin (DCO)](https://developercertificate.org/).
+Contributions are welcome! Please review our **[Contributing Guidelines](CONTRIBUTING.md)** for detailed setup, vector texture authoring standards, and pull request requirements.
+
+### Quick Checklist
+* **SVG Vector Masters**: Authored cleanly in `textures/` at $512\times512$ with verified seamless toroidal tiling.
+* **Conventional Commits**: Commits follow [Conventional Commits](https://www.conventionalcommits.org/) (e.g. `feat(textures): ...`).
+* **DCO Sign-Off**: Every commit must be signed off (`git commit -s`) per the [Developer Certificate of Origin (DCO)](https://developercertificate.org/).
+* **Rebase Workflow**: Keep branches rebased cleanly on `main` (avoid merge commits).
 
 ---
 
