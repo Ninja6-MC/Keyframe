@@ -1,0 +1,64 @@
+name: Icons
+
+# docs/assets is generated from docs/assets/icon-master.svg, but the outputs are
+# committed because platforms and the README reference them directly. That means
+# nothing stops someone hand-editing a generated file, or editing the master and
+# forgetting to re-export - the "do not edit" headers in those files are a request,
+# not a check. This job makes it one.
+#
+# It also runs the export's safe-zone and palette gates, so artwork that a circular
+# avatar crop would clip, or a variant carrying the wrong theme's ink, cannot reach
+# main. Those gates only help if something actually runs them; locally they run when
+# someone remembers to.
+#
+# Scoped with `paths:` rather than a paths-filter job.
+#
+# IMPORTANT: This workflow must NEVER be added to the repository's required status
+# checks list. A required check that reports nothing on unrelated PRs blocks them.
+
+on:
+  pull_request:
+    paths:
+      - 'docs/assets/**'
+      - 'scripts/export-icons.mjs'
+      - '.github/workflows/icons.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/assets/**'
+      - 'scripts/export-icons.mjs'
+      - '.github/workflows/icons.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    name: Committed Icons Match The Master
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: '22'
+
+      - name: Regenerate Icons From The Master
+        run: node scripts/export-icons.mjs
+
+      - name: Fail If The Committed Artwork Drifted
+        run: |
+          if git diff --quiet -- docs/assets; then
+            echo "docs/assets matches what the master produces."
+            exit 0
+          fi
+          echo "::error::docs/assets does not match scripts/export-icons.mjs output."
+          echo "Run 'node scripts/export-icons.mjs' and commit the result."
+          git diff --stat -- docs/assets
+          exit 1

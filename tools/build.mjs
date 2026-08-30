@@ -21,7 +21,8 @@ const DIST_DIR = path.join(ROOT_DIR, "dist");
 function createZipArchive(sourceDir, outPath) {
   return new Promise((resolve, reject) => {
     const output = fs.createWriteStream(outPath);
-    const archive = new archiver.ZipArchive({
+    const archiverFn = typeof archiver === 'function' ? archiver : archiver.default;
+    const archive = archiverFn("zip", {
       zlib: { level: 9 }
     });
 
@@ -70,7 +71,7 @@ export async function buildResourcePack(targetRes = 512) {
   };
 
   fs.writeFileSync(path.join(BUILD_TMP, "pack.mcmeta"), JSON.stringify(mcmeta, null, 2), "utf-8");
-  console.log(`[1/4] Created pack.mcmeta (Supported Formats: 1.20 - 1.21.4+)`);
+  console.log(`[1/5] Created pack.mcmeta (Supported Formats: 1.20 - 1.21.4+)`);
 
   // 2. High-Speed Rust Resvg Rasterization
   const svgFiles = fs.readdirSync(TEXTURES_DIR).filter((f) => f.endsWith(".svg"));
@@ -88,7 +89,7 @@ export async function buildResourcePack(targetRes = 512) {
     fs.writeFileSync(destPngPath, pngData.asPng());
   }
 
-  console.log(`[2/4] Rasterizing ${svgFiles.length} vector textures to ${targetRes}×${targetRes} PNG...`);
+  console.log(`[2/5] Rasterizing ${svgFiles.length} vector textures to ${targetRes}×${targetRes} PNG...`);
 
   for (const svgFile of svgFiles) {
     const stem = path.basename(svgFile, ".svg");
@@ -125,11 +126,20 @@ export async function buildResourcePack(targetRes = 512) {
 
   // 4. Generate pack.png (128x128 pack icon)
   const packIconDest = path.join(BUILD_TMP, "pack.png");
+  const smallPlatePng = path.join(ROOT_DIR, "docs", "assets", "icon-small-plate-128.png");
+  const smallPlateSvg = path.join(ROOT_DIR, "docs", "assets", "icon-small-plate.svg");
   const grassTopSvg = path.join(TEXTURES_DIR, "grass_block_top.svg");
-  if (fs.existsSync(grassTopSvg)) {
+
+  if (fs.existsSync(smallPlatePng)) {
+    fs.copyFileSync(smallPlatePng, packIconDest);
+    console.log(`[4/5] Pack icon: icon-small-plate-128.png -> pack.png`);
+  } else if (fs.existsSync(smallPlateSvg)) {
+    rasterize(smallPlateSvg, packIconDest, 128);
+    console.log(`[4/5] Generated pack.png from icon-small-plate.svg (128×128)`);
+  } else if (fs.existsSync(grassTopSvg)) {
     rasterize(grassTopSvg, packIconDest, 128);
+    console.log(`[4/5] Generated pack.png from grass_block_top.svg (128×128 fallback)`);
   }
-  console.log(`[4/5] Generated pack.png (128×128 icon)`);
 
   // 5. Package into clean Minecraft-compliant .ZIP (pure Node.js archiver)
   const zipFileName = `Keyframe-${targetRes}x.zip`;
@@ -139,7 +149,7 @@ export async function buildResourcePack(targetRes = 512) {
     fs.unlinkSync(zipOutputPath);
   }
 
-  console.log(`[4/4] Creating pure cross-platform ZIP archive: ${zipFileName}...`);
+  console.log(`[5/5] Creating pure cross-platform ZIP archive: ${zipFileName}...`);
   await createZipArchive(BUILD_TMP, zipOutputPath);
 
   // 6. Auto-sync clean .zip archive to local .minecraft/resourcepacks if present
