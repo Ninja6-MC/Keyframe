@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: STONE                                   -->
+  <!-- Calibrated to authentic Minecraft neutral slate-gray stone palette        -->
+  <!-- Shared stone background master for textures/diamond_ore.svg & coal_ore.svg -->
+  <!-- 3D Pop-Down Recessed Striation Grooves (Top Drop Shadows + Bottom Rim)     -->
+  <!-- ========================================================================= -->
+
+  <defs>
+    <!-- 1x1 (32x32) Sunken Pop-Down Groove -->
+    <g id="groove_32">
+      <!-- Sunken Cavity Floor -->
+      <rect width="32" height="32" rx="8" fill="#5f6268" />
+      <!-- Top Inner Cast Shadow (Pop-Down Depth) -->
+      <rect x="2" y="2" width="28" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <!-- Bottom Inner Highlight Rim (Light Catch) -->
+      <rect x="2" y="24" width="28" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+
+    <!-- 2x1 (64x32) Sunken Pop-Down Groove -->
+    <g id="groove_64">
+      <!-- Sunken Cavity Floor -->
+      <rect width="64" height="32" rx="8" fill="#5f6268" />
+      <!-- Top Inner Cast Shadow (Pop-Down Depth) -->
+      <rect x="2" y="2" width="60" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <!-- Bottom Inner Highlight Rim (Light Catch) -->
+      <rect x="2" y="24" width="60" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+
+    <!-- 3x1 (96x32) Sunken Pop-Down Groove -->
+    <g id="groove_96">
+      <!-- Sunken Cavity Floor -->
+      <rect width="96" height="32" rx="8" fill="#5f6268" />
+      <!-- Top Inner Cast Shadow (Pop-Down Depth) -->
+      <rect x="2" y="2" width="92" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <!-- Bottom Inner Highlight Rim (Light Catch) -->
+      <rect x="2" y="24" width="92" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+
+    <!-- 4x1 (128x32) Sunken Pop-Down Groove -->
+    <g id="groove_128">
+      <!-- Sunken Cavity Floor -->
+      <rect width="128" height="32" rx="8" fill="#5f6268" />
+      <!-- Top Inner Cast Shadow (Pop-Down Depth) -->
+      <rect x="2" y="2" width="124" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <!-- Bottom Inner Highlight Rim (Light Catch) -->
+      <rect x="2" y="24" width="124" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+  </defs>
+
+  <!-- Authentic Neutral Minecraft Stone Base (#7e8187) -->
+  <rect width="512" height="512" fill="#7e8187" />
+
+  <!-- ========================================================================= -->
+  <!-- 3D POP-DOWN STRIATION GROOVES (100% Toroidal Seamless)                    -->
+  <!-- ========================================================================= -->
+  <g id="stone_base">
+    <!-- Row 1 (Top Area) -->
+    <use href="#groove_128" x="64" y="32" />
+    <use href="#groove_96" x="288" y="32" />
+    <use href="#groove_32" x="416" y="64" />
+
+    <!-- Row 2 (Upper Area) -->
+    <use href="#groove_64" x="224" y="96" />
+
+    <!-- Row 3 (Upper-Mid Area - Seamless Horizontal Wrap) -->
+    <use href="#groove_96" x="480" y="128" />
+    <use href="#groove_96" x="-32" y="128" />
+    <use href="#groove_128" x="320" y="160" />
+
+    <!-- Row 4 (Mid Area) -->
+    <use href="#groove_64" x="96" y="224" />
+    <use href="#groove_128" x="224" y="224" />
+    <use href="#groove_32" x="32" y="256" />
+
+    <!-- Row 5 (Mid-Lower Area - Seamless Horizontal Wrap) -->
+    <use href="#groove_96" x="448" y="288" />
+    <use href="#groove_96" x="-64" y="288" />
+
+    <!-- Row 6 (Lower-Mid Area) -->
+    <use href="#groove_128" x="64" y="352" />
+    <use href="#groove_96" x="320" y="352" />
+    <use href="#groove_64" x="288" y="416" />
+
+    <!-- Row 7 (Bottom Area) -->
+    <use href="#groove_96" x="32" y="448" />
+    <use href="#groove_32" x="160" y="448" />
+  </g>
+</svg>

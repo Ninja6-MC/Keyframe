@@ -1,0 +1,292 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: COAL ORE                                -->
+  <!-- Stone background is 1:1 derived from textures/stone.svg                   -->
+  <!-- High-Visibility 3D Pop-Up Jet-Black Coal Nodules with Crisp Highlights     -->
+  <!-- ========================================================================= -->
+
+  <defs>
+    <!-- 1x1 (32x32) Sunken Pop-Down Groove -->
+    <g id="groove_32">
+      <rect width="32" height="32" rx="8" fill="#5f6268" />
+      <rect x="2" y="2" width="28" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <rect x="2" y="24" width="28" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+
+    <!-- 2x1 (64x32) Sunken Pop-Down Groove -->
+    <g id="groove_64">
+      <rect width="64" height="32" rx="8" fill="#5f6268" />
+      <rect x="2" y="2" width="60" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <rect x="2" y="24" width="60" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+
+    <!-- 3x1 (96x32) Sunken Pop-Down Groove -->
+    <g id="groove_96">
+      <rect width="96" height="32" rx="8" fill="#5f6268" />
+      <rect x="2" y="2" width="92" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <rect x="2" y="24" width="92" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+
+    <!-- 4x1 (128x32) Sunken Pop-Down Groove -->
+    <g id="groove_128">
+      <rect width="128" height="32" rx="8" fill="#5f6268" />
+      <rect x="2" y="2" width="124" height="6" rx="3" fill="#3c3e44" />
+      <rect x="2" y="2" width="4" height="14" rx="2" fill="#3c3e44" opacity="0.75" />
+      <rect x="2" y="24" width="124" height="6" rx="3" fill="#a4a7ae" opacity="0.9" />
+    </g>
+  </defs>
+
+  <!-- 1. Authentic Neutral Minecraft Stone Base (#7e8187) -->
+  <rect width="512" height="512" fill="#7e8187" />
+
+  <!-- ========================================================================= -->
+  <!-- 2. STONE BASE GROOVES - 1:1 Shared Base with stone.svg                    -->
+  <!-- ========================================================================= -->
+  <g id="stone_base">
+    <!-- Row 1 (Top Area) -->
+    <use href="#groove_128" x="64" y="32" />
+    <use href="#groove_96" x="288" y="32" />
+    <use href="#groove_32" x="416" y="64" />
+
+    <!-- Row 2 (Upper Area) -->
+    <use href="#groove_64" x="224" y="96" />
+
+    <!-- Row 3 (Upper-Mid Area - Seamless Horizontal Wrap) -->
+    <use href="#groove_96" x="480" y="128" />
+    <use href="#groove_96" x="-32" y="128" />
+    <use href="#groove_128" x="320" y="160" />
+
+    <!-- Row 4 (Mid Area) -->
+    <use href="#groove_64" x="96" y="224" />
+    <use href="#groove_128" x="224" y="224" />
+    <use href="#groove_32" x="32" y="256" />
+
+    <!-- Row 5 (Mid-Lower Area - Seamless Horizontal Wrap) -->
+    <use href="#groove_96" x="448" y="288" />
+    <use href="#groove_96" x="-64" y="288" />
+
+    <!-- Row 6 (Lower-Mid Area) -->
+    <use href="#groove_128" x="64" y="352" />
+    <use href="#groove_96" x="320" y="352" />
+    <use href="#groove_64" x="288" y="416" />
+
+    <!-- Row 7 (Bottom Area) -->
+    <use href="#groove_96" x="32" y="448" />
+    <use href="#groove_32" x="160" y="448" />
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- 3. HIGH-VISIBILITY 3D POP-UP COAL ORE NODULES                            -->
+  <!-- ========================================================================= -->
+  <g id="coal-nodules">
+    <!-- 3A. 3D Bottom Crevice Drop Shadows (Creates Pop-Up Relief over Stone) -->
+    <g id="coal-drop-shadows" fill="#26282f" opacity="0.95">
+      <!-- Cluster 1 -->
+      <rect x="96" y="68" width="64" height="32" rx="6" />
+      <rect x="64" y="100" width="64" height="32" rx="6" />
+
+      <!-- Cluster 2 -->
+      <rect x="352" y="36" width="32" height="32" rx="6" />
+      <rect x="384" y="68" width="64" height="32" rx="6" />
+
+      <!-- Cluster 3 -->
+      <rect x="224" y="132" width="64" height="32" rx="6" />
+      <rect x="160" y="164" width="96" height="32" rx="6" />
+      <rect x="192" y="196" width="32" height="32" rx="6" />
+
+      <!-- Cluster 4 -->
+      <rect x="352" y="196" width="64" height="32" rx="6" />
+      <rect x="384" y="228" width="64" height="32" rx="6" />
+
+      <!-- Cluster 5 -->
+      <rect x="64" y="228" width="64" height="32" rx="6" />
+      <rect x="96" y="260" width="64" height="32" rx="6" />
+
+      <!-- Cluster 6 -->
+      <rect x="224" y="260" width="96" height="32" rx="6" />
+      <rect x="192" y="292" width="96" height="32" rx="6" />
+      <rect x="224" y="324" width="32" height="32" rx="6" />
+
+      <!-- Cluster 7 -->
+      <rect x="320" y="356" width="96" height="32" rx="6" />
+      <rect x="352" y="388" width="96" height="32" rx="6" />
+
+      <!-- Cluster 8 -->
+      <rect x="64" y="356" width="32" height="32" rx="6" />
+      <rect x="96" y="388" width="64" height="32" rx="6" />
+      <rect x="64" y="420" width="64" height="32" rx="6" />
+    </g>
+
+    <!-- 3B. Jet-Black Charcoal Mineral Bodies (#181b22) -->
+    <g id="coal-bodies" fill="#181b22">
+      <!-- Cluster 1: Top-Left -->
+      <rect x="96" y="64" width="64" height="32" rx="5" />
+      <rect x="64" y="96" width="64" height="32" rx="5" />
+
+      <!-- Cluster 2: Top-Right -->
+      <rect x="352" y="32" width="32" height="32" rx="5" />
+      <rect x="384" y="64" width="64" height="32" rx="5" />
+
+      <!-- Cluster 3: Upper-Mid Hero Cluster -->
+      <rect x="224" y="128" width="64" height="32" rx="5" />
+      <rect x="160" y="160" width="96" height="32" rx="5" />
+      <rect x="192" y="192" width="32" height="32" rx="5" />
+
+      <!-- Cluster 4: Mid-Right -->
+      <rect x="352" y="192" width="64" height="32" rx="5" />
+      <rect x="384" y="224" width="64" height="32" rx="5" />
+
+      <!-- Cluster 5: Center-Left Stepped Nodule -->
+      <rect x="64" y="224" width="64" height="32" rx="5" />
+      <rect x="96" y="256" width="64" height="32" rx="5" />
+
+      <!-- Cluster 6: Lower-Mid Center Hero Nodule -->
+      <rect x="224" y="256" width="96" height="32" rx="5" />
+      <rect x="192" y="288" width="96" height="32" rx="5" />
+      <rect x="224" y="320" width="32" height="32" rx="5" />
+
+      <!-- Cluster 7: Lower-Right Nodule -->
+      <rect x="320" y="352" width="96" height="32" rx="5" />
+      <rect x="352" y="384" width="96" height="32" rx="5" />
+
+      <!-- Cluster 8: Bottom-Left Accent -->
+      <rect x="64" y="352" width="32" height="32" rx="5" />
+      <rect x="96" y="384" width="64" height="32" rx="5" />
+      <rect x="64" y="416" width="64" height="32" rx="5" />
+    </g>
+
+    <!-- 3C. Deep Cavity Shadows (#0b0c10) -->
+    <g id="coal-shadow-bevels" fill="#0b0c10">
+      <!-- Cluster 1 -->
+      <rect x="98" y="93" width="60" height="3" rx="1.5" />
+      <rect x="157" y="66" width="3" height="30" rx="1.5" />
+      <rect x="66" y="125" width="60" height="3" rx="1.5" />
+      <rect x="125" y="98" width="3" height="30" rx="1.5" />
+
+      <!-- Cluster 2 -->
+      <rect x="354" y="61" width="28" height="3" rx="1.5" />
+      <rect x="381" y="34" width="3" height="30" rx="1.5" />
+      <rect x="386" y="93" width="60" height="3" rx="1.5" />
+      <rect x="445" y="66" width="3" height="30" rx="1.5" />
+
+      <!-- Cluster 3 -->
+      <rect x="226" y="157" width="60" height="3" rx="1.5" />
+      <rect x="285" y="130" width="3" height="30" rx="1.5" />
+      <rect x="162" y="189" width="92" height="3" rx="1.5" />
+      <rect x="253" y="162" width="3" height="30" rx="1.5" />
+      <rect x="194" y="221" width="28" height="3" rx="1.5" />
+      <rect x="221" y="194" width="3" height="30" rx="1.5" />
+
+      <!-- Cluster 4 -->
+      <rect x="354" y="221" width="60" height="3" rx="1.5" />
+      <rect x="413" y="194" width="3" height="30" rx="1.5" />
+      <rect x="386" y="253" width="60" height="3" rx="1.5" />
+      <rect x="445" y="226" width="3" height="30" rx="1.5" />
+
+      <!-- Cluster 5 -->
+      <rect x="66" y="253" width="60" height="3" rx="1.5" />
+      <rect x="125" y="226" width="3" height="30" rx="1.5" />
+      <rect x="98" y="285" width="60" height="3" rx="1.5" />
+      <rect x="157" y="258" width="3" height="30" rx="1.5" />
+
+      <!-- Cluster 6 -->
+      <rect x="226" y="285" width="92" height="3" rx="1.5" />
+      <rect x="317" y="258" width="3" height="30" rx="1.5" />
+      <rect x="194" y="317" width="92" height="3" rx="1.5" />
+      <rect x="285" y="290" width="3" height="30" rx="1.5" />
+      <rect x="226" y="349" width="28" height="3" rx="1.5" />
+      <rect x="253" y="322" width="3" height="30" rx="1.5" />
+
+      <!-- Cluster 7 -->
+      <rect x="322" y="381" width="92" height="3" rx="1.5" />
+      <rect x="413" y="354" width="3" height="30" rx="1.5" />
+      <rect x="354" y="413" width="92" height="3" rx="1.5" />
+      <rect x="445" y="386" width="3" height="30" rx="1.5" />
+
+      <!-- Cluster 8 -->
+      <rect x="66" y="381" width="28" height="3" rx="1.5" />
+      <rect x="93" y="354" width="3" height="30" rx="1.5" />
+      <rect x="98" y="413" width="60" height="3" rx="1.5" />
+      <rect x="157" y="386" width="3" height="30" rx="1.5" />
+      <rect x="66" y="445" width="60" height="3" rx="1.5" />
+      <rect x="125" y="418" width="3" height="30" rx="1.5" />
+    </g>
+
+    <!-- 3D. High-Visibility Crisp Mineral Bevel Highlights (#8e96a5) -->
+    <g id="coal-highlight-bevels" fill="#8e96a5">
+      <!-- Cluster 1 -->
+      <rect x="98" y="66" width="60" height="4" rx="2" />
+      <rect x="98" y="66" width="4" height="28" rx="2" />
+      <rect x="66" y="98" width="60" height="4" rx="2" />
+      <rect x="66" y="98" width="4" height="28" rx="2" />
+
+      <!-- Cluster 2 -->
+      <rect x="354" y="34" width="28" height="4" rx="2" />
+      <rect x="354" y="34" width="4" height="28" rx="2" />
+      <rect x="386" y="66" width="60" height="4" rx="2" />
+      <rect x="386" y="66" width="4" height="28" rx="2" />
+
+      <!-- Cluster 3 -->
+      <rect x="226" y="130" width="60" height="4" rx="2" />
+      <rect x="226" y="130" width="4" height="28" rx="2" />
+      <rect x="162" y="162" width="92" height="4" rx="2" />
+      <rect x="162" y="162" width="4" height="28" rx="2" />
+      <rect x="194" y="194" width="28" height="4" rx="2" />
+      <rect x="194" y="194" width="4" height="28" rx="2" />
+
+      <!-- Cluster 4 -->
+      <rect x="354" y="194" width="60" height="4" rx="2" />
+      <rect x="354" y="194" width="4" height="28" rx="2" />
+      <rect x="386" y="226" width="60" height="4" rx="2" />
+      <rect x="386" y="226" width="4" height="28" rx="2" />
+
+      <!-- Cluster 5 -->
+      <rect x="66" y="226" width="60" height="4" rx="2" />
+      <rect x="66" y="226" width="4" height="28" rx="2" />
+      <rect x="98" y="258" width="60" height="4" rx="2" />
+      <rect x="98" y="258" width="4" height="28" rx="2" />
+
+      <!-- Cluster 6 -->
+      <rect x="226" y="258" width="92" height="4" rx="2" />
+      <rect x="226" y="258" width="4" height="28" rx="2" />
+      <rect x="194" y="290" width="92" height="4" rx="2" />
+      <rect x="194" y="290" width="4" height="28" rx="2" />
+      <rect x="226" y="322" width="28" height="4" rx="2" />
+      <rect x="226" y="322" width="4" height="28" rx="2" />
+
+      <!-- Cluster 7 -->
+      <rect x="322" y="354" width="92" height="4" rx="2" />
+      <rect x="322" y="354" width="4" height="28" rx="2" />
+      <rect x="354" y="386" width="92" height="4" rx="2" />
+      <rect x="354" y="386" width="4" height="28" rx="2" />
+
+      <!-- Cluster 8 -->
+      <rect x="66" y="354" width="28" height="4" rx="2" />
+      <rect x="66" y="354" width="4" height="28" rx="2" />
+      <rect x="98" y="386" width="60" height="4" rx="2" />
+      <rect x="98" y="386" width="4" height="28" rx="2" />
+      <rect x="66" y="418" width="60" height="4" rx="2" />
+      <rect x="66" y="418" width="4" height="28" rx="2" />
+    </g>
+
+    <!-- 3E. Specular Lustre Sparks (#ffffff at 90% Opacity) -->
+    <g id="coal-lustre-glints" fill="#ffffff" opacity="0.9">
+      <rect x="100" y="68" width="16" height="4" rx="2" />
+      <rect x="68" y="100" width="16" height="4" rx="2" />
+      <rect x="388" y="68" width="16" height="4" rx="2" />
+      <rect x="228" y="132" width="16" height="4" rx="2" />
+      <rect x="164" y="164" width="20" height="4" rx="2" />
+      <rect x="356" y="196" width="16" height="4" rx="2" />
+      <rect x="68" y="228" width="16" height="4" rx="2" />
+      <rect x="228" y="260" width="20" height="4" rx="2" />
+      <rect x="196" y="292" width="20" height="4" rx="2" />
+      <rect x="324" y="356" width="20" height="4" rx="2" />
+      <rect x="356" y="388" width="20" height="4" rx="2" />
+      <rect x="68" y="420" width="16" height="4" rx="2" />
+    </g>
+  </g>
+</svg>
