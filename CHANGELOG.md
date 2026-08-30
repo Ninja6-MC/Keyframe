@@ -13,6 +13,9 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ## [Unreleased]
 
 ### Added
+- Stone and ores set: `stone`, `diamond_ore`, and `coal_ore` — 512×512 vector masters with
+  3D pop-down recessed striation grooves, high-contrast 3D pop-up mineral nodules and crystals,
+  un-rotated stone blockstate override, and synchronized stone backgrounds (#28).
 - `bedrock` — chaotic tectonic stone plates with interior highlights and 100% periodic
   toroidal boundary continuity.
 - `deepslate` and `deepslate_top`, and `infested_deepslate`.
