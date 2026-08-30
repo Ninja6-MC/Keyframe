@@ -1,43 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: DIRT PATH TOP                           -->
-  <!-- Grounded Sunlit Bamboo Ochre Base (#d4ae62) with Soft Highlights          -->
+  <!-- 3D Rectangular Strata Plates with Deepslate-Style Popup Effect            -->
   <!-- ========================================================================= -->
 
-  <!-- Warm Grounded Sunlit Bamboo Ochre Base (#d4ae62) -->
+  <!-- Warm Grounded Sunlit Bamboo Ochre Base -->
   <rect width="512" height="512" fill="#d4ae62" />
 
-  <!-- ========================================================================= -->
-  <!-- THE 4 PATH STROKES (Matching Grass Top Geometry 1:1)                      -->
-  <!-- ========================================================================= -->
-  <g id="exact-4-path-strokes" fill="#edd28c" opacity="0.88">
-    <!-- Line 1: Row 1 (Y=52), starts left and ends after middle -->
-    <rect x="15" y="52" width="300" height="25" rx="9" />
+  <!-- 3D Crevice Drop Shadows (Deepslate-Style +8px Offset) -->
+  <g id="crevice_shadows" shape-rendering="crispEdges">
+    <rect x="15" y="58" width="300" height="28" fill="#8a6118" opacity="0.95" />
+    <rect x="260" y="186" width="225" height="28" fill="#8a6118" opacity="0.95" />
+    <rect x="25" y="314" width="150" height="28" fill="#8a6118" opacity="0.95" />
+    <!-- Row 4 Toroidal Wrap -->
+    <rect x="0" y="442" width="130" height="28" fill="#8a6118" opacity="0.95" />
+    <rect x="360" y="442" width="152" height="28" fill="#8a6118" opacity="0.95" />
+  </g>
 
-    <!-- Line 2: Row 2 (Y=180), starts after middle and ends before right -->
-    <rect x="260" y="180" width="225" height="25" rx="9" />
-
-    <!-- Line 3: Row 3 (Y=308), starts after left and ends before middle -->
-    <rect x="25" y="308" width="150" height="25" rx="9" />
-
-    <!-- Line 4: Row 4 (Y=436) - Left Segment (wraps left border X=0 to X=130) -->
-    <path
-      d="M 0,436 
-         v 25 
-         h 121 
-         a 9,9 0 0 0 9,-9 
-         v -7 
-         a 9,9 0 0 0 -9,-9 
-         Z" />
-
-    <!-- Line 4: Row 4 (Y=436) - Right Segment (starts X=360 to right border X=512) -->
-    <path
-      d="M 369,436 
-         a 9,9 0 0 0 -9,9 
-         v 7 
-         a 9,9 0 0 0 9,9 
-         h 143 
-         v -25 
-         Z" />
+  <!-- Clean Raised Strata Plates (Authentic #edd28c) -->
+  <g id="strata_plates" shape-rendering="crispEdges">
+    <rect x="15" y="50" width="300" height="28" fill="#edd28c" />
+    <rect x="260" y="178" width="225" height="28" fill="#edd28c" />
+    <rect x="25" y="306" width="150" height="28" fill="#edd28c" />
+    <!-- Row 4 Toroidal Wrap -->
+    <rect x="0" y="434" width="130" height="28" fill="#edd28c" />
+    <rect x="360" y="434" width="152" height="28" fill="#edd28c" />
   </g>
 </svg>

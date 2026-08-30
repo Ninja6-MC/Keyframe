@@ -29,4 +29,6 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   vector masters.
 
 ### Changed
+- `grass_block_top` updated with Deepslate-style 3D rectangular strata plates and ambient crevice drop shadows establishing tactile ground turf relief (#34).
+- `dirt_path_top` updated with Deepslate-style 3D rectangular strata plates and warm crevice drop shadows establishing authentic sunlit footpath relief (#34).
 - `water` returned to the vanilla default pending a rework.
