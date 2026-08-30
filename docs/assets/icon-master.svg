@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!--
+    Keyframe icon — AUTHORING MASTER. Single source of truth.
+
+    Geometry only; no baked colour and no baked plate in definitions.
+    Variants are composed by scripts/export-icons.mjs via inherited presentation attributes.
+    Conforms to the Ninja6-MC Brand Identity System (ICON_PLAN.md).
+
+    CONVENTIONS:
+    1. Pure orthogonal vector geometry, stroke-linecap="square", stroke-linejoin="miter".
+    2. Master stroke weight is 48; small-size cut is 118.
+    3. Paint arrives through inherited presentation attributes: polyline/polygon leaves stroke
+       unset (fill="none" explicit), circle leaves fill unset (stroke="none" explicit).
+    4. Safe zone: all artwork strictly within r <= 460 of (512,512).
+    5. Four-fold radial symmetry (D4 dihedral symmetry) centred at (512,512).
+  -->
+  <defs>
+    <!-- FULL MARK: Stroke 48, Central Amber Dot r=54 at (512, 512) -->
+    <g id="geo">
+      <!-- 4-Corner Camera Viewfinder Brackets -->
+      <polyline points="260,380 260,260 380,260"
+                fill="none" stroke-width="48"
+                stroke-linecap="square" stroke-linejoin="miter" />
+      <polyline points="764,380 764,260 644,260"
+                fill="none" stroke-width="48"
+                stroke-linecap="square" stroke-linejoin="miter" />
+      <polyline points="260,644 260,764 380,764"
+                fill="none" stroke-width="48"
+                stroke-linecap="square" stroke-linejoin="miter" />
+      <polyline points="764,644 764,764 644,764"
+                fill="none" stroke-width="48"
+                stroke-linecap="square" stroke-linejoin="miter" />
+
+      <!-- Central Cinematic Keyframe Diamond -->
+      <polygon points="512,320 704,512 512,704 320,512"
+               fill="none" stroke-width="48"
+               stroke-linecap="square" stroke-linejoin="miter" />
+
+      <!-- Family Constant Amber Core -->
+      <circle cx="512" cy="512" r="54" stroke="none" />
+    </g>
+
+    <!-- SMALL-SIZE CUT (<=24px): Stroke 118, Dot dropped for clear aperture -->
+    <g id="geo-small">
+      <!-- 4-Corner Camera Viewfinder Brackets -->
+      <polyline points="260,390 260,260 390,260"
+                fill="none" stroke-width="118"
+                stroke-linecap="square" stroke-linejoin="miter" />
+      <polyline points="764,390 764,260 634,260"
+                fill="none" stroke-width="118"
+                stroke-linecap="square" stroke-linejoin="miter" />
+      <polyline points="260,634 260,764 390,764"
+                fill="none" stroke-width="118"
+                stroke-linecap="square" stroke-linejoin="miter" />
+      <polyline points="764,634 764,764 634,764"
+                fill="none" stroke-width="118"
+                stroke-linecap="square" stroke-linejoin="miter" />
+
+      <!-- Central Keyframe Diamond -->
+      <polygon points="512,314 710,512 512,710 314,512"
+               fill="none" stroke-width="118"
+               stroke-linecap="square" stroke-linejoin="miter" />
+    </g>
+  </defs>
+
+  <!-- Default preview on dark plate -->
+  <rect width="1024" height="1024" rx="225" fill="#12161A" />
+  <g stroke="#38BDF8" fill="#FFAC1C">
+    <use href="#geo" />
+  </g>
+</svg>

@@ -4,6 +4,7 @@ node_modules/
 # Build Outputs & Temporary Artifacts
 dist/
 cache/
+build/
 
 # OS & Editor Artifacts
 .DS_Store

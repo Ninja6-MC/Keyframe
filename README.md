@@ -1,6 +1,13 @@
 # Keyframe
 
 <p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/icon-transparent-dark.svg">
+    <img src="docs/assets/icon-transparent-light.svg" width="160" height="160" alt="">
+  </picture>
+</p>
+
+<p align="center">
   <b>The cinematic trailer aesthetic for Minecraft, rendered in infinite vector clarity.</b>
 </p>
 
@@ -89,9 +96,41 @@ Contributions are welcome! Please review our **[Contributing Guidelines](CONTRIB
 
 ---
 
+## Brand Assets
+
+Two directories hold artwork, and they have opposite rules.
+
+[`docs/assets/`](docs/assets/README.md) is **this repository's own** icon suite, authored
+here and generated from [`icon-master.svg`](docs/assets/icon-master.svg) via
+[`scripts/export-icons.mjs`](scripts/export-icons.mjs). Edit the master and re-export; do
+not edit a generated file.
+
+[`assets/`](assets/) holds the **shared organisation marks** and is **machine-managed**.
+It is delivered by pull request from the asset-sync pipeline in the organisation's `brand`
+repository, and its master lives there, not here. Anything hand-edited in it is overwritten
+by the next sync, so changes to those marks belong in `brand`. See `N6-REPO-03` in the org
+standards register, and [`docs/assets/README.md`](docs/assets/README.md) for the pipeline
+and master by name.
+
+Both conform to the Ninja6-MC brand identity system. (That system lives in the
+organisation's private `brand` repository, so it is named rather than linked - a link
+would 404 for everyone reading this.)
+
+---
+
 ## License & Disclaimer
 
 **Keyframe Community License** (All Rights Reserved with Permitted Use Grants).  
 Free for personal gameplay, YouTube/Twitch content creation, multiplayer servers, and public modpacks. Third-party mirroring, texture ripping, and commercial resale are prohibited. See [LICENSE](LICENSE) for details.
 
 > **NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.**
+
+---
+
+<p align="center">
+  <a href="https://github.com/Ninja6-MC"><img src="assets/ninja6-primary-256.png" width="48" height="48" alt=""></a>
+</p>
+
+<p align="center">
+  <sub>A <a href="https://github.com/Ninja6-MC">Ninja6</a> project.</sub>
+</p>
