@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "defaultCategory": "toroidal",
+  "categories": {
+    "toroidal": {
+      "description": "Full 2D terrain block textures repeating infinitely on both X and Y axes",
+      "testAxes": ["x", "y"],
+      "tolerance": 0
+    },
+    "x-only": {
+      "description": "Terrain side blocks that tile horizontally across connected terrain contours",
+      "testAxes": ["x"],
+      "tolerance": 0
+    },
+    "y-only": {
+      "description": "Vertical pillar and column blocks that tile along the Y axis",
+      "testAxes": ["y"],
+      "tolerance": 0
+    },
+    "exempt": {
+      "description": "Non-tiling assets including handheld items, cross-quad plant cutouts, and tint masks",
+      "testAxes": []
+    }
+  },
+  "patterns": [
+    {
+      "pattern": "*_side.svg",
+      "category": "x-only",
+      "reason": "Block side texture with top overhang/strata and soil bottom"
+    },
+    {
+      "pattern": "*_overlay.svg",
+      "category": "exempt",
+      "reason": "Transparent biome colormap overlay mask"
+    },
+    {
+      "pattern": "short_grass*.svg",
+      "category": "exempt",
+      "reason": "Cross-quad plant cutout model"
+    },
+    {
+      "pattern": "tall_grass_*.svg",
+      "category": "exempt",
+      "reason": "Cross-quad plant cutout model"
+    },
+    {
+      "pattern": "grass*.svg",
+      "category": "exempt",
+      "reason": "Backwards-compatible plant alias"
+    }
+  ],
+  "itemIds": [
+    "cooked_beef",
+    "golden_apple",
+    "compass_nexus",
+    "plot_compass",
+    "spiral_core",
+    "ninja6_token"
+  ],
+  "overrides": {}
+}

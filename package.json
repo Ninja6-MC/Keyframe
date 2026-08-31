@@ -18,7 +18,9 @@
     "palette:inject": "node tools/lib/palette-injector.mjs",
     "test:palette": "node tools/test/palette-injector.test.mjs",
     "test:animation": "node tools/test-animation-packager.mjs",
-    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs"
+    "test:tiling": "node tools/test-tiling.mjs",
+    "test:tiling:render": "node tools/test-tiling.mjs --render",
+    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test-tiling.mjs"
   },
   "keywords": [
     "minecraft",

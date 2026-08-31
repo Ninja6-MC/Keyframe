@@ -29,6 +29,12 @@ npm run build
 
 # 4. Batch build all 5 resolution tiers
 npm run build:all
+
+# 5. Run automated toroidal tiling & seam audit harness
+npm run test:tiling
+
+# 6. Render 3x3 tiled test grids (saved to dist/tiling_tests/)
+npm run test:tiling:render
 ```
 
 Compiled `.zip` resource packs are saved to `dist/` and automatically deployed to your local `.minecraft/resourcepacks/` directory if detected.
@@ -58,7 +64,14 @@ Minecraft blocks repeat horizontally and vertically across infinite terrain. **A
 * **Vertical ($Y$-Axis Wrapping)**:
   * If a stone, boulder, or soil clod touches $Y=0$ (top edge), its corresponding bottom portion must touch $Y=512$ (bottom edge) at the identical $X$ coordinates.
 * **Tiling Verification**:
-  * Before submitting, test your texture in a $3\times3$ grid or compile and check how it tiles in-game when stacked and aligned horizontally and vertically.
+  * Verify zero seam discontinuity using the automated test harness:
+    ```bash
+    npm run test:tiling
+    ```
+  * Generate high-resolution $3\times3$ tiled test grids to visually inspect corner and seam alignment:
+    ```bash
+    npm run test:tiling:render
+    ```
 
 ### 3. Ore & Material Consistency
 * **Shared Base Patterns**: Ore textures (e.g., `diamond_ore.svg`, `iron_ore.svg`, `gold_ore.svg`, `coal_ore.svg`) **must inherit the exact same stone background** (striation layout, positions, corner radius `rx`) as [`textures/block/stone.svg`](textures/block/stone.svg).
@@ -148,7 +161,7 @@ Every commit must be signed off with `Signed-off-by: Name <email>` to certify th
 Before submitting a pull request, please verify:
 
 - [ ] All new textures are authored in `textures/` (e.g., `textures/block/*.svg`, `textures/item/*.svg`) at $512\times512$.
-- [ ] Seamless tiling has been verified on both $X$ and $Y$ axes.
+- [ ] Seamless tiling passes zero-discontinuity check with `npm run test:tiling`.
 - [ ] Ores share the identical base stone background as `stone.svg`.
 - [ ] Pack compiles cleanly with `npm run build`.
 - [ ] Commits follow Conventional Commits format.
