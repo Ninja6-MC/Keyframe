@@ -10,6 +10,10 @@ import {
   generateMcmeta,
   processAnimatedTextures
 } from "./lib/animation-packager.mjs";
+import {
+  loadPalette,
+  compileAllVariations
+} from "./lib/palette-injector.mjs";
 
 const require = createRequire(import.meta.url);
 const archiver = require("archiver");
@@ -116,10 +120,12 @@ async function pMap(items, mapper, concurrency = 8) {
 }
 
 /**
- * Rasterizes an SVG string/buffer to PNG at the target resolution using Rust Resvg
+ * Rasterizes an SVG file or raw string to PNG at the target resolution using Rust Resvg
  */
-async function rasterizeSvg(srcSvgPath, destPngPath, size) {
-  const svgText = fs.readFileSync(srcSvgPath, "utf-8");
+async function rasterizeSvg(srcSvgOrText, destPngPath, size) {
+  const svgText = typeof srcSvgOrText === "string" && (srcSvgOrText.startsWith("<") || srcSvgOrText.includes("<svg"))
+    ? srcSvgOrText
+    : fs.readFileSync(srcSvgOrText, "utf-8");
   const rendered = await renderAsync(svgText, {
     fitTo: {
       mode: "width",
@@ -138,6 +144,7 @@ async function rasterizeSvg(srcSvgPath, destPngPath, size) {
  */
 export async function buildResourcePack(targetRes = 512, options = {}) {
   const deploy = Boolean(options.deploy);
+  const paletteName = options.palette || "trailer";
   const rawConcurrency = typeof options.concurrency === "number" && !isNaN(options.concurrency) && options.concurrency > 0
     ? options.concurrency
     : (os.availableParallelism ? os.availableParallelism() : 8);
@@ -146,6 +153,7 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
   console.log("\n======================================================");
   console.log("  Keyframe Resource Pack Compiler");
   console.log("  Target Resolution: " + targetRes + "×" + targetRes);
+  console.log("  Palette Baseline:  " + paletteName);
   if (deploy) console.log("  Auto-Deploy: Enabled");
   console.log("======================================================\n");
 
@@ -180,7 +188,8 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
   fs.writeFileSync(path.join(BUILD_TMP, "pack.mcmeta"), JSON.stringify(mcmeta, null, 2), "utf-8");
   console.log("[1/5] Created pack.mcmeta (Supported Formats: 1.20 - 1.21.4+)");
 
-  // 2. High-Speed Multi-Threaded Rust Resvg Rasterization with Directory Mirroring
+  // 2. High-Speed Multi-Threaded Rust Resvg Rasterization with Directory Mirroring & Palette Injection
+  const palette = loadPalette(paletteName, options.override || null);
   const textureFiles = getAllTextureFiles(TEXTURES_DIR);
   textureFiles.sort((a, b) => a.relPath.localeCompare(b.relPath));
   console.log("[2/5] Rasterizing " + textureFiles.length + " vector textures to " + targetRes + "×" + targetRes + " PNG (concurrency: " + concurrency + ")...");
@@ -197,7 +206,25 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
         fs.mkdirSync(targetDir, { recursive: true });
       }
 
-      if (file.ext === ".svg") {
+      if (file.name.endsWith(".template.svg")) {
+        // Dynamic 16-color variation template compilation in-memory
+        const stem = file.name.replace(/\.template\.svg$/, "");
+        const svgText = fs.readFileSync(file.fullPath, "utf-8");
+        const variations = compileAllVariations(svgText, palette, {
+          stem,
+          namePattern: "{color}_{stem}.svg",
+          strict: true,
+          namespaceIds: true
+        });
+
+        for (const v of variations) {
+          const destPng = path.join(targetDir, v.filename.replace(/\.svg$/, ".png"));
+          await rasterizeSvg(v.svg, destPng, targetRes);
+        }
+
+        const relLog = path.join(relDir === "." ? "" : relDir, stem + " [16 variations]").replace(/\\/g, "/");
+        return "  ✓ " + relLog + " (palette-injected)";
+      } else if (file.ext === ".svg") {
         const stem = path.basename(file.name, ".svg");
         const destPng = path.join(targetDir, stem + ".png");
         await rasterizeSvg(file.fullPath, destPng, targetRes);
@@ -374,6 +401,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       options.interpolate = true;
     } else if (arg === "--no-interpolate") {
       options.interpolate = false;
+    } else if (arg === "--palette" && args[i + 1]) {
+      options.palette = args[i + 1];
+      i++;
     }
   }
 
@@ -391,7 +421,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
           targetRes = parsed;
         }
         i++;
-      } else if (args[i] === "--concurrency" || args[i] === "--frametime") {
+      } else if (args[i] === "--concurrency" || args[i] === "--frametime" || args[i] === "--palette") {
         i++;
       } else if (!args[i].startsWith("-") && !isNaN(parseInt(args[i], 10))) {
         const parsed = parseInt(args[i], 10);
