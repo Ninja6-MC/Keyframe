@@ -14,7 +14,9 @@
     "build:all": "node tools/build.mjs --all",
     "build:deploy": "node tools/build.mjs --res 512 --deploy",
     "build:all:deploy": "node tools/build.mjs --all --deploy",
-    "export:icons": "node scripts/export-icons.mjs"
+    "export:icons": "node scripts/export-icons.mjs",
+    "test:animation": "node tools/test-animation-packager.mjs",
+    "test": "npm run test:animation"
   },
   "keywords": [
     "minecraft",
