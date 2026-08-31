@@ -15,8 +15,10 @@
     "build:deploy": "node tools/build.mjs --res 512 --deploy",
     "build:all:deploy": "node tools/build.mjs --all --deploy",
     "export:icons": "node scripts/export-icons.mjs",
+    "palette:inject": "node tools/lib/palette-injector.mjs",
+    "test:palette": "node tools/test/palette-injector.test.mjs",
     "test:animation": "node tools/test-animation-packager.mjs",
-    "test": "npm run test:animation"
+    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs"
   },
   "keywords": [
     "minecraft",
