@@ -6,11 +6,14 @@
   "main": "tools/build.mjs",
   "scripts": {
     "build": "node tools/build.mjs --res 512",
+    "build:512": "node tools/build.mjs --res 512",
     "build:256": "node tools/build.mjs --res 256",
     "build:128": "node tools/build.mjs --res 128",
     "build:64": "node tools/build.mjs --res 64",
     "build:32": "node tools/build.mjs --res 32",
     "build:all": "node tools/build.mjs --all",
+    "build:deploy": "node tools/build.mjs --res 512 --deploy",
+    "build:all:deploy": "node tools/build.mjs --all --deploy",
     "export:icons": "node scripts/export-icons.mjs"
   },
   "keywords": [

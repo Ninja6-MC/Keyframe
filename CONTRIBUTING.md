@@ -61,7 +61,7 @@ Minecraft blocks repeat horizontally and vertically across infinite terrain. **A
   * Before submitting, test your texture in a $3\times3$ grid or compile and check how it tiles in-game when stacked and aligned horizontally and vertically.
 
 ### 3. Ore & Material Consistency
-* **Shared Base Patterns**: Ore textures (e.g., `diamond_ore.svg`, `iron_ore.svg`, `gold_ore.svg`, `coal_ore.svg`) **must inherit the exact same stone background** (striation layout, positions, corner radius `rx`) as [`textures/stone.svg`](textures/stone.svg).
+* **Shared Base Patterns**: Ore textures (e.g., `diamond_ore.svg`, `iron_ore.svg`, `gold_ore.svg`, `coal_ore.svg`) **must inherit the exact same stone background** (striation layout, positions, corner radius `rx`) as [`textures/block/stone.svg`](textures/block/stone.svg).
 * **Ore Gems / Crystals**: Embed crystal shapes cleanly over the base stone layer without modifying or displacing the shared stone background pattern.
 
 ### 4. Art Direction & Shading
@@ -147,7 +147,7 @@ Every commit must be signed off with `Signed-off-by: Name <email>` to certify th
 
 Before submitting a pull request, please verify:
 
-- [ ] All new textures are authored in `textures/*.svg` at $512\times512$.
+- [ ] All new textures are authored in `textures/` (e.g., `textures/block/*.svg`, `textures/item/*.svg`) at $512\times512$.
 - [ ] Seamless tiling has been verified on both $X$ and $Y$ axes.
 - [ ] Ores share the identical base stone background as `stone.svg`.
 - [ ] Pack compiles cleanly with `npm run build`.
