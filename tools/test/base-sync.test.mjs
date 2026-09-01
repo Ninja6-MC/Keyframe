@@ -322,6 +322,25 @@ console.log("\n[Suite 6] Build-Time Gate");
   // The real tree must pass the same gate the build applies.
   const live = assertBaseSync(TEXTURES_DIR);
   assertEqual(live.ok, true, "The shipped textures/ tree passes the build-time gate");
+
+  // The gate is only worth anything if the compiler actually calls it. Without this the
+  // suite would still report all green with the call deleted from build.mjs, which is
+  // exactly the claim this PR rests on.
+  const buildSource = fs.readFileSync(path.join(ROOT_DIR, "tools", "build.mjs"), "utf-8");
+  assert(
+    /import\s*\{[^}]*\bassertBaseSync\b[^}]*\}\s*from\s*["']\.\/lib\/base-sync\.mjs["']/.test(buildSource),
+    "tools/build.mjs imports assertBaseSync from the verifier"
+  );
+  assert(
+    /\bassertBaseSync\s*\(\s*TEXTURES_DIR\s*\)/.test(buildSource),
+    "tools/build.mjs calls assertBaseSync(TEXTURES_DIR), so the compiler is actually gated"
+  );
+  const gateIndex = buildSource.search(/\bassertBaseSync\s*\(/);
+  const rasterIndex = buildSource.indexOf("Rasterizing ");
+  assert(
+    gateIndex !== -1 && rasterIndex !== -1 && gateIndex < rasterIndex,
+    "The gate runs before rasterization, so a drifted pack produces no output at all"
+  );
 }
 
 if (fs.existsSync(TEST_TMP)) fs.rmSync(TEST_TMP, { recursive: true, force: true });

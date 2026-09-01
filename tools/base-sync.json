@@ -1,7 +1,7 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
   "description": "Shared-base contracts between texture masters. A derivative copies a base master's background verbatim and lays its own geometry on top; the copied sections must never drift. Verified by tools/lib/base-sync.mjs, gated at build time in tools/build.mjs and covered by tools/test/base-sync.test.mjs.",
+  "scope": "Only content inside a listed sharedSection is compared. Root <svg> attributes (viewBox, width, height) are deliberately out of scope here - they are a pack-wide invariant covered by the authoring standards in CONTRIBUTING.md and by the tiling harness, not part of a base-to-derivative contract.",
   "bases": {
     "block/stone.svg": {
       "description": "Stone master. Every stone-variant ore overlays its mineral geometry on an untouched copy of this file's background, so the groove definitions (with their corner radii) and the stone_base group - whose first child is the full-canvas slate fill - must be identical in each derivative or ore blocks stop blending with surrounding stone in caves. Anything shared must sit inside one of the listed sharedSections; a shared element left as a loose sibling is compared by nothing.",
