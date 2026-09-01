@@ -17,10 +17,11 @@
     "export:icons": "node scripts/export-icons.mjs",
     "palette:inject": "node tools/lib/palette-injector.mjs",
     "test:palette": "node tools/test/palette-injector.test.mjs",
+    "test:base-sync": "node tools/test/base-sync.test.mjs",
     "test:animation": "node tools/test-animation-packager.mjs",
     "test:tiling": "node tools/test-tiling.mjs",
     "test:tiling:render": "node tools/test-tiling.mjs --render",
-    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test-tiling.mjs"
+    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test/base-sync.test.mjs && node tools/test-tiling.mjs"
   },
   "keywords": [
     "minecraft",

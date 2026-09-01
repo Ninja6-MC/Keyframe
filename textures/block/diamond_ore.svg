@@ -2,8 +2,15 @@
   viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: DIAMOND ORE                             -->
-  <!-- Stone background is 1:1 derived from textures/stone.svg                   -->
   <!-- Clean 3D Pop-Up Diamond Crystals with Crisp Facets and Drop Shadows       -->
+  <!--                                                                           -->
+  <!-- DERIVATIVE OF textures/block/stone.svg - READ BEFORE EDITING               -->
+  <!-- The <defs> grooves below (including every corner radius rx) and the        -->
+  <!-- <g id="stone_base"> placement group are a verbatim copy of that file and   -->
+  <!-- must stay identical to it, or this ore stops blending into surrounding     -->
+  <!-- stone in caves. Edit stone.svg first, then re-copy both sections here in   -->
+  <!-- the same commit. The registry is tools/base-sync.json; tools/lib/base-sync.mjs -->
+  <!-- enforces it - `npm run build` fails on drift and `npm test` covers it.     -->
   <!-- ========================================================================= -->
 
   <defs>

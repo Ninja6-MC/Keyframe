@@ -3,8 +3,18 @@
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: STONE                                   -->
   <!-- Calibrated to authentic Minecraft neutral slate-gray stone palette        -->
-  <!-- Shared stone background master for textures/diamond_ore.svg & coal_ore.svg -->
   <!-- 3D Pop-Down Recessed Striation Grooves (Top Drop Shadows + Bottom Rim)     -->
+  <!--                                                                           -->
+  <!-- SHARED BASE MASTER - READ BEFORE EDITING                                   -->
+  <!-- This file is the stone background for every stone-variant ore. The <defs>  -->
+  <!-- grooves below (including every corner radius rx) and the <g id="stone_base"> -->
+  <!-- placement group are copied verbatim into:                                  -->
+  <!--   textures/block/coal_ore.svg                                              -->
+  <!--   textures/block/diamond_ore.svg                                           -->
+  <!-- Ore blocks must blend seamlessly into surrounding stone in caves, so any   -->
+  <!-- edit to those two sections has to be applied to every derivative in the    -->
+  <!-- same commit. The registry is tools/base-sync.json; tools/lib/base-sync.mjs -->
+  <!-- enforces it - `npm run build` fails on drift and `npm test` covers it.     -->
   <!-- ========================================================================= -->
 
   <defs>

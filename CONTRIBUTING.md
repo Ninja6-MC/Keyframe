@@ -76,6 +76,19 @@ Minecraft blocks repeat horizontally and vertically across infinite terrain. **A
 ### 3. Ore & Material Consistency
 * **Shared Base Patterns**: Ore textures (e.g., `diamond_ore.svg`, `iron_ore.svg`, `gold_ore.svg`, `coal_ore.svg`) **must inherit the exact same stone background** (striation layout, positions, corner radius `rx`) as [`textures/block/stone.svg`](textures/block/stone.svg).
 * **Ore Gems / Crystals**: Embed crystal shapes cleanly over the base stone layer without modifying or displacing the shared stone background pattern.
+* **This is enforced, not just documented.** The shared sections are the `<defs>` groove
+  definitions (which carry every corner radius `rx`) and the `<g id="stone_base">` placement
+  group. [`tools/base-sync.json`](tools/base-sync.json) registers each base and its
+  derivatives, and `tools/lib/base-sync.mjs` compares them — ignoring comments and
+  indentation, so only real geometry counts. `npm run build` fails on drift before it
+  rasterizes anything, and `npm run test:base-sync` covers the checker itself.
+* **Editing `stone.svg` means editing every derivative in the same commit.** That is the
+  whole point of the gate: the author who changes the stone master is the one who gets the
+  signal, rather than the drift surfacing later as an ore that no longer blends into
+  surrounding stone in caves.
+* **Authoring a new ore? Add it to the `derivatives` list in `tools/base-sync.json`.** A
+  file that copies `<g id="stone_base">` without being registered is reported as an error,
+  so a new ore cannot silently opt out of the contract.
 
 ### 4. Art Direction & Shading
 * **Cinematic Aesthetic**: Saturated, warm, joyful palette matching Minecraft promotional cinematics and update trailers.
@@ -162,7 +175,7 @@ Before submitting a pull request, please verify:
 
 - [ ] All new textures are authored in `textures/` (e.g., `textures/block/*.svg`, `textures/item/*.svg`) at $512\times512$.
 - [ ] Seamless tiling passes zero-discontinuity check with `npm run test:tiling`.
-- [ ] Ores share the identical base stone background as `stone.svg`.
+- [ ] Ores share the identical base stone background as `stone.svg`, and any new ore is registered in `tools/base-sync.json` (`npm run test:base-sync`).
 - [ ] Pack compiles cleanly with `npm run build`.
 - [ ] Commits follow Conventional Commits format.
 - [ ] Every commit is signed off with DCO (`git commit -s`).

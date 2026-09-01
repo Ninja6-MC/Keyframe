@@ -13,6 +13,11 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ## [Unreleased]
 
 ### Added
+- Shared-base contract enforcement for ore masters: `tools/base-sync.json` registers each
+  base master and its derivatives, `tools/lib/base-sync.mjs` verifies that the striation
+  groove definitions (including every corner radius `rx`) and the `stone_base` placement
+  group are identical, and `npm run build` now fails before rasterizing if they drift.
+  Unregistered files that copy the stone base are reported too (#28).
 - Stone and ores set: `stone`, `diamond_ore`, and `coal_ore` — 512×512 vector masters with
   3D pop-down recessed striation grooves, high-contrast 3D pop-up mineral nodules and crystals,
   un-rotated stone blockstate override, and synchronized stone backgrounds (#28).
