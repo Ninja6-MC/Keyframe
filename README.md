@@ -34,7 +34,7 @@ Ever wanted Minecraft to look just like the **cinematic animated update trailers
 **Keyframe** brings that warm, joyful, clean art direction to life. Unlike standard pixel-art packs that are locked to low-resolution grids or noisy dithering, Keyframe is authored natively in **infinite-scale vector (SVG) masters** and compiled cleanly into pixel-perfect PNG textures at every resolution tier.
 
 ### Key Highlights
-* **Cinematic Art Direction**: Saturated meadow greens, rich golden-terracotta soil, clean stepped grass overhangs, warm honey oak wood, and grounded slate pebbles.
+* **Cinematic Art Direction**: Saturated meadow greens, rich warm-umber soil, clean stepped grass overhangs, warm honey oak wood, and grounded slate pebbles.
 * **Zero Visual Noise**: Eliminates gritty pixel noise and harsh dithering while preserving vanilla recognition.
 * **Full Multi-Resolution Support**: Whether playing on a 4K monitor or an entry-level laptop, choose the exact resolution tier that fits your setup.
 * **Un-Rotated Clean Tiling**: Bundles custom blockstates for seamless, unified wood grains and terrain surfaces.
