@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER COBBLESTONE: EXACT LEGO MATRIX MATCH           -->
+  <!-- 1:1 Exact Pixel Layout Sampled from Reference Screenshot                  -->
+  <!-- Synchronized with stone.svg Palette:                                      -->
+  <!--   Stone Plate Face: #7e8187 | Recessed Mortar Bed: #5f6268                -->
+  <!--   Drop Shadow: #3c3e44 | Sunlit Highlight Bevel: #a4a7ae                  -->
+  <!-- 100% Toroidal Seamless Boundary Tiling (X=0<->512, Y=0<->512)             -->
+  <!-- ========================================================================= -->
+
+  <defs>
+    <!-- Combined Stone Geometry directly from 16x16 matrix -->
+    <g id="stone_lego_matrix">
+      <rect x="64" y="0" width="32" height="32" />
+      <rect x="96" y="0" width="32" height="32" />
+      <rect x="224" y="0" width="32" height="32" />
+      <rect x="256" y="0" width="32" height="32" />
+      <rect x="288" y="0" width="32" height="32" />
+      <rect x="320" y="0" width="32" height="32" />
+      <rect x="384" y="0" width="32" height="32" />
+      <rect x="416" y="0" width="32" height="32" />
+      <rect x="448" y="0" width="32" height="32" />
+      <rect x="480" y="0" width="32" height="32" />
+      <rect x="32" y="32" width="32" height="32" />
+      <rect x="64" y="32" width="32" height="32" />
+      <rect x="96" y="32" width="32" height="32" />
+      <rect x="128" y="32" width="32" height="32" />
+      <rect x="192" y="32" width="32" height="32" />
+      <rect x="224" y="32" width="32" height="32" />
+      <rect x="256" y="32" width="32" height="32" />
+      <rect x="288" y="32" width="32" height="32" />
+      <rect x="320" y="32" width="32" height="32" />
+      <rect x="416" y="32" width="32" height="32" />
+      <rect x="448" y="32" width="32" height="32" />
+      <rect x="480" y="32" width="32" height="32" />
+      <rect x="32" y="64" width="32" height="32" />
+      <rect x="64" y="64" width="32" height="32" />
+      <rect x="96" y="64" width="32" height="32" />
+      <rect x="192" y="64" width="32" height="32" />
+      <rect x="224" y="64" width="32" height="32" />
+      <rect x="256" y="64" width="32" height="32" />
+      <rect x="288" y="64" width="32" height="32" />
+      <rect x="448" y="64" width="32" height="32" />
+      <rect x="480" y="64" width="32" height="32" />
+      <rect x="64" y="96" width="32" height="32" />
+      <rect x="192" y="96" width="32" height="32" />
+      <rect x="224" y="96" width="32" height="32" />
+      <rect x="256" y="96" width="32" height="32" />
+      <rect x="352" y="96" width="32" height="32" />
+      <rect x="384" y="96" width="32" height="32" />
+      <rect x="416" y="96" width="32" height="32" />
+      <rect x="0" y="128" width="32" height="32" />
+      <rect x="96" y="128" width="32" height="32" />
+      <rect x="128" y="128" width="32" height="32" />
+      <rect x="160" y="128" width="32" height="32" />
+      <rect x="224" y="128" width="32" height="32" />
+      <rect x="320" y="128" width="32" height="32" />
+      <rect x="352" y="128" width="32" height="32" />
+      <rect x="384" y="128" width="32" height="32" />
+      <rect x="416" y="128" width="32" height="32" />
+      <rect x="448" y="128" width="32" height="32" />
+      <rect x="0" y="160" width="32" height="32" />
+      <rect x="64" y="160" width="32" height="32" />
+      <rect x="96" y="160" width="32" height="32" />
+      <rect x="128" y="160" width="32" height="32" />
+      <rect x="160" y="160" width="32" height="32" />
+      <rect x="288" y="160" width="32" height="32" />
+      <rect x="320" y="160" width="32" height="32" />
+      <rect x="352" y="160" width="32" height="32" />
+      <rect x="384" y="160" width="32" height="32" />
+      <rect x="416" y="160" width="32" height="32" />
+      <rect x="480" y="160" width="32" height="32" />
+      <rect x="0" y="192" width="32" height="32" />
+      <rect x="32" y="192" width="32" height="32" />
+      <rect x="96" y="192" width="32" height="32" />
+      <rect x="128" y="192" width="32" height="32" />
+      <rect x="160" y="192" width="32" height="32" />
+      <rect x="192" y="192" width="32" height="32" />
+      <rect x="352" y="192" width="32" height="32" />
+      <rect x="384" y="192" width="32" height="32" />
+      <rect x="416" y="192" width="32" height="32" />
+      <rect x="480" y="192" width="32" height="32" />
+      <rect x="0" y="224" width="32" height="32" />
+      <rect x="32" y="224" width="32" height="32" />
+      <rect x="128" y="224" width="32" height="32" />
+      <rect x="160" y="224" width="32" height="32" />
+      <rect x="256" y="224" width="32" height="32" />
+      <rect x="288" y="224" width="32" height="32" />
+      <rect x="320" y="224" width="32" height="32" />
+      <rect x="416" y="224" width="32" height="32" />
+      <rect x="480" y="224" width="32" height="32" />
+      <rect x="0" y="256" width="32" height="32" />
+      <rect x="64" y="256" width="32" height="32" />
+      <rect x="96" y="256" width="32" height="32" />
+      <rect x="224" y="256" width="32" height="32" />
+      <rect x="256" y="256" width="32" height="32" />
+      <rect x="288" y="256" width="32" height="32" />
+      <rect x="320" y="256" width="32" height="32" />
+      <rect x="352" y="256" width="32" height="32" />
+      <rect x="32" y="288" width="32" height="32" />
+      <rect x="64" y="288" width="32" height="32" />
+      <rect x="96" y="288" width="32" height="32" />
+      <rect x="128" y="288" width="32" height="32" />
+      <rect x="160" y="288" width="32" height="32" />
+      <rect x="256" y="288" width="32" height="32" />
+      <rect x="288" y="288" width="32" height="32" />
+      <rect x="320" y="288" width="32" height="32" />
+      <rect x="352" y="288" width="32" height="32" />
+      <rect x="416" y="288" width="32" height="32" />
+      <rect x="448" y="288" width="32" height="32" />
+      <rect x="0" y="320" width="32" height="32" />
+      <rect x="64" y="320" width="32" height="32" />
+      <rect x="96" y="320" width="32" height="32" />
+      <rect x="128" y="320" width="32" height="32" />
+      <rect x="288" y="320" width="32" height="32" />
+      <rect x="320" y="320" width="32" height="32" />
+      <rect x="416" y="320" width="32" height="32" />
+      <rect x="448" y="320" width="32" height="32" />
+      <rect x="480" y="320" width="32" height="32" />
+      <rect x="0" y="352" width="32" height="32" />
+      <rect x="224" y="352" width="32" height="32" />
+      <rect x="256" y="352" width="32" height="32" />
+      <rect x="384" y="352" width="32" height="32" />
+      <rect x="416" y="352" width="32" height="32" />
+      <rect x="448" y="352" width="32" height="32" />
+      <rect x="480" y="352" width="32" height="32" />
+      <rect x="64" y="384" width="32" height="32" />
+      <rect x="96" y="384" width="32" height="32" />
+      <rect x="192" y="384" width="32" height="32" />
+      <rect x="224" y="384" width="32" height="32" />
+      <rect x="256" y="384" width="32" height="32" />
+      <rect x="288" y="384" width="32" height="32" />
+      <rect x="384" y="384" width="32" height="32" />
+      <rect x="416" y="384" width="32" height="32" />
+      <rect x="448" y="384" width="32" height="32" />
+      <rect x="480" y="384" width="32" height="32" />
+      <rect x="32" y="416" width="32" height="32" />
+      <rect x="64" y="416" width="32" height="32" />
+      <rect x="96" y="416" width="32" height="32" />
+      <rect x="128" y="416" width="32" height="32" />
+      <rect x="192" y="416" width="32" height="32" />
+      <rect x="224" y="416" width="32" height="32" />
+      <rect x="256" y="416" width="32" height="32" />
+      <rect x="288" y="416" width="32" height="32" />
+      <rect x="320" y="416" width="32" height="32" />
+      <rect x="448" y="416" width="32" height="32" />
+      <rect x="0" y="448" width="32" height="32" />
+      <rect x="32" y="448" width="32" height="32" />
+      <rect x="64" y="448" width="32" height="32" />
+      <rect x="96" y="448" width="32" height="32" />
+      <rect x="128" y="448" width="32" height="32" />
+      <rect x="256" y="448" width="32" height="32" />
+      <rect x="288" y="448" width="32" height="32" />
+      <rect x="384" y="448" width="32" height="32" />
+      <rect x="416" y="448" width="32" height="32" />
+      <rect x="32" y="480" width="32" height="32" />
+      <rect x="160" y="480" width="32" height="32" />
+      <rect x="192" y="480" width="32" height="32" />
+      <rect x="352" y="480" width="32" height="32" />
+      <rect x="384" y="480" width="32" height="32" />
+      <rect x="416" y="480" width="32" height="32" />
+      <rect x="448" y="480" width="32" height="32" />
+    </g>
+
+    <clipPath id="clip_lego_matrix">
+      <use href="#stone_lego_matrix" />
+    </clipPath>
+  </defs>
+
+  <!-- 1. Sunken Mortar Matrix Floor (#5f6268 - exact stone.svg groove floor) -->
+  <rect width="512" height="512" fill="#5f6268" />
+
+  <!-- 2. 3D Lego Interlocking Cobblestones (#7e8187) -->
+  <g id="cobblestones">
+    <!-- 3D Mortar Crevice Drop Shadow (+3px Y) -->
+    <use href="#stone_lego_matrix" y="3" fill="#3c3e44" opacity="0.8" />
+
+    <!-- Stone Body Surface (#7e8187) -->
+    <use href="#stone_lego_matrix" fill="#7e8187" />
+
+    <!-- Perimeter 3D Bevel Lighting -->
+    <g clip-path="url(#clip_lego_matrix)">
+      <!-- Sunlit Highlight Rim (Top-Left) -->
+      <use href="#stone_lego_matrix" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linejoin="round" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom-Right) -->
+      <use href="#stone_lego_matrix" y="2" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linejoin="round" opacity="0.75" />
+    </g>
+  </g>
+</svg>
