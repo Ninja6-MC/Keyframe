@@ -2,8 +2,16 @@
   viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: COAL ORE                                -->
-  <!-- Stone background is 1:1 derived from textures/stone.svg                   -->
   <!-- High-Visibility 3D Pop-Up Jet-Black Coal Nodules with Crisp Highlights     -->
+  <!--                                                                           -->
+  <!-- DERIVATIVE OF textures/block/stone.svg - READ BEFORE EDITING               -->
+  <!-- The <defs> grooves below (including every corner radius rx) and the        -->
+  <!-- <g id="stone_base"> group, whose first child is the full-canvas slate      -->
+  <!-- fill, are a verbatim copy of that file and                                 -->
+  <!-- must stay identical to it, or this ore stops blending into surrounding     -->
+  <!-- stone in caves. Edit stone.svg first, then re-copy both sections here in   -->
+  <!-- the same commit. The registry is tools/base-sync.json; tools/lib/base-sync.mjs -->
+  <!-- enforces it - `npm run build` fails on drift and `npm test` covers it.     -->
   <!-- ========================================================================= -->
 
   <defs>
@@ -40,13 +48,16 @@
     </g>
   </defs>
 
-  <!-- 1. Authentic Neutral Minecraft Stone Base (#7e8187) -->
-  <rect width="512" height="512" fill="#7e8187" />
-
   <!-- ========================================================================= -->
-  <!-- 2. STONE BASE GROOVES - 1:1 Shared Base with stone.svg                    -->
+  <!-- 1. STONE BASE - 1:1 Shared Base with stone.svg                            -->
   <!-- ========================================================================= -->
+  <!-- The slate fill is the first child of this group rather than a loose sibling -->
+  <!-- so it falls inside the shared section the base-sync check compares. Document -->
+  <!-- order, and therefore paint order, is unchanged.                            -->
   <g id="stone_base">
+    <!-- Authentic Neutral Minecraft Stone Base (#7e8187) -->
+    <rect width="512" height="512" fill="#7e8187" />
+
     <!-- Row 1 (Top Area) -->
     <use href="#groove_128" x="64" y="32" />
     <use href="#groove_96" x="288" y="32" />

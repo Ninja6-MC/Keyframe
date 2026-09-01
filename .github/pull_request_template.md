@@ -3,7 +3,7 @@
 <!-- Provide a brief summary of the changes introduced by this pull request. -->
 
 ### Affected Assets
-<!-- List any new or modified textures, blockstates, or models. Example: textures/stone.svg, pack_template/.../stone.json -->
+<!-- List any new or modified textures, blockstates, or models. Example: textures/block/stone.svg, pack_template/.../stone.json -->
 - 
 
 ---
@@ -25,7 +25,7 @@ Please check all applicable boxes before requesting review:
 - [ ] Authored as a clean $512\times512$ SVG (`viewBox="0 0 512 512"`).
 - [ ] Primary shapes are aligned to the $32\text{px}$ texel grid ($16\times16$ grid).
 - [ ] **Seamless Toroidal Tiling**: Checked and verified that elements wrapping across $X$ and $Y$ edges align perfectly without seams or chopped shapes.
-- [ ] **Ore Consistency**: If adding an ore texture, the stone background geometry and corner radius (`rx`) match [`textures/stone.svg`](textures/stone.svg) exactly.
+- [ ] **Ore Consistency**: If adding an ore texture, the stone background geometry and corner radius (`rx`) match [`textures/block/stone.svg`](textures/block/stone.svg) exactly.
 - [ ] Free of leftover AI generation comments, unnecessary editor namespaces, or embedded raster images.
 
 ### Build & Verification

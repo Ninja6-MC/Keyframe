@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Minecraft Dye Color Palettes",
+  "version": "1.0.0",
+  "default_palette": "trailer",
+  "palettes": {
+    "trailer": {
+      "name": "Cinematic Trailer",
+      "description": "Vibrant, high-contrast palette calibrated for Keyframe vector assets and Minecraft trailer style",
+      "colors": {
+        "white": {
+          "name": "White",
+          "PRIMARY_COLOR": "#ECEEF2",
+          "SHADOW_COLOR": "#C5CCD9",
+          "HIGHLIGHT_COLOR": "#FFFFFF",
+          "DARK_SHADOW_COLOR": "#9DA4AE",
+          "ACCENT_COLOR": "#A0AAB8"
+        },
+        "orange": {
+          "name": "Orange",
+          "PRIMARY_COLOR": "#E06100",
+          "SHADOW_COLOR": "#AA4600",
+          "HIGHLIGHT_COLOR": "#FF8526",
+          "DARK_SHADOW_COLOR": "#7D3300",
+          "ACCENT_COLOR": "#FFA04D"
+        },
+        "magenta": {
+          "name": "Magenta",
+          "PRIMARY_COLOR": "#B24CD8",
+          "SHADOW_COLOR": "#8128A3",
+          "HIGHLIGHT_COLOR": "#D273F2",
+          "DARK_SHADOW_COLOR": "#5A1974",
+          "ACCENT_COLOR": "#E192FA"
+        },
+        "light_blue": {
+          "name": "Light Blue",
+          "PRIMARY_COLOR": "#3AAFD9",
+          "SHADOW_COLOR": "#1B7FA6",
+          "HIGHLIGHT_COLOR": "#6FD3F5",
+          "DARK_SHADOW_COLOR": "#105470",
+          "ACCENT_COLOR": "#97E2FA"
+        },
+        "yellow": {
+          "name": "Yellow",
+          "PRIMARY_COLOR": "#FFD000",
+          "SHADOW_COLOR": "#C79B00",
+          "HIGHLIGHT_COLOR": "#FFE04D",
+          "DARK_SHADOW_COLOR": "#8F6F00",
+          "ACCENT_COLOR": "#FFEB80"
+        },
+        "lime": {
+          "name": "Lime",
+          "PRIMARY_COLOR": "#70B91A",
+          "SHADOW_COLOR": "#4A850C",
+          "HIGHLIGHT_COLOR": "#92DC34",
+          "DARK_SHADOW_COLOR": "#335E08",
+          "ACCENT_COLOR": "#ADEA5A"
+        },
+        "pink": {
+          "name": "Pink",
+          "PRIMARY_COLOR": "#ED6D90",
+          "SHADOW_COLOR": "#B83E62",
+          "HIGHLIGHT_COLOR": "#F79EB7",
+          "DARK_SHADOW_COLOR": "#852541",
+          "ACCENT_COLOR": "#FBBFD0"
+        },
+        "gray": {
+          "name": "Gray",
+          "PRIMARY_COLOR": "#3E4447",
+          "SHADOW_COLOR": "#24282A",
+          "HIGHLIGHT_COLOR": "#5B6468",
+          "DARK_SHADOW_COLOR": "#151718",
+          "ACCENT_COLOR": "#737D82"
+        },
+        "light_gray": {
+          "name": "Light Gray",
+          "PRIMARY_COLOR": "#8C9398",
+          "SHADOW_COLOR": "#656B70",
+          "HIGHLIGHT_COLOR": "#B0B8BE",
+          "DARK_SHADOW_COLOR": "#474C50",
+          "ACCENT_COLOR": "#C8CED3"
+        },
+        "cyan": {
+          "name": "Cyan",
+          "PRIMARY_COLOR": "#169C9C",
+          "SHADOW_COLOR": "#0E6E6E",
+          "HIGHLIGHT_COLOR": "#2AC0C0",
+          "DARK_SHADOW_COLOR": "#084747",
+          "ACCENT_COLOR": "#4DD4D4"
+        },
+        "purple": {
+          "name": "Purple",
+          "PRIMARY_COLOR": "#7427A8",
+          "SHADOW_COLOR": "#4C1473",
+          "HIGHLIGHT_COLOR": "#9945D4",
+          "DARK_SHADOW_COLOR": "#330C4F",
+          "ACCENT_COLOR": "#B365E6"
+        },
+        "blue": {
+          "name": "Blue",
+          "PRIMARY_COLOR": "#2C3599",
+          "SHADOW_COLOR": "#19206B",
+          "HIGHLIGHT_COLOR": "#4F59C7",
+          "DARK_SHADOW_COLOR": "#0F144D",
+          "ACCENT_COLOR": "#717ADB"
+        },
+        "brown": {
+          "name": "Brown",
+          "PRIMARY_COLOR": "#6E3D19",
+          "SHADOW_COLOR": "#45230B",
+          "HIGHLIGHT_COLOR": "#94572A",
+          "DARK_SHADOW_COLOR": "#2E1606",
+          "ACCENT_COLOR": "#B3713D"
+        },
+        "green": {
+          "name": "Green",
+          "PRIMARY_COLOR": "#4D6B12",
+          "SHADOW_COLOR": "#2F4407",
+          "HIGHLIGHT_COLOR": "#6F9620",
+          "DARK_SHADOW_COLOR": "#1F2E04",
+          "ACCENT_COLOR": "#8EBD2E"
+        },
+        "red": {
+          "name": "Red",
+          "PRIMARY_COLOR": "#A8201A",
+          "SHADOW_COLOR": "#6B100C",
+          "HIGHLIGHT_COLOR": "#D23D36",
+          "DARK_SHADOW_COLOR": "#470805",
+          "ACCENT_COLOR": "#E85B54"
+        },
+        "black": {
+          "name": "Black",
+          "PRIMARY_COLOR": "#18191D",
+          "SHADOW_COLOR": "#0C0D0F",
+          "HIGHLIGHT_COLOR": "#2E3036",
+          "DARK_SHADOW_COLOR": "#050506",
+          "ACCENT_COLOR": "#454850"
+        }
+      }
+    },
+    "vanilla": {
+      "name": "Standard Minecraft",
+      "description": "Standard Minecraft Java/Bedrock edition dye and wool color mappings",
+      "colors": {
+        "white": {
+          "name": "White",
+          "PRIMARY_COLOR": "#E4E4E4",
+          "SHADOW_COLOR": "#C6C6C6",
+          "HIGHLIGHT_COLOR": "#FFFFFF",
+          "DARK_SHADOW_COLOR": "#A0A0A0",
+          "ACCENT_COLOR": "#B8B8B8"
+        },
+        "orange": {
+          "name": "Orange",
+          "PRIMARY_COLOR": "#EA7E35",
+          "SHADOW_COLOR": "#B85514",
+          "HIGHLIGHT_COLOR": "#FCA65E",
+          "DARK_SHADOW_COLOR": "#873C0C",
+          "ACCENT_COLOR": "#FFB87A"
+        },
+        "magenta": {
+          "name": "Magenta",
+          "PRIMARY_COLOR": "#BE49BA",
+          "SHADOW_COLOR": "#8E2A89",
+          "HIGHLIGHT_COLOR": "#DA74D7",
+          "DARK_SHADOW_COLOR": "#661A62",
+          "ACCENT_COLOR": "#E892E6"
+        },
+        "light_blue": {
+          "name": "Light Blue",
+          "PRIMARY_COLOR": "#3AB3DA",
+          "SHADOW_COLOR": "#1E82A6",
+          "HIGHLIGHT_COLOR": "#6FD3F5",
+          "DARK_SHADOW_COLOR": "#12566F",
+          "ACCENT_COLOR": "#8FE0F8"
+        },
+        "yellow": {
+          "name": "Yellow",
+          "PRIMARY_COLOR": "#FFDE3D",
+          "SHADOW_COLOR": "#C4A616",
+          "HIGHLIGHT_COLOR": "#FFF082",
+          "DARK_SHADOW_COLOR": "#8C750C",
+          "ACCENT_COLOR": "#FFF5A3"
+        },
+        "lime": {
+          "name": "Lime",
+          "PRIMARY_COLOR": "#7FCC19",
+          "SHADOW_COLOR": "#549909",
+          "HIGHLIGHT_COLOR": "#A6E643",
+          "DARK_SHADOW_COLOR": "#386904",
+          "ACCENT_COLOR": "#BAF065"
+        },
+        "pink": {
+          "name": "Pink",
+          "PRIMARY_COLOR": "#F38BAA",
+          "SHADOW_COLOR": "#C95277",
+          "HIGHLIGHT_COLOR": "#F8B6CA",
+          "DARK_SHADOW_COLOR": "#963351",
+          "ACCENT_COLOR": "#FCD0DC"
+        },
+        "gray": {
+          "name": "Gray",
+          "PRIMARY_COLOR": "#434B4D",
+          "SHADOW_COLOR": "#2C3335",
+          "HIGHLIGHT_COLOR": "#646F72",
+          "DARK_SHADOW_COLOR": "#1B2021",
+          "ACCENT_COLOR": "#7E8A8D"
+        },
+        "light_gray": {
+          "name": "Light Gray",
+          "PRIMARY_COLOR": "#8E8E86",
+          "SHADOW_COLOR": "#676761",
+          "HIGHLIGHT_COLOR": "#B5B5AF",
+          "DARK_SHADOW_COLOR": "#484843",
+          "ACCENT_COLOR": "#C9C9C4"
+        },
+        "cyan": {
+          "name": "Cyan",
+          "PRIMARY_COLOR": "#158991",
+          "SHADOW_COLOR": "#0C5C62",
+          "HIGHLIGHT_COLOR": "#29B5BF",
+          "DARK_SHADOW_COLOR": "#073C40",
+          "ACCENT_COLOR": "#44C9D3"
+        },
+        "purple": {
+          "name": "Purple",
+          "PRIMARY_COLOR": "#792AAC",
+          "SHADOW_COLOR": "#511679",
+          "HIGHLIGHT_COLOR": "#A353D4",
+          "DARK_SHADOW_COLOR": "#370D54",
+          "ACCENT_COLOR": "#BD72EB"
+        },
+        "blue": {
+          "name": "Blue",
+          "PRIMARY_COLOR": "#35399D",
+          "SHADOW_COLOR": "#1F226D",
+          "HIGHLIGHT_COLOR": "#5E64C8",
+          "DARK_SHADOW_COLOR": "#14164D",
+          "ACCENT_COLOR": "#7B81DA"
+        },
+        "brown": {
+          "name": "Brown",
+          "PRIMARY_COLOR": "#724321",
+          "SHADOW_COLOR": "#4B2A10",
+          "HIGHLIGHT_COLOR": "#9D6539",
+          "DARK_SHADOW_COLOR": "#311A08",
+          "ACCENT_COLOR": "#B87B4C"
+        },
+        "green": {
+          "name": "Green",
+          "PRIMARY_COLOR": "#546D1B",
+          "SHADOW_COLOR": "#35470D",
+          "HIGHLIGHT_COLOR": "#7A9C2F",
+          "DARK_SHADOW_COLOR": "#223006",
+          "ACCENT_COLOR": "#95B847"
+        },
+        "red": {
+          "name": "Red",
+          "PRIMARY_COLOR": "#A12722",
+          "SHADOW_COLOR": "#6F1511",
+          "HIGHLIGHT_COLOR": "#CD4741",
+          "DARK_SHADOW_COLOR": "#4B0C09",
+          "ACCENT_COLOR": "#DE625C"
+        },
+        "black": {
+          "name": "Black",
+          "PRIMARY_COLOR": "#141519",
+          "SHADOW_COLOR": "#0A0B0D",
+          "HIGHLIGHT_COLOR": "#2E3038",
+          "DARK_SHADOW_COLOR": "#040405",
+          "ACCENT_COLOR": "#424550"
+        }
+      }
+    }
+  }
+}
