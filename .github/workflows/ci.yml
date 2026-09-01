@@ -69,6 +69,17 @@ jobs:
       - name: Palette Injector Test Suite
         run: npm run test:palette
 
+      # The five build steps above already gate on the shared-base contract - the
+      # verifier runs inside tools/build.mjs and is fatal there, so a drifted ore master
+      # fails the 32x build before this step is reached. This step covers the verifier
+      # itself: that it reports a changed corner radius, a moved groove, an edit to
+      # stone.svg alone, and an unregistered file carrying the stone base, and that it
+      # does not report comment or indentation differences as drift. Without it a bug
+      # that made the checker silently pass everything would look exactly like a healthy
+      # build.
+      - name: Shared-Base Contract Test Suite
+        run: npm run test:base-sync
+
       # ADVISORY, NOT A GATE, and that is deliberate rather than an oversight. As of this
       # commit the seam audit fails on `main` for 20 of the 30 committed masters: the
       # textures authored so far predate the harness that measures them. Making it

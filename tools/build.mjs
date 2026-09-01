@@ -14,6 +14,7 @@ import {
   loadPalette,
   compileAllVariations
 } from "./lib/palette-injector.mjs";
+import { assertBaseSync } from "./lib/base-sync.mjs";
 
 const require = createRequire(import.meta.url);
 const archiver = require("archiver");
@@ -187,6 +188,19 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
 
   fs.writeFileSync(path.join(BUILD_TMP, "pack.mcmeta"), JSON.stringify(mcmeta, null, 2), "utf-8");
   console.log("[1/5] Created pack.mcmeta (Supported Formats: 1.20 - 1.21.4+)");
+
+  // 1b. Shared-base contract gate. Ore masters overlay their mineral geometry on a
+  // verbatim copy of stone.svg's striation grooves; if that copy drifts, ore blocks stop
+  // blending with surrounding stone and the only symptom is a visual seam in-game. This
+  // is the one automated execution path the pack has (release.yml compiles with
+  // `--all`), so the check is fatal here rather than advisory.
+  const baseSync = assertBaseSync(TEXTURES_DIR);
+  if (baseSync.derivatives.length > 0) {
+    console.log(
+      "      Shared-base contract verified: " + baseSync.derivatives.length +
+      " derivative master(s), " + baseSync.comparisons + " section(s) in sync"
+    );
+  }
 
   // 2. High-Speed Multi-Threaded Rust Resvg Rasterization with Directory Mirroring & Palette Injection
   const palette = loadPalette(paletteName, options.override || null);

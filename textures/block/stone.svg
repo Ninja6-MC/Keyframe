@@ -3,8 +3,21 @@
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: STONE                                   -->
   <!-- Calibrated to authentic Minecraft neutral slate-gray stone palette        -->
-  <!-- Shared stone background master for textures/diamond_ore.svg & coal_ore.svg -->
   <!-- 3D Pop-Down Recessed Striation Grooves (Top Drop Shadows + Bottom Rim)     -->
+  <!--                                                                           -->
+  <!-- SHARED BASE MASTER - READ BEFORE EDITING                                   -->
+  <!-- This file is the stone background for every stone-variant ore. Two sections -->
+  <!-- are copied verbatim into each derivative: the <defs> grooves below,        -->
+  <!-- including every corner radius rx, and the <g id="stone_base"> group, whose -->
+  <!-- first child is the full-canvas slate fill. Derivatives:                    -->
+  <!--   textures/block/coal_ore.svg                                              -->
+  <!--   textures/block/diamond_ore.svg                                           -->
+  <!-- Ore blocks must blend seamlessly into surrounding stone in caves, so any   -->
+  <!-- edit to those two sections has to be applied to every derivative in the    -->
+  <!-- same commit. Anything shared must live INSIDE one of them: a shared        -->
+  <!-- element left as a loose sibling is compared by nothing.                    -->
+  <!-- The registry is tools/base-sync.json; tools/lib/base-sync.mjs enforces it  -->
+  <!-- - `npm run build` fails on drift and `npm test` covers it.                 -->
   <!-- ========================================================================= -->
 
   <defs>
@@ -53,13 +66,16 @@
     </g>
   </defs>
 
-  <!-- Authentic Neutral Minecraft Stone Base (#7e8187) -->
-  <rect width="512" height="512" fill="#7e8187" />
-
   <!-- ========================================================================= -->
   <!-- 3D POP-DOWN STRIATION GROOVES (100% Toroidal Seamless)                    -->
   <!-- ========================================================================= -->
+  <!-- The slate fill is the first child of this group rather than a loose sibling -->
+  <!-- so it falls inside the shared section the base-sync check compares. Document -->
+  <!-- order, and therefore paint order, is unchanged.                            -->
   <g id="stone_base">
+    <!-- Authentic Neutral Minecraft Stone Base (#7e8187) -->
+    <rect width="512" height="512" fill="#7e8187" />
+
     <!-- Row 1 (Top Area) -->
     <use href="#groove_128" x="64" y="32" />
     <use href="#groove_96" x="288" y="32" />
