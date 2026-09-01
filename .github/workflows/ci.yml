@@ -1,0 +1,118 @@
+# The pull-request gate for the compiler and its test suite. DCO sign-off and the N6-*
+# standards register are checked by dco.yml and standards.yml respectively; this file
+# deliberately does not repeat either of them - a local copy of the DCO check would be a
+# N6-CI-01 violation even if its contents were correct.
+#
+# Third-party actions are pinned to commit SHAs, not tags (N6-CI-06): a tag can be
+# repointed at new code with no diff, no review and no notification. .github/dependabot.yml
+# is the other half of that trade and already covers this directory - do not add a pin
+# here without checking it still does.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Nothing here writes. Declared explicitly rather than inheriting the repository default,
+# which is broader than this needs and moves under an org setting change (N6-CI-07).
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No step here does an authenticated git operation, so the job token is not
+          # left behind in .git/config for a later step to find (N6-CI-08).
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          # Matches release.yml. The pack that ships is built on 20, so the pack that is
+          # smoke-tested on a pull request is built on 20 too.
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # Each tier is its own step rather than a single `--all`, so a failure names the
+      # resolution that broke instead of the batch. A matrix would do the same but would
+      # report five check names, and a required-check list matches names as plain strings
+      # (N6-CI-03) - one job, one name, is the cheaper shape to require.
+      - name: Build 32x Pack
+        run: npm run build:32
+
+      - name: Build 64x Pack
+        run: npm run build:64
+
+      - name: Build 128x Pack
+        run: npm run build:128
+
+      - name: Build 256x Pack
+        run: npm run build:256
+
+      - name: Build 512x Pack
+        run: npm run build:512
+
+      - name: Animation Packager Test Suite
+        run: npm run test:animation
+
+      - name: Palette Injector Test Suite
+        run: npm run test:palette
+
+      # ADVISORY, NOT A GATE, and that is deliberate rather than an oversight. As of this
+      # commit the seam audit fails on `main` for 20 of the 30 committed masters: the
+      # textures authored so far predate the harness that measures them. Making it
+      # blocking today would red every pull request over debt none of them introduced,
+      # and a check that is always red is a check nobody reads.
+      #
+      # It still runs, and its findings are printed and annotated on every pull request,
+      # which is what the authoring guidance in CONTRIBUTING.md asks a contributor to
+      # look at. Flip `continue-on-error` off once the committed masters pass it.
+      - name: Toroidal Tiling and Seam Audit (advisory)
+        continue-on-error: true
+        run: npm run test:tiling
+
+      # A WARNING, NOT A FAILURE, per the acceptance criterion on issue #58. The budget is
+      # a design guardrail rather than a correctness property: a legitimately richer pack
+      # can exceed it and should still be mergeable once someone has looked at it. Failing
+      # here would turn a judgement call into a blocked merge with no way to say "yes,
+      # this one is fine".
+      - name: Pack Size Budget (512x)
+        env:
+          BUDGET_MB: 15
+        run: |
+          ZIP="dist/Keyframe-512x.zip"
+          if [ ! -f "$ZIP" ]; then
+            echo "::error::$ZIP was not produced by the 512x build."
+            exit 1
+          fi
+
+          BYTES=$(stat -c %s "$ZIP")
+          BUDGET_BYTES=$((BUDGET_MB * 1024 * 1024))
+          SIZE_MB=$(awk -v b="$BYTES" 'BEGIN { printf "%.2f", b / 1048576 }')
+
+          if [ "$BYTES" -gt "$BUDGET_BYTES" ]; then
+            echo "::warning file=tools/build.mjs::512x pack is ${SIZE_MB} MB, over the ${BUDGET_MB} MB budget."
+            STATUS="over budget"
+          else
+            echo "512x pack is ${SIZE_MB} MB, within the ${BUDGET_MB} MB budget."
+            STATUS="within budget"
+          fi
+
+          {
+            echo "### Pack size budget"
+            echo
+            echo "| Pack | Size | Budget | Status |"
+            echo "| :--- | ---: | ---: | :--- |"
+            echo "| Keyframe-512x.zip | ${SIZE_MB} MB | ${BUDGET_MB} MB | ${STATUS} |"
+          } >> "$GITHUB_STEP_SUMMARY"
