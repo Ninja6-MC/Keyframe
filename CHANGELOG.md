@@ -13,6 +13,11 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ## [Unreleased]
 
 ### Added
+- Shared-base contract enforcement for ore masters: `tools/base-sync.json` registers each
+  base master and its derivatives, `tools/lib/base-sync.mjs` verifies that the striation
+  groove definitions (including every corner radius `rx`) and the `stone_base` placement
+  group are identical, and `npm run build` now fails before rasterizing if they drift.
+  Unregistered files that copy the stone base are reported too (#28).
 - Stone and ores set: `stone`, `diamond_ore`, and `coal_ore` — 512×512 vector masters with
   3D pop-down recessed striation grooves, high-contrast 3D pop-up mineral nodules and crystals,
   un-rotated stone blockstate override, and synchronized stone backgrounds (#28).
@@ -32,6 +37,12 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   vector masters.
 
 ### Changed
+- Soil palette revised to **Balanced Warm Umber** across `dirt`, `grass_block_side`,
+  `dirt_path_top` and `dirt_path_side`. Base soil moves `#d98827` → `#c77d38`: the
+  lightness ladder of every soil role is held exactly, so clod and bevel relief contrast
+  is unchanged, while chroma drops ~15 points and the hue is pulled from 33° to 29° to
+  meet `coarse_dirt` (28.5°). Fixes the over-saturated orange cast on large exposed cliff
+  faces and the hue disparity with adjacent earth blocks (#37).
 - `grass_block_top` updated with Deepslate-style 3D rectangular strata plates and ambient crevice drop shadows establishing tactile ground turf relief (#34).
 - `dirt_path_top` updated with Deepslate-style 3D rectangular strata plates and warm crevice drop shadows establishing authentic sunlit footpath relief (#34).
 - `water` returned to the vanilla default pending a rework.

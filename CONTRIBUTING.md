@@ -29,6 +29,12 @@ npm run build
 
 # 4. Batch build all 5 resolution tiers
 npm run build:all
+
+# 5. Run automated toroidal tiling & seam audit harness
+npm run test:tiling
+
+# 6. Render 3x3 tiled test grids (saved to dist/tiling_tests/)
+npm run test:tiling:render
 ```
 
 Compiled `.zip` resource packs are saved to `dist/` and automatically deployed to your local `.minecraft/resourcepacks/` directory if detected.
@@ -58,11 +64,38 @@ Minecraft blocks repeat horizontally and vertically across infinite terrain. **A
 * **Vertical ($Y$-Axis Wrapping)**:
   * If a stone, boulder, or soil clod touches $Y=0$ (top edge), its corresponding bottom portion must touch $Y=512$ (bottom edge) at the identical $X$ coordinates.
 * **Tiling Verification**:
-  * Before submitting, test your texture in a $3\times3$ grid or compile and check how it tiles in-game when stacked and aligned horizontally and vertically.
+  * Verify zero seam discontinuity using the automated test harness:
+    ```bash
+    npm run test:tiling
+    ```
+  * Generate high-resolution $3\times3$ tiled test grids to visually inspect corner and seam alignment:
+    ```bash
+    npm run test:tiling:render
+    ```
 
 ### 3. Ore & Material Consistency
 * **Shared Base Patterns**: Ore textures (e.g., `diamond_ore.svg`, `iron_ore.svg`, `gold_ore.svg`, `coal_ore.svg`) **must inherit the exact same stone background** (striation layout, positions, corner radius `rx`) as [`textures/block/stone.svg`](textures/block/stone.svg).
 * **Ore Gems / Crystals**: Embed crystal shapes cleanly over the base stone layer without modifying or displacing the shared stone background pattern.
+* **This is enforced, not just documented.** The shared sections are the `<defs>` groove
+  definitions (which carry every corner radius `rx`) and the `<g id="stone_base">` group,
+  whose first child is the full-canvas slate fill.
+  [`tools/base-sync.json`](tools/base-sync.json) registers each base and its
+  derivatives, and `tools/lib/base-sync.mjs` compares them — ignoring comments and
+  indentation, so only real geometry counts. `npm run build` fails on drift before it
+  rasterizes anything, and `npm run test:base-sync` covers the checker itself.
+* **Anything shared has to live *inside* one of those sections.** The slate fill was
+  originally a loose sibling of the group, which put it outside both: recolouring it in
+  `stone.svg` alone passed the check and left the ores a different colour from the stone
+  around them. It is now the group's first child, which changes neither document order nor
+  paint order. If you add a shared element, put it inside a compared section or the check
+  does not see it.
+* **Editing `stone.svg` means editing every derivative in the same commit.** That is the
+  whole point of the gate: the author who changes the stone master is the one who gets the
+  signal, rather than the drift surfacing later as an ore that no longer blends into
+  surrounding stone in caves.
+* **Authoring a new ore? Add it to the `derivatives` list in `tools/base-sync.json`.** A
+  file that copies `<g id="stone_base">` without being registered is reported as an error,
+  so a new ore cannot silently opt out of the contract.
 
 ### 4. Art Direction & Shading
 * **Cinematic Aesthetic**: Saturated, warm, joyful palette matching Minecraft promotional cinematics and update trailers.
@@ -148,8 +181,8 @@ Every commit must be signed off with `Signed-off-by: Name <email>` to certify th
 Before submitting a pull request, please verify:
 
 - [ ] All new textures are authored in `textures/` (e.g., `textures/block/*.svg`, `textures/item/*.svg`) at $512\times512$.
-- [ ] Seamless tiling has been verified on both $X$ and $Y$ axes.
-- [ ] Ores share the identical base stone background as `stone.svg`.
+- [ ] Seamless tiling passes zero-discontinuity check with `npm run test:tiling`.
+- [ ] Ores share the identical base stone background as `stone.svg`, and any new ore is registered in `tools/base-sync.json` (`npm run test:base-sync`).
 - [ ] Pack compiles cleanly with `npm run build`.
 - [ ] Commits follow Conventional Commits format.
 - [ ] Every commit is signed off with DCO (`git commit -s`).

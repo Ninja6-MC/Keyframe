@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- TRAILER STYLE: DIRT PATH SIDE                                             -->
-  <!-- Stepped Bamboo Ochre Overhang (#d4ae62) over #d98827 soil with pebbles    -->
+  <!-- Stepped Bamboo Ochre Overhang (#cfa567) over #c77d38 soil with pebbles    -->
   <!-- ========================================================================= -->
 
-  <!-- Matching Golden-Terracotta Soil Base (#d98827) -->
-  <rect width="512" height="512" fill="#d98827" />
+  <!-- Matching Balanced Warm Umber Soil Base (#c77d38) -->
+  <rect width="512" height="512" fill="#c77d38" />
 
   <!-- Soil Clods & Organic Earth Pebbles -->
-  <rect x="48" y="220" width="72" height="56" rx="8" fill="#f0a346" />
-  <rect x="60" y="232" width="40" height="28" rx="4" fill="#fcae52" />
+  <rect x="48" y="220" width="72" height="56" rx="8" fill="#d59f62" />
+  <rect x="60" y="232" width="40" height="28" rx="4" fill="#deae70" />
 
-  <rect x="240" y="220" width="56" height="48" rx="6" fill="#b36615" />
-  <rect x="320" y="280" width="72" height="52" rx="6" fill="#f0a346" />
-  <rect x="332" y="292" width="40" height="24" rx="3" fill="#fcae52" />
+  <rect x="240" y="220" width="56" height="48" rx="6" fill="#a35f24" />
+  <rect x="320" y="280" width="72" height="52" rx="6" fill="#d59f62" />
+  <rect x="332" y="292" width="40" height="24" rx="3" fill="#deae70" />
 
-  <rect x="140" y="340" width="128" height="72" rx="10" fill="#b36615" />
-  <rect x="156" y="356" width="64" height="36" rx="4" fill="#944e0a" />
+  <rect x="140" y="340" width="128" height="72" rx="10" fill="#a35f24" />
+  <rect x="156" y="356" width="64" height="36" rx="4" fill="#864a18" />
 
-  <rect x="380" y="380" width="88" height="64" rx="8" fill="#b36615" />
-  <rect x="40" y="420" width="64" height="48" rx="6" fill="#f0a346" />
+  <rect x="380" y="380" width="88" height="64" rx="8" fill="#a35f24" />
+  <rect x="40" y="420" width="64" height="48" rx="6" fill="#d59f62" />
 
   <!-- ========================================================================= -->
   <!-- STYLIZED SLATE STONE PEBBLES (70% OPACITY - MATCHING GRASS SIDE & DIRT)   -->
@@ -53,5 +53,5 @@
            L 368 88 L 368 144 L 304 144 L 304 80 
            L 240 80 L 240 120 L 192 120 L 192 80 
            L 144 80 L 144 136 L 80 136 L 80 80 
-           L 0 80 Z" fill="#d4ae62" />
+           L 0 80 Z" fill="#cfa567" />
 </svg>
