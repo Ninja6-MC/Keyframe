@@ -4,8 +4,15 @@
  * Some texture masters are *derivatives*: an ore is the stone master with mineral
  * geometry laid over an untouched copy of the stone background. The two files have to
  * stay byte-for-byte equivalent in their shared sections - the striation groove
- * definitions (including every corner radius `rx`) and the groove placement group - or
- * ore blocks stop blending into the surrounding stone in caves.
+ * definitions (including every corner radius `rx`) and the groove placement group, which
+ * holds the slate fill as its first child - or ore blocks stop blending into the
+ * surrounding stone in caves.
+ *
+ * Anything shared has to live *inside* a registered section to be covered. The slate fill
+ * rect was originally a loose sibling of the placement group, which put it outside both
+ * sections: recolouring it in stone.svg alone passed the check while leaving the ores a
+ * different colour from the stone around them. It is now the group's first child, which
+ * changes neither document order nor paint order.
  *
  * Nothing about copy-pasted SVG geometry enforces that on its own, and the drift shows
  * up as a visual artefact in-game rather than as a build failure. This module turns the
@@ -74,12 +81,26 @@ export function extractDefs(svgText) {
   return svgText.slice(openEnd + 1, close);
 }
 
+/** Escapes a string for literal use inside a RegExp. */
+function escapeRe(text) {
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Builds the matcher for a `<g>` opening tag carrying the given id. `<g` is required to
+ * be followed by whitespace, `>` or `/` so it cannot match `<glyph` or any other element
+ * whose name merely starts with "g".
+ */
+export function groupOpenTagPattern(groupId, flags = "") {
+  return new RegExp(`<g(?=[\\s/>])[^>]*\\bid\\s*=\\s*["']${escapeRe(groupId)}["']`, flags);
+}
+
 /**
  * Extracts the inner content of `<g id="<groupId>">`, counting nested `<g>` elements so
  * a group containing subgroups is captured whole. Returns null when absent.
  */
 export function extractGroup(svgText, groupId) {
-  const marker = new RegExp(`<g\\b[^>]*\\bid\\s*=\\s*["']${groupId}["']`);
+  const marker = groupOpenTagPattern(groupId);
   const match = marker.exec(svgText);
   if (!match) return null;
 
@@ -91,9 +112,14 @@ export function extractGroup(svgText, groupId) {
   let depth = 1;
   let cursor = openEnd + 1;
   const contentStart = cursor;
+  // `<g` must be followed by whitespace, `/` or `>` to count as a nested group; without
+  // that guard `<glyph` would inflate the depth and swallow the rest of the document.
+  const nestedOpen = /<g(?=[\s/>])/g;
 
   while (depth > 0) {
-    const nextOpen = svgText.indexOf("<g", cursor);
+    nestedOpen.lastIndex = cursor;
+    const openMatch = nestedOpen.exec(svgText);
+    const nextOpen = openMatch ? openMatch.index : -1;
     const nextClose = svgText.indexOf("</g>", cursor);
     if (nextClose === -1) return null;
 
@@ -175,7 +201,7 @@ export function checkBaseSync(texturesDir, rules = loadBaseSyncRules()) {
     // A derivative is self-identifying: it carries the base's marker group id. Anything
     // that carries it without being registered is drift waiting to happen.
     if (spec.markerGroupId) {
-      const markerRe = new RegExp(`<g\\b[^>]*\\bid\\s*=\\s*["']${spec.markerGroupId}["']`);
+      const markerRe = groupOpenTagPattern(spec.markerGroupId);
       for (const rel of allSvgs) {
         if (rel === baseRel || declared.includes(rel)) continue;
         const text = fs.readFileSync(path.join(texturesDir, rel), "utf-8");

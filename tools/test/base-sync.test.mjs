@@ -12,6 +12,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   loadBaseSyncRules,
+  groupOpenTagPattern,
   stripComments,
   normalizeFragment,
   extractDefs,
@@ -120,6 +121,14 @@ console.log("\n[Suite 2] Fragment Extraction & Normalization");
     "extractGroup captures a nested group whole"
   );
   assertEqual(extractGroup(svg, "absent"), null, "extractGroup returns null for a missing group");
+
+  // `<g` must be a real group element, not the start of another element's name.
+  const withGlyph = "<svg><g id=\"outer\"><glyph unicode=\"a\"/><rect/></g><rect id=\"after\"/></svg>";
+  assertEqual(
+    extractGroup(withGlyph, "outer"),
+    "<glyph unicode=\"a\"/><rect/>",
+    "extractGroup does not treat <glyph> as a nested <g>"
+  );
   assertEqual(extractDefs("<svg><g/></svg>"), null, "extractDefs returns null when defs is absent");
   assertEqual(extractGroup("<svg><g id=\"solo\"/></svg>", "solo"), "", "A self-closing group has empty content");
 
@@ -130,6 +139,12 @@ console.log("\n[Suite 2] Fragment Extraction & Normalization");
     threw = true;
   }
   assert(threw, "An unknown section descriptor is rejected");
+
+  // The marker id comes from the registry, but building a RegExp from it unescaped
+  // would turn a dot or bracket into a wildcard rather than a literal.
+  assert(!groupOpenTagPattern("a.c").test("<g id=\"abc\">"), "A marker id is matched literally, not as a pattern");
+  assert(groupOpenTagPattern("a.c").test("<g id=\"a.c\">"), "A marker id containing regex metacharacters still matches itself");
+  assert(!groupOpenTagPattern("stone_base").test("<glyph id=\"stone_base\">"), "The marker matches <g>, not <glyph>");
 }
 
 // -----------------------------------------------------------------------------
@@ -157,6 +172,21 @@ console.log("\n[Suite 3] Shipped Masters Are In Sync");
     "diamond_ore.svg striation placement equals stone.svg's"
   );
 
+  // The slate fill is shared too, so it has to sit inside a compared section rather than
+  // beside it. As a loose sibling of the group it was covered by neither.
+  for (const [label, text] of [["stone.svg", stoneText], ["diamond_ore.svg", oreText]]) {
+    const groupBody = extractSection(text, "group:stone_base").value;
+    assert(
+      groupBody.includes("<rect width=\"512\" height=\"512\" fill=\"#7e8187\"/>"),
+      `${label} keeps the 512x512 slate fill inside <g id="stone_base">, where it is compared`
+    );
+  }
+  const stoneOutside = stripComments(stoneText).slice(0, stripComments(stoneText).indexOf("<g id=\"stone_base\""));
+  assert(
+    !/<rect\s+width="512"\s+height="512"/.test(stoneOutside.slice(stoneOutside.indexOf("</defs>"))),
+    "stone.svg has no full-canvas rect loose between </defs> and the compared group"
+  );
+
   assert(
     /stone\.svg/.test(oreText) && /base-sync/i.test(oreText),
     "diamond_ore.svg header names stone.svg and the enforcing check"
@@ -178,7 +208,10 @@ console.log("\n[Suite 4] Drift Detection");
     "    <!-- groove -->",
     "    <g id=\"groove_32\"><rect width=\"32\" height=\"32\" rx=\"8\" fill=\"#5f6268\" /></g>",
     "  </defs>",
-    "  <g id=\"stone_base\"><use href=\"#groove_32\" x=\"64\" y=\"32\" /></g>",
+    "  <g id=\"stone_base\">",
+    "    <rect width=\"512\" height=\"512\" fill=\"#7e8187\" />",
+    "    <use href=\"#groove_32\" x=\"64\" y=\"32\" />",
+    "  </g>",
     "</svg>"
   ].join("\n");
 
@@ -206,6 +239,19 @@ console.log("\n[Suite 4] Drift Detection");
   assert(
     result.errors.some((e) => e.includes("stone_base")),
     "The placement drift error names the stone_base group"
+  );
+
+  // Background slate drift. This one regressed once: while the fill rect was a loose
+  // sibling of the group it was inside no compared section, so recolouring stone.svg
+  // alone passed the gate and left the ores a different colour from the stone around
+  // them - the exact failure the contract exists to prevent.
+  const fillDrift = base.replace("fill=\"#7e8187\"", "fill=\"#903030\"");
+  tree = makeFixtureTree({ "block/stone.svg": fillDrift, "block/diamond_ore.svg": base });
+  result = checkBaseSync(tree, FIXTURE_RULES);
+  assert(!result.ok, "Recolouring the shared slate fill in stone.svg alone is reported as drift");
+  assert(
+    result.errors.some((e) => e.includes("stone_base")),
+    "The slate fill drift error names the stone_base group that now contains it"
   );
 
   // Editing the base without editing the derivative is symmetrical drift.
