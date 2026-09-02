@@ -86,3 +86,32 @@ with that platform's own redistribution terms before anything is uploaded.
 Adding a channel therefore means, in order: decide the platform, check its terms against
 `LICENSE`, add the upload step and its secret to `release.yml`, and update §2 and this
 section in the same pull request.
+
+## 6. Validating the Release Path
+
+`release.yml` runs only on a pushed `v*` tag and on `workflow_dispatch`. No pull request
+ever triggers it, so a green pull-request check says nothing about whether the release job
+works. A `workflow_dispatch` run is not a substitute either: it leaves `github.ref` on a
+branch, so the publishing step's `if: startsWith(github.ref, 'refs/tags/')` guard skips it,
+and only the build and notes steps are proven.
+
+**A bump to any action used only in `release.yml` therefore cannot be validated by CI.**
+Either exercise the path — push a pre-release tag, let the run publish, verify the attached
+zips, then delete the release and the tag — or say plainly in the pull request that the bump
+was merged unexercised. Either is acceptable; treating a green tick as though it had covered
+the release job is not.
+
+### Exercise record
+
+| Date | Commit | Tag | Outcome |
+| :--- | :--- | :--- | :--- |
+| 2026-09-02 | `81472f3` | `v0.1.0-alpha.1`, deleted afterwards | green |
+
+That run was the first time `softprops/action-gh-release` v3.0.2 had executed on this
+repository; it arrived by dependency bump and had never run here. Every step ran, the
+`refs/tags/` guard let the publishing step through, the release was created as a pre-release
+and not a draft, all five zips attached at plausible sizes, the pre-release fallback note
+appeared above GitHub's generated notes, and the downloaded 512× zip unpacked to a real
+pack — `pack.mcmeta`, `pack.png` and 33 PNGs under `assets/minecraft/textures/block/`. The
+release and the tag were deleted immediately afterwards, so the first `v0.1.0-alpha.1` in
+this repository's history will still be the real one.
