@@ -257,6 +257,40 @@ export function reportSummary(summary, log = console.log) {
   }
 }
 
+/** Every directory in the masters tree, root first. Used by the non-recursive watch fallback. */
+export function listDirectories(dir) {
+  const dirs = [dir];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) dirs.push(...listDirectories(path.join(dir, entry.name)));
+  }
+  return dirs;
+}
+
+/**
+ * Watches the masters tree and calls `onChange` for any SVG event.
+ *
+ * `fs.watch` with `recursive: true` is not supported on Linux before Node 20, and
+ * package.json declares `engines.node >= 18` - so a contributor on Node 18 would get
+ * ERR_FEATURE_UNAVAILABLE_ON_PLATFORM rather than a watcher. Fall back to one non-recursive
+ * watcher per directory, which every supported platform has always had. Returns an object
+ * with a `close()`, matching the shape of a single FSWatcher.
+ */
+export function watchTree(texturesDir, onChange) {
+  const relay = (_event, filename) => {
+    const name = filename ? filename.toString() : "";
+    if (name && path.extname(name).toLowerCase() !== ".svg") return;
+    onChange();
+  };
+
+  try {
+    return fs.watch(texturesDir, { recursive: true }, relay);
+  } catch (err) {
+    if (err.code !== "ERR_FEATURE_UNAVAILABLE_ON_PLATFORM") throw err;
+    const watchers = listDirectories(texturesDir).map((dir) => fs.watch(dir, relay));
+    return { close: () => watchers.forEach((w) => w.close()) };
+  }
+}
+
 /**
  * Watch mode. Debounced, because an editor writing an SVG produces several events and a
  * burst of syncs would just print the same result repeatedly.
@@ -273,8 +307,7 @@ export function watchStudio({
   if (log) log(`\nWatching ${texturesDir} for changes. Ctrl+C to stop.`);
 
   let timer = null;
-  const watcher = fs.watch(texturesDir, { recursive: true }, (_event, filename) => {
-    if (filename && path.extname(filename.toString()).toLowerCase() !== ".svg") return;
+  const watcher = watchTree(texturesDir, () => {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
       timer = null;

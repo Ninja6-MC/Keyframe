@@ -22,7 +22,10 @@ import {
   collectMasters,
   planSync,
   syncOnce,
-  parseArgs
+  parseArgs,
+  listDirectories,
+  watchTree,
+  watchStudio
 } from "../sync-studio.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -302,6 +305,38 @@ console.log("\n[Suite 5] Argument Parsing");
     Boolean(catchSyncError(() => parseArgs(["--watch", "--dry-run"]))),
     "--watch with --dry-run is rejected as a contradiction"
   );
+}
+
+// -----------------------------------------------------------------------------
+// Suite 5b: Watch mode
+// -----------------------------------------------------------------------------
+console.log("\n[Suite 5b] Watch Mode");
+{
+  const tex = writeTree(path.join(TEST_TMP, "textures-watch"), {
+    "block/dirt.svg": SVG("#c77d38"),
+    "block/nested/deep.svg": SVG("#111111")
+  });
+
+  // fs.watch({recursive:true}) is unsupported on Linux before Node 20 while package.json
+  // declares engines.node >= 18, so the fallback has to cover every directory itself.
+  const dirs = listDirectories(tex).map((d) => (path.relative(tex, d) || ".").split(path.sep).join("/")).sort();
+  assertEqual(dirs.join(","), ".,block,block/nested", "listDirectories walks the whole masters tree");
+
+  let fired = 0;
+  const watcher = watchTree(tex, () => { fired++; });
+  assert(typeof watcher.close === "function", "watchTree returns something closeable on every platform");
+  watcher.close();
+  assertEqual(fired, 0, "No change, no callback");
+
+  const studio = makeFakeStudio("studio-watch");
+  const live = watchStudio({ studioDir: studio, texturesDir: tex, log: null });
+  assert(typeof live.close === "function", "watchStudio returns a closeable watcher");
+  assertEqual(
+    fs.readdirSync(path.join(studio, "textures")).sort().join(","),
+    "deep.svg,dirt.svg",
+    "watchStudio syncs once up front, before it waits for anything"
+  );
+  live.close();
 }
 
 // -----------------------------------------------------------------------------
