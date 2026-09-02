@@ -45,9 +45,9 @@
       "reason": "Cross-quad plant cutout model"
     },
     {
-      "pattern": "grass*.svg",
+      "pattern": "grass.svg",
       "category": "exempt",
-      "reason": "Backwards-compatible plant alias"
+      "reason": "Backwards-compatible plant alias (pre-1.20.3 name for short_grass)"
     }
   ],
   "itemIds": [

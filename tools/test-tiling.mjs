@@ -52,21 +52,55 @@ function loadRules() {
   };
 }
 
-function matchGlob(filename, pattern) {
-  if (pattern.startsWith("*") && pattern.endsWith("*")) {
-    return filename.includes(pattern.slice(1, -1));
-  }
-  if (pattern.startsWith("*")) {
-    return filename.endsWith(pattern.slice(1));
-  }
-  if (pattern.endsWith("*")) {
-    return filename.startsWith(pattern.slice(0, -1));
-  }
-  return filename === pattern;
+/** Normalizes a texture path - relative, absolute, POSIX or Windows - to its basename. */
+export function basenameOf(filename) {
+  return path.basename(String(filename).replace(/\\/g, "/"));
+}
+
+// Regex metacharacters that must survive translation as literals. `*` and `?` are
+// deliberately absent: they are the two wildcards and are translated separately. `.`
+// appears in every pattern in tiling-rules.json and must never match an arbitrary
+// character, or `*_side.svg` would also match a file called `oak_logXsvg`.
+const GLOB_METACHARS = /[.+^${}()|[\]\\]/g;
+
+const globRegexCache = new Map();
+
+/**
+ * Translates a glob into an anchored RegExp. `*` matches any run of characters (including
+ * none) in any position, `?` matches exactly one, and every other character is literal.
+ * The expression is anchored at both ends, so the whole name must match.
+ */
+export function globToRegExp(pattern) {
+  const cached = globRegexCache.get(pattern);
+  if (cached) return cached;
+  const body = pattern
+    .replace(GLOB_METACHARS, "\\$&")
+    .replace(/\*/g, ".*")
+    .replace(/\?/g, ".");
+  const regex = new RegExp(`^${body}$`);
+  globRegexCache.set(pattern, regex);
+  return regex;
+}
+
+/**
+ * Matches one glob against a texture name. Patterns in tiling-rules.json address the
+ * **basename**, never the path a texture was discovered at, so `short_grass.svg` and
+ * `block/short_grass.svg` give the same answer.
+ *
+ * The previous implementation special-cased only leading and trailing `*` and otherwise
+ * fell through to string equality, so every rule with an interior wildcard
+ * (`tall_grass_*.svg`, `short_grass*.svg`) was dead and never fired.
+ */
+export function matchGlob(filename, pattern) {
+  return globToRegExp(pattern).test(basenameOf(filename));
 }
 
 export function categorizeTexture(filename, rules, axisOverride = null) {
-  const stem = path.basename(filename, ".svg");
+  // Rules address the basename. `findSvgFiles` already hands over `entry.filename`, but
+  // this function is exported and the CLI's `--texture` path can carry a directory, so
+  // normalize once here rather than trusting every caller to have stripped it.
+  const base = basenameOf(filename);
+  const stem = base.replace(/\.svg$/i, "");
 
   if (axisOverride) {
     const axes = axisOverride.toLowerCase() === "x" ? ["x"] :
@@ -81,8 +115,8 @@ export function categorizeTexture(filename, rules, axisOverride = null) {
   }
 
   // 1. Explicit overrides
-  if (rules.overrides && rules.overrides[filename]) {
-    const ovr = rules.overrides[filename];
+  if (rules.overrides && (rules.overrides[filename] || rules.overrides[base])) {
+    const ovr = rules.overrides[filename] || rules.overrides[base];
     const catConfig = rules.categories[ovr.category] || { testAxes: ["x", "y"], tolerance: 0 };
     return {
       category: ovr.category,
@@ -105,7 +139,7 @@ export function categorizeTexture(filename, rules, axisOverride = null) {
   // 3. Glob patterns
   if (rules.patterns) {
     for (const pat of rules.patterns) {
-      if (matchGlob(filename, pat.pattern)) {
+      if (matchGlob(base, pat.pattern)) {
         const catConfig = rules.categories[pat.category] || { testAxes: [], tolerance: 0 };
         return {
           category: pat.category,

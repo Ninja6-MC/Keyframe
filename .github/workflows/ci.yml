@@ -80,8 +80,16 @@ jobs:
       - name: Shared-Base Contract Test Suite
         run: npm run test:base-sync
 
+      # Gates the matcher that decides which axes each master is audited on. It is its own
+      # step rather than riding on the audit below because the audit is advisory: a broken
+      # matcher would silently re-categorize masters and `continue-on-error` would swallow
+      # it. This step is blocking, so an over-broad exempt rule - one that quietly excuses
+      # a real terrain block from the seam audit - fails the pull request.
+      - name: Tiling Rules Matcher Test Suite
+        run: npm run test:tiling-rules
+
       # ADVISORY, NOT A GATE, and that is deliberate rather than an oversight. As of this
-      # commit the seam audit fails on `main` for 20 of the 30 committed masters: the
+      # commit the seam audit fails on `main` for 15 of the 30 committed masters: the
       # textures authored so far predate the harness that measures them. Making it
       # blocking today would red every pull request over debt none of them introduced,
       # and a check that is always red is a check nobody reads.
