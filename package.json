@@ -16,13 +16,16 @@
     "build:all:deploy": "node tools/build.mjs --all --deploy",
     "export:icons": "node scripts/export-icons.mjs",
     "palette:inject": "node tools/lib/palette-injector.mjs",
+    "sync:studio": "node tools/sync-studio.mjs",
+    "sync:studio:watch": "node tools/sync-studio.mjs --watch",
     "test:palette": "node tools/test/palette-injector.test.mjs",
     "test:base-sync": "node tools/test/base-sync.test.mjs",
     "test:tiling-rules": "node tools/test/tiling-rules.test.mjs",
+    "test:sync-studio": "node tools/test/sync-studio.test.mjs",
     "test:animation": "node tools/test-animation-packager.mjs",
     "test:tiling": "node tools/test-tiling.mjs",
     "test:tiling:render": "node tools/test-tiling.mjs --render",
-    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test/base-sync.test.mjs && node tools/test/tiling-rules.test.mjs && node tools/test-tiling.mjs"
+    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test/base-sync.test.mjs && node tools/test/tiling-rules.test.mjs && node tools/test/sync-studio.test.mjs && node tools/test-tiling.mjs"
   },
   "keywords": [
     "minecraft",

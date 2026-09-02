@@ -88,6 +88,16 @@ jobs:
       - name: Tiling Rules Matcher Test Suite
         run: npm run test:tiling-rules
 
+      # The sync itself cannot run here - the TextureStudio checkout it writes into is a
+      # sibling working copy that does not exist on a runner - but everything up to the
+      # write does: target resolution, the refusal to sync into a directory that is not
+      # TextureStudio, the flattening of textures/block/ into the flat shape the Studio
+      # discovers, and a full end-to-end sync of the shipped masters into a fixture
+      # checkout. It also asserts its own wiring, so deleting this step fails the suite
+      # rather than quietly removing the coverage.
+      - name: TextureStudio Sync Test Suite
+        run: npm run test:sync-studio
+
       # ADVISORY, NOT A GATE, and that is deliberate rather than an oversight. As of this
       # commit the seam audit fails on `main` for 15 of the 30 committed masters: the
       # textures authored so far predate the harness that measures them. Making it
