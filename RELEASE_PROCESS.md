@@ -91,9 +91,10 @@ section in the same pull request.
 
 `release.yml` runs only on a pushed `v*` tag and on `workflow_dispatch`. No pull request
 ever triggers it, so a green pull-request check says nothing about whether the release job
-works. A `workflow_dispatch` run is not a substitute either: it leaves `github.ref` on a
-branch, so the publishing step's `if: startsWith(github.ref, 'refs/tags/')` guard skips it,
-and only the build and notes steps are proven.
+works. A `workflow_dispatch` run from a branch is not a substitute either: `github.ref` is
+then outside `refs/tags/`, so the publishing step's `if: startsWith(github.ref,
+'refs/tags/')` guard skips it and only the build and notes steps are proven. Only a real
+tag exercises the whole path.
 
 **A bump to any action used only in `release.yml` therefore cannot be validated by CI.**
 Either exercise the path — push a pre-release tag, let the run publish, verify the attached
@@ -113,5 +114,11 @@ repository; it arrived by dependency bump and had never run here. Every step ran
 and not a draft, all five zips attached at plausible sizes, the pre-release fallback note
 appeared above GitHub's generated notes, and the downloaded 512× zip unpacked to a real
 pack — `pack.mcmeta`, `pack.png` and 33 PNGs under `assets/minecraft/textures/block/`. The
-release and the tag were deleted immediately afterwards, so the first `v0.1.0-alpha.1` in
-this repository's history will still be the real one.
+release and the tag were deleted immediately afterwards, leaving the repository with no
+releases and no tags, so the alpha can be cut for real under the same name.
+
+The v3 release notes were read at the same time, which is the other half of what the bump
+skipped: v3.0.0 moved the action's runtime from Node 20 to Node 24, v3.0.1 was dependency
+maintenance, and v3.0.2 hardened asset uploads and release-creation diagnostics. None of
+them changed the behaviour of the `files`, `body`, `draft`, `prerelease` or
+`generate_release_notes` inputs this workflow uses.
