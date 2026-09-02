@@ -123,6 +123,17 @@ would 404 for everyone reading this.)
 **Keyframe Community License** (All Rights Reserved with Permitted Use Grants).  
 Free for personal gameplay, YouTube/Twitch content creation, multiplayer servers, and public modpacks. Third-party mirroring, texture ripping, and commercial resale are prohibited. See [LICENSE](LICENSE) for details.
 
+That licence is deliberately **not** OSI-approved, and it is the only non-OSI licence in the
+organisation — `SpiralGenesis` and `SessionPulse` are GPL-3.0, `.github` is CC0. A plugin is
+source code meant to be forked, built on and redistributed; Keyframe is original artwork
+whose value depends on it remaining one attributable pack, so the grants are written around
+how a resource pack is actually used — gameplay, streaming, server packs, modpacks — while
+withholding the rehosting and derivative-pack rights an open-source licence would have to
+give away. GitHub does not recognise the licence, so this repository reports `NOASSERTION`
+and shows no licence in the sidebar: that is expected, not an oversight waiting to be
+corrected. For what the licence means the moment a download channel is added, see
+[`RELEASE_PROCESS.md`](RELEASE_PROCESS.md) §5.
+
 > **NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.**
 
 ---
