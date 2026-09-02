@@ -35,9 +35,65 @@ npm run test:tiling
 
 # 6. Render 3x3 tiled test grids (saved to dist/tiling_tests/)
 npm run test:tiling:render
+
+# 7. Push the SVG masters into a local TextureStudio checkout for 3D preview
+npm run sync:studio
+
+# 8. ...and keep pushing them on every save
+npm run sync:studio:watch
 ```
 
 Compiled `.zip` resource packs are saved to `dist/` and automatically deployed to your local `.minecraft/resourcepacks/` directory if detected.
+
+---
+
+## 🧊 Live 3D Preview in TextureStudio
+
+[TextureStudio](https://github.com/Ninja6-MC/TextureStudio) renders these masters in a WebGL
+viewport — single cubes with exact 6-face UV wrapping, and multi-block cliff, trail and tree
+presets. It is the only way to judge a texture in perspective and under engine-like lighting
+rather than as a flat 512×512 square.
+
+`npm run sync:studio` copies this repository's masters into a local TextureStudio checkout so
+the Studio previews what Keyframe actually ships. Three things about it are worth knowing:
+
+* **It carries SVG masters, not compiled PNGs.** The Studio's viewport loads
+  `textures/<name>.svg` straight into the page, and its own compiler rasterizes the same SVGs.
+  Feeding it rasters would throw away the resolution independence the viewport exists to show.
+  The Studio's PNG code path is for *external comparison packs* only — for that, drop a built
+  `dist/Keyframe-512x.zip` into the Studio's `cache/packs/` instead.
+* **The layouts differ, so masters are flattened.** Keyframe namespaces its masters
+  (`textures/block/dirt.svg`); the Studio discovers them flat (`textures/dirt.svg`). The sync
+  flattens by basename, which is lossless because a basename *is* the Minecraft texture id.
+  If two namespaces ever share one, the sync aborts rather than picking a winner.
+* **The target is checked before anything is written.** `--studio <path>` overrides
+  `$KEYFRAME_STUDIO_DIR`, which overrides the sibling `../TextureStudio`. A path that does not
+  exist, or that is not a TextureStudio checkout, is a hard error — the sync never creates a
+  stray directory where a typo pointed it.
+
+```bash
+npm run sync:studio -- --dry-run          # report what would change, write nothing
+npm run sync:studio -- --studio ../Studio # explicit target
+npm run sync:studio -- --prune            # also delete Studio SVGs with no Keyframe master
+npm run sync:studio -- --help
+```
+
+The Studio's `textures/` is gitignored on its side ("Creative Vector Master Assets"), which is
+both why the two copies were free to drift and why writing into it from here is safe. The sync
+touches nothing else in that repository.
+
+> **Launching the Studio against the synced copy.** TextureStudio's server currently prefers a
+> sibling `../Keyframe/textures` over its own `textures/`, and that path yields no blocks
+> because Keyframe's masters sit one directory deeper than its non-recursive discovery looks.
+> Until that is fixed on the TextureStudio side, start it explicitly:
+>
+> ```bash
+> cd ../TextureStudio && npm start -- --textures textures
+> ```
+>
+> Then use the Studio's **🔄 Reload Textures** button to pick up a save. The server sends
+> `Cache-Control: no-cache` and re-reads from disk on every request, so a reload always shows
+> the current master; no restart is needed.
 
 ---
 
