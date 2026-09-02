@@ -18,9 +18,10 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   groove definitions (including every corner radius `rx`) and the `stone_base` placement
   group are identical, and `npm run build` now fails before rasterizing if they drift.
   Unregistered files that copy the stone base are reported too (#28).
-- Stone and ores set: `stone`, `diamond_ore`, and `coal_ore` — 512×512 vector masters with
-  3D pop-down recessed striation grooves, high-contrast 3D pop-up mineral nodules and crystals,
-  un-rotated stone blockstate override, and synchronized stone backgrounds (#28).
+- Stone, cobblestone, and ores set: `stone`, `cobblestone`, `diamond_ore`, and `coal_ore` —
+  512×512 vector masters with 3D pop-down recessed striations, interlocking rounded 3D boulders,
+  high-contrast 3D pop-up mineral nodules and crystals, un-rotated blockstate overrides,
+  and 100% seamless toroidal tiling (#28).
 - `bedrock` — chaotic tectonic stone plates with interior highlights and 100% periodic
   toroidal boundary continuity.
 - `deepslate` and `deepslate_top`, and `infested_deepslate`.
