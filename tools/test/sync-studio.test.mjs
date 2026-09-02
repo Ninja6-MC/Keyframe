@@ -317,26 +317,150 @@ console.log("\n[Suite 5b] Watch Mode");
     "block/nested/deep.svg": SVG("#111111")
   });
 
-  // fs.watch({recursive:true}) is unsupported on Linux before Node 20 while package.json
-  // declares engines.node >= 18, so the fallback has to cover every directory itself.
   const dirs = listDirectories(tex).map((d) => (path.relative(tex, d) || ".").split(path.sep).join("/")).sort();
   assertEqual(dirs.join(","), ".,block,block/nested", "listDirectories walks the whole masters tree");
 
-  let fired = 0;
-  const watcher = watchTree(tex, () => { fired++; });
-  assert(typeof watcher.close === "function", "watchTree returns something closeable on every platform");
-  watcher.close();
-  assertEqual(fired, 0, "No change, no callback");
+  // A recording stand-in for fs.watch. The fallback branch only runs on Linux before Node
+  // 20, so on Windows, macOS and CI (ubuntu + Node 20) it would otherwise be covered by
+  // nothing at all - the platform decides which branch runs, and every platform this suite
+  // runs on picks the other one.
+  function makeFakeWatch({ recursiveSupported }) {
+    const calls = { recursive: [], perDir: [] };
+    const handles = [];
+    const fire = (dir, filename) => {
+      for (const h of handles) {
+        if (!h.closed && h.dir === dir) h.listener("change", filename);
+      }
+    };
+    const watchFn = (dir, a, b) => {
+      const listener = typeof a === "function" ? a : b;
+      const recursive = typeof a === "object" && a !== null && a.recursive === true;
+      if (recursive) {
+        calls.recursive.push(dir);
+        if (!recursiveSupported) {
+          const err = new Error("recursive watch unavailable");
+          err.code = "ERR_FEATURE_UNAVAILABLE_ON_PLATFORM";
+          throw err;
+        }
+      } else {
+        calls.perDir.push(dir);
+      }
+      const handle = { dir, listener, closed: false, close() { this.closed = true; } };
+      handles.push(handle);
+      return handle;
+    };
+    return { watchFn, calls, fire, openCount: () => handles.filter((h) => !h.closed).length };
+  }
 
-  const studio = makeFakeStudio("studio-watch");
-  const live = watchStudio({ studioDir: studio, texturesDir: tex, log: null });
-  assert(typeof live.close === "function", "watchStudio returns a closeable watcher");
-  assertEqual(
-    fs.readdirSync(path.join(studio, "textures")).sort().join(","),
-    "deep.svg,dirt.svg",
-    "watchStudio syncs once up front, before it waits for anything"
-  );
-  live.close();
+  // --- Primary path: one recursive watcher, no per-directory ones, no double-fire.
+  {
+    const fake = makeFakeWatch({ recursiveSupported: true });
+    let fired = 0;
+    const watcher = watchTree(tex, () => { fired++; }, { watchFn: fake.watchFn });
+    assertEqual(fake.calls.recursive.length, 1, "The primary path asks fs.watch for one recursive watcher");
+    assertEqual(fake.calls.perDir.length, 0, "The primary path opens no per-directory watchers, so nothing double-fires");
+
+    fake.fire(tex, "block/dirt.svg");
+    assertEqual(fired, 1, "A master change on the primary path reaches the callback exactly once");
+    fake.fire(tex, "notes.txt");
+    assertEqual(fired, 1, "A non-SVG change is filtered out");
+
+    watcher.close();
+    assertEqual(fake.openCount(), 0, "Closing the primary watcher closes it");
+  }
+
+  // --- Fallback path: the branch that exists for Node 18 on Linux.
+  {
+    const fake = makeFakeWatch({ recursiveSupported: false });
+    let fired = 0;
+    const watcher = watchTree(tex, () => { fired++; }, { watchFn: fake.watchFn });
+    assertEqual(
+      fake.calls.perDir.length,
+      3,
+      "The fallback opens one watcher per directory when a recursive watch is unavailable"
+    );
+
+    fake.fire(path.join(tex, "block", "nested"), "deep.svg");
+    assertEqual(fired, 1, "A change in a nested directory reaches the callback on the fallback path");
+
+    // The gap this fallback would otherwise have: a directory created after startup is
+    // watched by nothing, so a whole namespace goes blind for the rest of the session.
+    fs.mkdirSync(path.join(tex, "block", "late"), { recursive: true });
+    fake.fire(path.join(tex, "block"), "late");
+    assert(
+      fake.calls.perDir.includes(path.join(tex, "block", "late")),
+      "A directory created after startup is picked up and watched"
+    );
+    const before = fired;
+    fake.fire(path.join(tex, "block", "late"), "arrived.svg");
+    assertEqual(fired, before + 1, "A master in that new directory reaches the callback");
+
+    watcher.close();
+    assertEqual(fake.openCount(), 0, "close() closes every per-directory watcher, leaking none");
+  }
+
+  // --- A throw part-way through mounting must not orphan the watchers already open.
+  {
+    const fake = makeFakeWatch({ recursiveSupported: false });
+    let opened = 0;
+    const throwingWatch = (dir, a, b) => {
+      const recursive = typeof a === "object" && a !== null && a.recursive === true;
+      if (!recursive && ++opened === 2) {
+        const err = new Error("ENOSPC: inotify watch limit reached");
+        err.code = "ENOSPC";
+        throw err;
+      }
+      return fake.watchFn(dir, a, b);
+    };
+    let threw = false;
+    try {
+      watchTree(tex, () => {}, { watchFn: throwingWatch });
+    } catch (err) {
+      threw = true;
+      assertEqual(err.code, "ENOSPC", "The mount failure is propagated as itself, not swallowed");
+    }
+    assert(threw, "A watcher that cannot be opened fails loudly");
+    assertEqual(fake.openCount(), 0, "Watchers opened before the failure are closed rather than orphaned");
+  }
+
+  // --- watchStudio: syncs up front, and a real change propagates through the debounce.
+  {
+    const studio = makeFakeStudio("studio-watch");
+    const fake = makeFakeWatch({ recursiveSupported: true });
+    const live = watchStudio({
+      studioDir: studio,
+      texturesDir: tex,
+      log: null,
+      debounceMs: 0,
+      watchOptions: { watchFn: fake.watchFn }
+    });
+    assert(typeof live.close === "function", "watchStudio returns a closeable watcher");
+    assertEqual(
+      fs.readdirSync(path.join(studio, "textures")).sort().join(","),
+      "deep.svg,dirt.svg",
+      "watchStudio syncs once up front, before it waits for anything"
+    );
+
+    // This is the criterion the task turns on: a saved master reaches the Studio.
+    fs.writeFileSync(path.join(tex, "block", "dirt.svg"), SVG("#ff0000"), "utf-8");
+    fake.fire(tex, "block/dirt.svg");
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    assert(
+      fs.readFileSync(path.join(studio, "textures", "dirt.svg"), "utf-8").includes("#ff0000"),
+      "A saved master propagates to the Studio within one watch cycle"
+    );
+
+    // Closing with a debounce still armed must not let one more sync land afterwards.
+    fs.writeFileSync(path.join(tex, "block", "dirt.svg"), SVG("#0000ff"), "utf-8");
+    fake.fire(tex, "block/dirt.svg");
+    live.close();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    assert(
+      fs.readFileSync(path.join(studio, "textures", "dirt.svg"), "utf-8").includes("#ff0000"),
+      "close() disarms a pending debounce, so no sync lands after the watcher is closed"
+    );
+    assertEqual(fake.openCount(), 0, "watchStudio's close() closes the underlying watcher");
+  }
 }
 
 // -----------------------------------------------------------------------------

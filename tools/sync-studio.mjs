@@ -275,7 +275,7 @@ export function listDirectories(dir) {
  * watcher per directory, which every supported platform has always had. Returns an object
  * with a `close()`, matching the shape of a single FSWatcher.
  */
-export function watchTree(texturesDir, onChange) {
+export function watchTree(texturesDir, onChange, { watchFn = fs.watch } = {}) {
   const relay = (_event, filename) => {
     const name = filename ? filename.toString() : "";
     if (name && path.extname(name).toLowerCase() !== ".svg") return;
@@ -283,11 +283,39 @@ export function watchTree(texturesDir, onChange) {
   };
 
   try {
-    return fs.watch(texturesDir, { recursive: true }, relay);
+    return watchFn(texturesDir, { recursive: true }, relay);
   } catch (err) {
     if (err.code !== "ERR_FEATURE_UNAVAILABLE_ON_PLATFORM") throw err;
-    const watchers = listDirectories(texturesDir).map((dir) => fs.watch(dir, relay));
-    return { close: () => watchers.forEach((w) => w.close()) };
+
+    // One watcher per directory. A directory created after startup gets no watcher from the
+    // initial walk, so every event re-checks the tree - otherwise a new namespace directory
+    // would go unwatched for the rest of the session and this fallback would not be the
+    // parity with the recursive path it claims to be.
+    const watched = new Map();
+    const close = () => {
+      for (const watcher of watched.values()) watcher.close();
+      watched.clear();
+    };
+
+    const mount = () => {
+      try {
+        for (const dir of listDirectories(texturesDir)) {
+          if (watched.has(dir)) continue;
+          watched.set(dir, watchFn(dir, (event, filename) => {
+            mount();
+            relay(event, filename);
+          }));
+        }
+      } catch (mountErr) {
+        // A throw part-way through (ENOSPC on the inotify watch limit is realistic on the
+        // very platform this fallback targets) must not orphan the watchers already open.
+        close();
+        throw mountErr;
+      }
+    };
+
+    mount();
+    return { close };
   }
 }
 
@@ -301,7 +329,8 @@ export function watchStudio({
   texturesDir = DEFAULT_TEXTURES_DIR,
   prune = false,
   debounceMs = 150,
-  log = console.log
+  log = console.log,
+  watchOptions = {}
 } = {}) {
   syncOnce({ studioDir, studioSource, texturesDir, prune, log });
   if (log) log(`\nWatching ${texturesDir} for changes. Ctrl+C to stop.`);
@@ -314,16 +343,23 @@ export function watchStudio({
       try {
         syncOnce({ studioDir, studioSource, texturesDir, prune, log });
       } catch (err) {
-        if (err instanceof SyncError) {
-          if (log) log(`\n  sync failed: ${err.message}`);
-        } else {
-          throw err;
-        }
+        // A watcher that dies on the first transient failure is worse than one that reports
+        // it: the file that caused it is usually saved again a second later. SyncError is
+        // the expected shape, but nothing here is worth taking the process down for.
+        if (log) log(`\n  sync failed: ${err.message}`);
       }
     }, debounceMs);
-  });
+  }, watchOptions);
 
-  return watcher;
+  return {
+    close: () => {
+      // Closing with a debounce still armed would let one more sync land after the caller
+      // believed the watcher was done.
+      if (timer) clearTimeout(timer);
+      timer = null;
+      watcher.close();
+    }
+  };
 }
 
 export function parseArgs(argv) {
