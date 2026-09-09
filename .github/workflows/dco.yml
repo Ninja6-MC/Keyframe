@@ -9,4 +9,4 @@ permissions:
 
 jobs:
   dco:
-    uses: Ninja6-MC/.github/.github/workflows/dco.yml@main
+    uses: Ninja6-MC/.github/.github/workflows/dco.yml@2359bf4e8da8fbc78c19e09606468c5a0c3e47bd # main @ 2026-09-09
