@@ -59,8 +59,46 @@ updates:
     # anything. Ungrouped, it is what split the first batch.
     open-pull-requests-limit: 5
 
-# ADDING THE BUILD'S OWN ECOSYSTEM is a separate decision, deliberately not made here.
-# Actions are infrastructure and a bump is a security question. A compile-time
-# dependency is not: a Minecraft plugin is built against a specific server API, and a
-# bot raising that version is a compatibility change wearing a security change's
-# clothes. Add `gradle`, `npm` or whatever applies only when someone owns the review.
+# THE BUILD'S OWN ECOSYSTEM. The template leaves this decision to each repository and
+# asks that it only be made when someone owns the review. It is made here, and the npm
+# block below is the result.
+#
+# The template's caution is about a Minecraft plugin compiled against a specific server
+# API, where a bot raising the version is a compatibility change wearing a security
+# change's clothes. Nothing here is that: @resvg/resvg-js and archiver are ordinary
+# runtime dependencies of a build tool, and neither decides what this repository is
+# compatible WITH. So there is no ignore list, unlike the plugin repositories.
+#
+# CI carries the review here. ci.yml runs npm ci, builds the pack at all five
+# resolutions and runs the animation, palette, base-sync, tiling-rules and sync-studio
+# suites, so a proposal that breaks the toolchain fails before anyone reads it. What CI
+# does NOT assert is rendered OUTPUT: @resvg/resvg-js is a native module, and a major
+# that changes rasterisation would build green and ship different pixels. That is what
+# the separate major group is for - it arrives on its own, to be looked at.
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      npm:
+        applies-to: version-updates
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+      npm-major:
+        applies-to: version-updates
+        patterns:
+          - '*'
+        update-types:
+          - major
+    commit-message:
+      # `build` rather than `ci`: ci is the Conventional Commits type for workflow
+      # actions, build is the one for build-system dependencies.
+      prefix: build
+    labels:
+      - dependencies
+    open-pull-requests-limit: 5
