@@ -3,15 +3,15 @@
 /**
  * Keyframe -> TextureStudio master sync.
  *
- * TextureStudio consumes **SVG masters**, not compiled rasters. Its 3D viewport loads
- * `/textures/<name>.svg` straight into an `<img>` and draws it to a canvas (`src/app.js`,
- * `loadTexture`), and its own compiler (`tools/build-pack.mjs`) rasterizes the same SVGs
- * itself. The only place TextureStudio reads PNGs is the *external comparison pack* path
- * (`cache/packs/<pack>/assets/minecraft/textures/block/*.png`), which is fed by dropping a
- * built `.zip` into `cache/packs/` and is not what this tool is for. Pushing Keyframe's
- * compiled rasters into `textures/` would therefore feed the Studio the wrong artifact
- * entirely - it would lose the resolution independence that is the whole point of the
- * viewport.
+ * TextureStudio's vector pipeline consumes **SVG masters**, not compiled rasters. While
+ * its discovery (`discoverActivePack()`) matches both `.svg` and `.png` files, its active
+ * 3D viewport loads `/textures/<name>.svg` directly into an `<img>` and draws it to a canvas
+ * (`src/app.js`, `loadTexture`), the server types `/textures/*` as `image/svg+xml`, and its
+ * compiler (`tools/build-pack.mjs`) rasterizes those SVGs itself. The raster path is
+ * reserved for external comparison packs under `cache/packs/` (fed by dropping built .zip
+ * packs into the cache), rather than the live active pack. Pushing Keyframe's compiled
+ * rasters into `textures/` would therefore bypass the Studio's vector pipeline and lose
+ * the resolution independence that is the whole point of the live viewport.
  *
  * Directory-shape mismatch: Keyframe's masters are namespaced, `textures/block/<name>.svg`;
  * TextureStudio's `discoverActivePack()` does a single non-recursive `readdirSync` and
@@ -259,8 +259,15 @@ export function reportSummary(summary, log = console.log) {
 
 /** Every directory in the masters tree, root first. Used by the non-recursive watch fallback. */
 export function listDirectories(dir) {
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch (err) {
+    if (err.code === "ENOENT") return [];
+    throw err;
+  }
   const dirs = [dir];
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+  for (const entry of entries) {
     if (entry.isDirectory()) dirs.push(...listDirectories(path.join(dir, entry.name)));
   }
   return dirs;
@@ -275,7 +282,7 @@ export function listDirectories(dir) {
  * watcher per directory, which every supported platform has always had. Returns an object
  * with a `close()`, matching the shape of a single FSWatcher.
  */
-export function watchTree(texturesDir, onChange, { watchFn = fs.watch } = {}) {
+export function watchTree(texturesDir, onChange, { watchFn = fs.watch, errLog = console.error } = {}) {
   const relay = (_event, filename) => {
     const name = filename ? filename.toString() : "";
     if (name && path.extname(name).toLowerCase() !== ".svg") return;
@@ -287,34 +294,67 @@ export function watchTree(texturesDir, onChange, { watchFn = fs.watch } = {}) {
   } catch (err) {
     if (err.code !== "ERR_FEATURE_UNAVAILABLE_ON_PLATFORM") throw err;
 
+    if (!fs.existsSync(texturesDir)) {
+      const noent = new Error(`ENOENT: no such file or directory, watch '${texturesDir}'`);
+      noent.code = "ENOENT";
+      throw noent;
+    }
+
     // One watcher per directory. A directory created after startup gets no watcher from the
     // initial walk, so every event re-checks the tree - otherwise a new namespace directory
     // would go unwatched for the rest of the session and this fallback would not be the
     // parity with the recursive path it claims to be.
     const watched = new Map();
     const close = () => {
-      for (const watcher of watched.values()) watcher.close();
+      for (const watcher of watched.values()) {
+        try {
+          watcher.close();
+        } catch {}
+      }
       watched.clear();
     };
 
-    const mount = () => {
-      try {
-        for (const dir of listDirectories(texturesDir)) {
-          if (watched.has(dir)) continue;
+    const mount = (isInitial = false) => {
+      const currentDirs = new Set(listDirectories(texturesDir));
+
+      // 1. Prune stale watchers for directories that no longer exist
+      for (const [dir, watcher] of watched.entries()) {
+        if (!currentDirs.has(dir)) {
+          try {
+            watcher.close();
+          } catch {}
+          watched.delete(dir);
+        }
+      }
+
+      // 2. Mount watchers for new directories
+      for (const dir of currentDirs) {
+        if (watched.has(dir)) continue;
+        try {
           watched.set(dir, watchFn(dir, (event, filename) => {
-            mount();
+            try {
+              mount(false);
+            } catch (mountErr) {
+              if (errLog) errLog(`\n  watcher remount failed: ${mountErr.message}`);
+            }
             relay(event, filename);
           }));
+        } catch (mountErr) {
+          if (isInitial) {
+            // A throw part-way through initial startup (ENOSPC on the inotify watch limit
+            // is realistic on the very platform this fallback targets) must not orphan the
+            // watchers already open, and must fail loudly to the caller.
+            close();
+            throw mountErr;
+          }
+          // Incremental mount failed (e.g. ENOSPC or racing ENOENT). Do not close existing
+          // watchers, report error, and continue with other directories.
+          if (errLog) errLog(`\n  failed to watch directory ${dir}: ${mountErr.message}`);
         }
-      } catch (mountErr) {
-        // A throw part-way through (ENOSPC on the inotify watch limit is realistic on the
-        // very platform this fallback targets) must not orphan the watchers already open.
-        close();
-        throw mountErr;
       }
     };
 
-    mount();
+    mount(true);
     return { close };
   }
 }
@@ -330,6 +370,7 @@ export function watchStudio({
   prune = false,
   debounceMs = 150,
   log = console.log,
+  errLog = console.error,
   watchOptions = {}
 } = {}) {
   syncOnce({ studioDir, studioSource, texturesDir, prune, log });
@@ -346,10 +387,11 @@ export function watchStudio({
         // A watcher that dies on the first transient failure is worse than one that reports
         // it: the file that caused it is usually saved again a second later. SyncError is
         // the expected shape, but nothing here is worth taking the process down for.
-        if (log) log(`\n  sync failed: ${err.message}`);
+        // Failures are reported to stderr (errLog) regardless of --quiet.
+        if (errLog) errLog(`\n  sync failed: ${err.message}`);
       }
     }, debounceMs);
-  }, watchOptions);
+  }, { errLog, ...watchOptions });
 
   return {
     close: () => {
@@ -395,7 +437,7 @@ Keyframe -> TextureStudio master sync
   --watch           Sync, then keep syncing on every change to a master
   --dry-run         Report what would change and write nothing
   --prune           Delete Studio SVGs that have no Keyframe master (off by default)
-  --quiet           Suppress the per-run report
+  --quiet           Suppress the per-run report (failures still print to stderr)
   -h, --help        This text
 
 Keyframe's textures/block/<name>.svg are flattened to TextureStudio's textures/<name>.svg,

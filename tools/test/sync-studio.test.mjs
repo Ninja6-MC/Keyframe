@@ -461,6 +461,147 @@ console.log("\n[Suite 5b] Watch Mode");
     );
     assertEqual(fake.openCount(), 0, "watchStudio's close() closes the underlying watcher");
   }
+
+  // --- listDirectories on a non-existent path returns [] rather than throwing (Finding 2)
+  {
+    const missing = listDirectories(path.join(TEST_TMP, "does-not-exist"));
+    assertEqual(missing.length, 0, "listDirectories on a non-existent path returns [] rather than throwing");
+  }
+
+  // --- Fallback path: stale watcher pruning and directory recreation (Finding 1)
+  {
+    const texPrune = writeTree(path.join(TEST_TMP, "textures-prune"), {
+      "block/dirt.svg": SVG("#c77d38"),
+      "block/nested/deep.svg": SVG("#111111")
+    });
+    const fake = makeFakeWatch({ recursiveSupported: false });
+    let fired = 0;
+    const watcher = watchTree(texPrune, () => { fired++; }, { watchFn: fake.watchFn });
+    assertEqual(fake.openCount(), 3, "Initial mount on fresh tree has 3 open watchers");
+
+    // 1. Create a dynamic directory and verify it gets watched
+    const tempDir = path.join(texPrune, "block", "transient");
+    fs.mkdirSync(tempDir, { recursive: true });
+    fake.fire(path.join(texPrune, "block"), "transient");
+    assertEqual(fake.openCount(), 4, "New directory is picked up and watched");
+
+    // 2. Delete the directory and fire an event from parent: stale watcher should be closed and pruned
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    fake.fire(path.join(texPrune, "block"), "transient");
+    assertEqual(fake.openCount(), 3, "Deleted directory watcher is pruned and closed");
+
+    // 3. Recreate the directory: mount() should not treat it as already watched; it must mount a new watcher
+    fs.mkdirSync(tempDir, { recursive: true });
+    fake.fire(path.join(texPrune, "block"), "transient");
+    assertEqual(fake.openCount(), 4, "Recreated directory is re-watched rather than skipped as stale");
+
+    // 4. Verify that events from the recreated directory actually reach onChange
+    const before = fired;
+    fake.fire(tempDir, "sample.svg");
+    assertEqual(fired, before + 1, "Events in the recreated directory reach onChange");
+
+    watcher.close();
+    assertEqual(fake.openCount(), 0, "Closing watcher closes all handles");
+  }
+
+  // --- Fallback path: incremental mount ENOSPC does not crash listener or orphan existing watchers (Finding 2)
+  {
+    const texErr = writeTree(path.join(TEST_TMP, "textures-incremental-err"), {
+      "block/dirt.svg": SVG("#c77d38"),
+      "block/nested/deep.svg": SVG("#111111")
+    });
+    const fake = makeFakeWatch({ recursiveSupported: false });
+    const errors = [];
+    let fired = 0;
+    const failDir = path.join(texErr, "block", "late_fail");
+
+    const throwingIncrementalWatch = (dir, a, b) => {
+      if (dir === failDir) {
+        const err = new Error("ENOSPC: inotify watch limit reached");
+        err.code = "ENOSPC";
+        throw err;
+      }
+      return fake.watchFn(dir, a, b);
+    };
+
+    const watcher = watchTree(texErr, () => { fired++; }, {
+      watchFn: throwingIncrementalWatch,
+      errLog: (msg) => { errors.push(msg); }
+    });
+    assertEqual(fake.openCount(), 3, "Initial 3 watchers mounted");
+
+    // Create the failing directory and fire change on parent
+    fs.mkdirSync(failDir, { recursive: true });
+    let listenerThrew = false;
+    try {
+      fake.fire(path.join(texErr, "block"), "late_fail");
+    } catch {
+      listenerThrew = true;
+    }
+
+    assert(!listenerThrew, "Incremental mount error does not throw out of the event listener");
+    assertEqual(fake.openCount(), 3, "Existing watchers remain open despite incremental failure");
+    assert(errors.some((e) => e.includes("ENOSPC")), "Incremental mount failure was reported to errLog");
+
+    // Verify existing watchers continue to function
+    const before = fired;
+    fake.fire(path.join(texErr, "block", "nested"), "deep.svg");
+    assertEqual(fired, before + 1, "Existing watchers continue delivering events after an incremental failure");
+
+    watcher.close();
+    assertEqual(fake.openCount(), 0, "Clean close after incremental failure");
+  }
+
+  // --- watchStudio: error visibility under --quiet (Finding 3)
+  {
+    const studio = makeFakeStudio("studio-quiet-err");
+    const fake = makeFakeWatch({ recursiveSupported: true });
+    const errors = [];
+    const logs = [];
+
+    const live = watchStudio({
+      studioDir: studio,
+      texturesDir: tex,
+      log: (msg) => logs.push(msg),
+      errLog: (msg) => errors.push(msg),
+      debounceMs: 0,
+      watchOptions: { watchFn: fake.watchFn }
+    });
+
+    assertEqual(errors.length, 0, "Normal startup produces zero errors in errLog");
+    assert(logs.length > 0, "Normal startup logs progress when log is provided");
+
+    // Quiet mode: log is null, errors must still reach errLog on failure
+    const quietErrors = [];
+    const quietLogs = [];
+    const quietStudio = makeFakeStudio("studio-quiet-target");
+
+    const quietLive = watchStudio({
+      studioDir: quietStudio,
+      texturesDir: tex,
+      log: null,
+      errLog: (msg) => quietErrors.push(msg),
+      debounceMs: 0,
+      watchOptions: { watchFn: fake.watchFn }
+    });
+
+    assertEqual(quietLogs.length, 0, "Quiet mode sends zero messages to log");
+    assertEqual(quietErrors.length, 0, "Quiet mode produces zero errors when sync succeeds");
+
+    // Corrupt the destination so syncOnce throws during debounced run
+    fs.rmSync(quietStudio, { recursive: true, force: true });
+    fs.writeFileSync(quietStudio, "not a directory", "utf-8");
+
+    fake.fire(tex, "block/dirt.svg");
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    assert(quietErrors.length > 0, "Under --quiet, sync failures are reported to errLog");
+    assert(quietErrors.some((e) => e.includes("sync failed:")), "errLog message contains 'sync failed:'");
+
+    live.close();
+    quietLive.close();
+    fs.rmSync(quietStudio, { recursive: true, force: true });
+  }
 }
 
 // -----------------------------------------------------------------------------
