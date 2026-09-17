@@ -1,5 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 512 512" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
   <!-- OFFICIAL MINECRAFT TRAILER STYLE: SAND                                    -->
   <!-- Accurate single-block pattern from perspective-unwarped reference frame:  -->
@@ -38,22 +37,35 @@
 
   <!-- 2. Light Bumps (Raised Mineral Grains from Reference Block) -->
   <g id="light_bumps">
-    <use href="#bump" x="256" y="0" />
+    <!-- Seam-Wrapped Bump at X=256 (Top/Bottom Y-Seam) -->
+    <use href="#bump" x="256" y="-16" />
+    <use href="#bump" x="256" y="496" />
+
+    <!-- Interior Bumps -->
     <use href="#bump" x="128" y="64" />
     <use href="#bump" x="416" y="96" />
     <use href="#bump" x="224" y="192" />
     <use href="#bump" x="288" y="256" />
     <use href="#bump" x="384" y="416" />
-    <use href="#bump" x="480" y="480" />
+
+    <!-- Seam-Wrapped Bump at 4 Corners -->
+    <use href="#bump" x="-16" y="-16" />
+    <use href="#bump" x="496" y="-16" />
+    <use href="#bump" x="-16" y="496" />
+    <use href="#bump" x="496" y="496" />
   </g>
 
   <!-- 3. Small Holes (Recessed Surface Dimples from Reference Block) -->
   <g id="small_holes">
+    <!-- Interior Holes -->
     <use href="#hole" x="96" y="32" />
     <use href="#hole" x="448" y="160" />
     <use href="#hole" x="192" y="256" />
     <use href="#hole" x="96" y="288" />
     <use href="#hole" x="288" y="320" />
-    <use href="#hole" x="192" y="480" />
+
+    <!-- Seam-Wrapped Hole at X=192 (Top/Bottom Y-Seam) -->
+    <use href="#hole" x="192" y="-16" />
+    <use href="#hole" x="192" y="496" />
   </g>
 </svg>
