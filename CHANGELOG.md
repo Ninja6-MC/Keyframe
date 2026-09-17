@@ -50,3 +50,4 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ### Fixed
 - Correct toroidal seam wrapping coordinate offsets in `coarse_dirt.svg` to achieve perfect Δ=0 periodic boundary continuity (#200).
 - Correct toroidal seam wrapping coordinate offsets in `sand.svg` and `red_sand.svg` to achieve perfect Δ=0 periodic boundary continuity (#64, #206).
+- Correct toroidal seam wrapping coordinate offsets in `gravel.svg` and `suspicious_gravel_0..3.svg` to achieve perfect Δ=0 periodic boundary continuity (#63, #206).
