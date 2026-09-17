@@ -3,7 +3,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import os from "node:os";
 import { fileURLToPath } from "node:url";
-import { createRequire } from "node:module";
+import { ZipArchive } from "archiver";
 import { renderAsync } from "@resvg/resvg-js";
 import {
   findCompanionMcmeta,
@@ -15,9 +15,6 @@ import {
   compileAllVariations
 } from "./lib/palette-injector.mjs";
 import { assertBaseSync } from "./lib/base-sync.mjs";
-
-const require = createRequire(import.meta.url);
-const archiver = require("archiver");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,8 +31,7 @@ const ALLOWED_ASSET_EXTS = new Set([".png", ".mcmeta", ".json"]);
 function createZipArchive(sourceDir, outPath) {
   return new Promise((resolve, reject) => {
     const output = fs.createWriteStream(outPath);
-    const archiverFn = typeof archiver === "function" ? archiver : archiver.default;
-    const archive = archiverFn("zip", {
+    const archive = new ZipArchive({
       zlib: { level: 9 }
     });
 
