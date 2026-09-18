@@ -1,0 +1,344 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "defaultMaterial": {
+    "baseHeight": 215,
+    "smoothness": 35,
+    "f0": 10,
+    "porosity": 5,
+    "emission": 0,
+    "ao": 255,
+    "normalStrength": 1.0
+  },
+  "materials": {
+    "stone": {
+      "baseHeight": 215,
+      "smoothness": 35,
+      "f0": 10,
+      "porosity": 5,
+      "emission": 0,
+      "ao": 255,
+      "colorFeatures": [
+        {
+          "hex": "#7e8187",
+          "height": 215,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        },
+        {
+          "hex": "#5f6268",
+          "height": 160,
+          "smoothness": 30,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 200
+        },
+        {
+          "hex": "#3c3e44",
+          "height": 140,
+          "smoothness": 25,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 160
+        },
+        {
+          "hex": "#a4a7ae",
+          "height": 225,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        }
+      ]
+    },
+    "diamond_ore": {
+      "baseHeight": 215,
+      "smoothness": 35,
+      "f0": 10,
+      "porosity": 5,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#137f76",
+          "height": 235,
+          "smoothness": 200,
+          "f0": 44,
+          "porosity": 0,
+          "emission": 20
+        },
+        {
+          "hex": "#4eebd9",
+          "height": 250,
+          "smoothness": 225,
+          "f0": 48,
+          "porosity": 0,
+          "emission": 30
+        },
+        {
+          "hex": "#73f7eb",
+          "height": 250,
+          "smoothness": 225,
+          "f0": 48,
+          "porosity": 0,
+          "emission": 30
+        },
+        {
+          "hex": "#a7fbf3",
+          "height": 255,
+          "smoothness": 235,
+          "f0": 50,
+          "porosity": 0,
+          "emission": 35
+        },
+        {
+          "hex": "#084a44",
+          "height": 225,
+          "smoothness": 190,
+          "f0": 40,
+          "porosity": 0,
+          "emission": 10
+        },
+        {
+          "hex": "#202a33",
+          "height": 160,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 5,
+          "emission": 0,
+          "ao": 160
+        },
+        {
+          "hex": "#7e8187",
+          "height": 215,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        },
+        {
+          "hex": "#5f6268",
+          "height": 160,
+          "smoothness": 30,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 200
+        },
+        {
+          "hex": "#3c3e44",
+          "height": 140,
+          "smoothness": 25,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 160
+        },
+        {
+          "hex": "#a4a7ae",
+          "height": 225,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        }
+      ]
+    },
+    "coal_ore": {
+      "baseHeight": 215,
+      "smoothness": 35,
+      "f0": 10,
+      "porosity": 5,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#1e2229",
+          "height": 228,
+          "smoothness": 65,
+          "f0": 14,
+          "porosity": 8,
+          "emission": 0
+        },
+        {
+          "hex": "#2e343e",
+          "height": 235,
+          "smoothness": 75,
+          "f0": 16,
+          "porosity": 8,
+          "emission": 0
+        },
+        {
+          "hex": "#7e8187",
+          "height": 215,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        },
+        {
+          "hex": "#5f6268",
+          "height": 160,
+          "smoothness": 30,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 200
+        },
+        {
+          "hex": "#3c3e44",
+          "height": 140,
+          "smoothness": 25,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 160
+        },
+        {
+          "hex": "#a4a7ae",
+          "height": 225,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        }
+      ]
+    },
+    "oak_planks": {
+      "baseHeight": 220,
+      "smoothness": 85,
+      "f0": 10,
+      "porosity": 12,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#b8945f",
+          "height": 220,
+          "smoothness": 85,
+          "f0": 10,
+          "porosity": 12
+        },
+        {
+          "hex": "#967441",
+          "height": 215,
+          "smoothness": 75,
+          "f0": 10,
+          "porosity": 15
+        },
+        {
+          "hex": "#67502c",
+          "height": 150,
+          "smoothness": 50,
+          "f0": 10,
+          "porosity": 20,
+          "ao": 170
+        }
+      ]
+    },
+    "dirt": {
+      "baseHeight": 210,
+      "smoothness": 20,
+      "f0": 10,
+      "porosity": 55,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#c77d38",
+          "height": 210,
+          "smoothness": 20,
+          "f0": 10,
+          "porosity": 55
+        },
+        {
+          "hex": "#a35f24",
+          "height": 225,
+          "smoothness": 18,
+          "f0": 10,
+          "porosity": 50
+        },
+        {
+          "hex": "#864a18",
+          "height": 235,
+          "smoothness": 18,
+          "f0": 10,
+          "porosity": 50
+        },
+        {
+          "hex": "#6f7887",
+          "height": 235,
+          "smoothness": 40,
+          "f0": 10,
+          "porosity": 5
+        }
+      ]
+    },
+    "coarse_dirt": {
+      "baseHeight": 205,
+      "smoothness": 18,
+      "f0": 10,
+      "porosity": 58,
+      "emission": 0
+    },
+    "sand": {
+      "baseHeight": 215,
+      "smoothness": 15,
+      "f0": 10,
+      "porosity": 64,
+      "emission": 0
+    },
+    "gravel": {
+      "baseHeight": 215,
+      "smoothness": 25,
+      "f0": 10,
+      "porosity": 40,
+      "emission": 0
+    },
+    "deepslate": {
+      "baseHeight": 210,
+      "smoothness": 45,
+      "f0": 10,
+      "porosity": 4,
+      "emission": 0
+    },
+    "clay": {
+      "baseHeight": 220,
+      "smoothness": 55,
+      "f0": 12,
+      "porosity": 20,
+      "emission": 0
+    },
+    "bedrock": {
+      "baseHeight": 200,
+      "smoothness": 30,
+      "f0": 10,
+      "porosity": 0,
+      "emission": 0
+    }
+  },
+  "patterns": [
+    {
+      "pattern": "*_ore",
+      "material": "stone"
+    },
+    {
+      "pattern": "*_planks",
+      "material": "oak_planks"
+    },
+    {
+      "pattern": "*_log*",
+      "material": "oak_planks"
+    },
+    {
+      "pattern": "*dirt*",
+      "material": "dirt"
+    },
+    {
+      "pattern": "*sand*",
+      "material": "sand"
+    },
+    {
+      "pattern": "*gravel*",
+      "material": "gravel"
+    },
+    {
+      "pattern": "*deepslate*",
+      "material": "deepslate"
+    }
+  ]
+}

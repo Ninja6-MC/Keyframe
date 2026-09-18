@@ -121,6 +121,11 @@ jobs:
       - name: Toroidal Tiling and Seam Audit
         run: npm run test:tiling
 
+      # Gates LabPBR 1.3 normal and specular companion map pipeline, channel packing,
+      # DirectX Y- conventions, 3x3 Sobel gradients, material optical rules, and pure Node PNG encoder (#186, #187).
+      - name: LabPBR 1.3 Pipeline Test Suite
+        run: npm run test:pbr
+
       # A WARNING, NOT A FAILURE, per the acceptance criterion on issue #58. The budget is
       # a design guardrail rather than a correctness property: a legitimately richer pack
       # can exceed it and should still be mergeable once someone has looked at it. Failing
