@@ -23,10 +23,11 @@
     "test:tiling-rules": "node tools/test/tiling-rules.test.mjs",
     "test:sync-studio": "node tools/test/sync-studio.test.mjs",
     "test:guardrails": "node tools/test/build-guardrails.test.mjs",
+    "test:soil-palette-3d": "node tools/test/soil-palette-3d.test.mjs",
     "test:animation": "node tools/test-animation-packager.mjs",
     "test:tiling": "node tools/test-tiling.mjs",
     "test:tiling:render": "node tools/test-tiling.mjs --render",
-    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test/base-sync.test.mjs && node tools/test/tiling-rules.test.mjs && node tools/test/sync-studio.test.mjs && node tools/test/build-guardrails.test.mjs && node tools/test-tiling.mjs"
+    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test/base-sync.test.mjs && node tools/test/tiling-rules.test.mjs && node tools/test/sync-studio.test.mjs && node tools/test/build-guardrails.test.mjs && node tools/test/soil-palette-3d.test.mjs && node tools/test-tiling.mjs"
   },
   "keywords": [
     "minecraft",
