@@ -110,6 +110,12 @@ jobs:
       - name: Soil Palette 3D Verification Test Suite
         run: npm run test:soil-palette-3d
 
+      # Gates LabPBR 1.3 normal and specular shaderpack calibration (Iris / Sodium /
+      # Complementary Reimagined BRDF evaluation, grazing normal relief, diamond
+      # specular highlight, metalness conductor tint, and unshadowed emission).
+      - name: Shader Calibration & Iris Verification Fixtures
+        run: npm run test:shader-fixtures
+
       # Gates periodic toroidal boundary continuity (zero seam discontinuity tolerance,
       # Δ = 0) across all non-exempt vector master textures on their defined axes.
       - name: Toroidal Tiling and Seam Audit
