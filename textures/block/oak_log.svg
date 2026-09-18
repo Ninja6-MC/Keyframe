@@ -11,26 +11,50 @@
   <!-- EXACT TRAILER BARK FURROWS (Trailer Reference #1d0a00)                    -->
   <!-- ========================================================================= -->
   <g id="trailer-oak-furrows" fill="#1d0a00">
+    <!-- Col 1 (x=32): Continuous vertical trunk furrow across Y=0/512 seam -->
     <rect x="32" y="0" width="32" height="160" />
-    <rect x="32" y="352" width="32" height="64" />
+    <rect x="32" y="352" width="32" height="160" />
+
+    <!-- Col 2 (x=64): Interior bark furrow -->
     <rect x="64" y="160" width="32" height="160" />
-    <rect x="64" y="416" width="32" height="96" />
+
+    <!-- Col 3 (x=96) -->
     <rect x="96" y="64" width="32" height="96" />
+
+    <!-- Col 5 (x=160): Continuous vertical trunk furrow across Y=0/512 seam -->
     <rect x="160" y="0" width="32" height="224" />
-    <rect x="160" y="320" width="32" height="96" />
+    <rect x="160" y="320" width="32" height="192" />
+
+    <!-- Col 6 (x=192) -->
     <rect x="192" y="192" width="32" height="128" />
+
+    <!-- Col 7 (x=224): Interior bark furrow -->
     <rect x="224" y="64" width="32" height="128" />
-    <rect x="224" y="320" width="32" height="192" />
+    <rect x="224" y="320" width="32" height="96" />
+
+    <!-- Col 9 (x=288): Continuous vertical trunk furrow across Y=0/512 seam -->
     <rect x="288" y="0" width="32" height="96" />
     <rect x="288" y="224" width="32" height="160" />
     <rect x="288" y="448" width="32" height="64" />
+
+    <!-- Col 11 (x=352) -->
     <rect x="352" y="64" width="32" height="128" />
     <rect x="352" y="288" width="32" height="192" />
+
+    <!-- Col 12 (x=384): Continuous vertical trunk furrow across Y=0/512 seam -->
     <rect x="384" y="0" width="32" height="128" />
     <rect x="384" y="448" width="32" height="64" />
+
+    <!-- Col 13 (x=416) -->
     <rect x="416" y="128" width="32" height="160" />
+
+    <!-- Col 14 (x=448) -->
     <rect x="448" y="288" width="32" height="96" />
-    <rect x="480" y="0" width="32" height="128" />
-    <rect x="480" y="480" width="32" height="32" />
+
+    <!-- Toroidal Seam Wrap: Boundary Furrow (X=0/512 wrap) -->
+    <rect x="-16" y="0" width="32" height="128" />
+    <rect x="496" y="0" width="32" height="128" />
+    <rect x="-16" y="480" width="32" height="32" />
+    <rect x="496" y="480" width="32" height="32" />
   </g>
 </svg>
