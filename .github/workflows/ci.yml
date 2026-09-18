@@ -82,9 +82,8 @@ jobs:
         run: npm run test:base-sync
 
       # Gates the matcher that decides which axes each master is audited on. It is its own
-      # step rather than riding on the audit below because the audit is advisory: a broken
-      # matcher would silently re-categorize masters and `continue-on-error` would swallow
-      # it. This step is blocking, so an over-broad exempt rule - one that quietly excuses
+      # step rather than riding on the audit below so a matcher regression isolates immediately
+      # from an asset seam defect. An over-broad exempt rule - one that quietly excuses
       # a real terrain block from the seam audit - fails the pull request.
       - name: Tiling Rules Matcher Test Suite
         run: npm run test:tiling-rules
@@ -99,17 +98,9 @@ jobs:
       - name: TextureStudio Sync Test Suite
         run: npm run test:sync-studio
 
-      # ADVISORY, NOT A GATE, and that is deliberate rather than an oversight. As of this
-      # commit the seam audit fails on `main` for 15 of the 30 committed masters: the
-      # textures authored so far predate the harness that measures them. Making it
-      # blocking today would red every pull request over debt none of them introduced,
-      # and a check that is always red is a check nobody reads.
-      #
-      # It still runs, and its findings are printed and annotated on every pull request,
-      # which is what the authoring guidance in CONTRIBUTING.md asks a contributor to
-      # look at. Flip `continue-on-error` off once the committed masters pass it.
-      - name: Toroidal Tiling and Seam Audit (advisory)
-        continue-on-error: true
+      # Gates periodic toroidal boundary continuity (zero seam discontinuity tolerance,
+      # Δ = 0) across all non-exempt vector master textures on their defined axes.
+      - name: Toroidal Tiling and Seam Audit
         run: npm run test:tiling
 
       # A WARNING, NOT A FAILURE, per the acceptance criterion on issue #58. The budget is
