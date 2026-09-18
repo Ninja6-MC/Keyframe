@@ -55,12 +55,22 @@
 
   <!-- 2. Raised Silky Silt Swells -->
   <g id="light_bumps">
-    <use href="#bump" x="192" y="0" />
-    <use href="#bump" x="0" y="32" />
+    <!-- Seam-Wrapped Bump at X=192 (Top/Bottom Y-Seam) -->
+    <use href="#bump" x="192" y="-16" />
+    <use href="#bump" x="192" y="496" />
+
+    <!-- Seam-Wrapped Bump at Y=32 (Left/Right X-Seam) -->
+    <use href="#bump" x="-16" y="32" />
+    <use href="#bump" x="496" y="32" />
+
+    <!-- Seam-Wrapped Oblong Bump at Y=288 (Left/Right X-Seam) -->
+    <use href="#bump_oblong" x="-32" y="288" />
+    <use href="#bump_oblong" x="480" y="288" />
+
+    <!-- Interior Bumps -->
     <use href="#bump_oblong" x="128" y="128" />
     <use href="#bump" x="352" y="192" />
     <use href="#bump" x="224" y="256" />
-    <use href="#bump_oblong" x="448" y="288" />
     <use href="#bump" x="96" y="384" />
     <use href="#bump" x="288" y="416" />
     <use href="#bump" x="416" y="448" />
@@ -68,6 +78,7 @@
 
   <!-- 3. Soft Recessed Hollow Dimples -->
   <g id="soft_holes">
+    <!-- Interior Holes -->
     <use href="#hole" x="160" y="32" />
     <use href="#hole_oblong" x="224" y="96" />
     <use href="#hole" x="448" y="96" />
@@ -76,15 +87,9 @@
     <use href="#hole" x="32" y="256" />
     <use href="#hole_oblong" x="256" y="320" />
     <use href="#hole" x="320" y="448" />
-    <use href="#hole" x="448" y="480" />
+
+    <!-- Seam-Wrapped Hole at X=448 (Top/Bottom Y-Seam) -->
+    <use href="#hole" x="448" y="-16" />
+    <use href="#hole" x="448" y="496" />
   </g>
-
-  <!-- ==================== TOROIDAL SEAM WRAPPING ==================== -->
-  <!-- Top/Bottom Seam Wrap -->
-  <use href="#bump" x="192" y="512" />
-  <use href="#hole" x="448" y="-32" />
-
-  <!-- Left/Right Seam Wrap -->
-  <use href="#bump_oblong" x="-64" y="288" />
-  <use href="#bump" x="512" y="32" />
 </svg>
