@@ -37,6 +37,7 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   vector masters.
 
 ### Changed
+- Converted the Toroidal Tiling and Seam Audit in CI into a blocking gate after eliminating all legacy seam debt (#206).
 - Soil palette revised to **Balanced Warm Umber** across `dirt`, `grass_block_side`,
   `dirt_path_top` and `dirt_path_side`. Base soil moves `#d98827` → `#c77d38`: the
   lightness ladder of every soil role is held exactly, so clod and bevel relief contrast
