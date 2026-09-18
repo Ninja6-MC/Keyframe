@@ -25,6 +25,57 @@ const DIST_DIR = path.join(ROOT_DIR, "dist");
 
 const ALLOWED_ASSET_EXTS = new Set([".png", ".mcmeta", ".json"]);
 
+export const VALID_TEXTURE_CATEGORIES = new Set([
+  "block",
+  "item",
+  "gui",
+  "particle",
+  "entity",
+  "environment",
+  "font",
+  "map",
+  "misc",
+  "mob_effect",
+  "models",
+  "painting"
+]);
+
+export class LooseSvgMasterError extends Error {
+  constructor(looseFiles) {
+    const fileList = looseFiles.map((f) => `  - textures/${f}`).join("\n");
+    const categoriesList = Array.from(VALID_TEXTURE_CATEGORIES)
+      .map((c) => `  - textures/${c}/`)
+      .join("\n");
+    super(
+      `Loose SVG master(s) detected in root textures directory:\n${fileList}\n\n` +
+      `Vector masters must be organized into valid category subdirectories:\n${categoriesList}\n\n` +
+      `Placing SVG files directly in textures/ compiles to assets/minecraft/textures/<name>.png, ` +
+      `which vanilla Minecraft ignores.`
+    );
+    this.name = "LooseSvgMasterError";
+    this.looseFiles = looseFiles;
+  }
+}
+
+/**
+ * Validates that no loose SVG masters sit directly in the root textures directory.
+ * Throws LooseSvgMasterError if any root-level SVGs are detected.
+ */
+export function assertNoLooseTextures(dir = TEXTURES_DIR) {
+  if (!fs.existsSync(dir)) return [];
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const looseFiles = [];
+  for (const entry of entries) {
+    if (entry.isFile() && path.extname(entry.name).toLowerCase() === ".svg") {
+      looseFiles.push(entry.name);
+    }
+  }
+  if (looseFiles.length > 0) {
+    throw new LooseSvgMasterError(looseFiles);
+  }
+  return looseFiles;
+}
+
 /**
  * Creates a clean POSIX zip archive using pure Node.js (cross-platform Linux/Win/macOS)
  */
@@ -198,6 +249,10 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
     );
   }
 
+  // 1c. Loose texture master guardrail. Prevent root-level SVGs from compiling to
+  // assets/minecraft/textures/<name>.png which vanilla Minecraft ignores.
+  assertNoLooseTextures(TEXTURES_DIR);
+
   // 2. High-Speed Multi-Threaded Rust Resvg Rasterization with Directory Mirroring & Palette Injection
   const palette = loadPalette(paletteName, options.override || null);
   const textureFiles = getAllTextureFiles(TEXTURES_DIR);
@@ -321,7 +376,6 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
   const smallPlatePng = path.join(ROOT_DIR, "docs", "assets", "icon-small-plate-128.png");
   const smallPlateSvg = path.join(ROOT_DIR, "docs", "assets", "icon-small-plate.svg");
   const grassBlockTopSvg = path.join(TEXTURES_DIR, "block", "grass_block_top.svg");
-  const grassBlockTopSvgFallback = path.join(TEXTURES_DIR, "grass_block_top.svg");
 
   if (fs.existsSync(smallPlatePng)) {
     fs.copyFileSync(smallPlatePng, packIconDest);
@@ -332,9 +386,6 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
   } else if (fs.existsSync(grassBlockTopSvg)) {
     await rasterizeSvg(grassBlockTopSvg, packIconDest, 128);
     console.log("[4/5] Generated pack.png from textures/block/grass_block_top.svg (128×128 fallback)");
-  } else if (fs.existsSync(grassBlockTopSvgFallback)) {
-    await rasterizeSvg(grassBlockTopSvgFallback, packIconDest, 128);
-    console.log("[4/5] Generated pack.png from textures/grass_block_top.svg (128×128 fallback)");
   }
 
   // 5. Package into clean Minecraft-compliant .ZIP (pure Node.js archiver)
