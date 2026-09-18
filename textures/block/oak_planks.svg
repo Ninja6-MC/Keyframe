@@ -11,43 +11,46 @@
   <!-- WOOD KNOTS & GRAIN ACCENTS (Bare Bones Accent #967441)                    -->
   <!-- ========================================================================= -->
   <g id="plank-knots-and-accents" fill="#967441">
-    <!-- Plank 1 Accents (Y = 0..96) -->
-    <rect x="96" y="32" width="32" height="32" />
-    <rect x="256" y="64" width="32" height="32" />
-    <rect x="480" y="0" width="32" height="96" />
+    <!-- Plank 1 Accents (Y = 16..112) -->
+    <rect x="96" y="48" width="32" height="32" />
+    <rect x="256" y="80" width="32" height="32" />
+    <rect x="-16" y="16" width="32" height="96" />
+    <rect x="496" y="16" width="32" height="96" />
 
-    <!-- Plank 2 Accents (Y = 128..224) -->
-    <rect x="64" y="160" width="32" height="32" />
-    <rect x="224" y="128" width="32" height="96" />
-    <rect x="320" y="192" width="32" height="32" />
-    <rect x="352" y="128" width="32" height="32" />
+    <!-- Plank 2 Accents (Y = 144..240) -->
+    <rect x="64" y="176" width="32" height="32" />
+    <rect x="224" y="144" width="32" height="96" />
+    <rect x="320" y="208" width="32" height="32" />
+    <rect x="352" y="144" width="32" height="32" />
 
-    <!-- Plank 3 Accents (Y = 256..352) -->
-    <rect x="160" y="256" width="32" height="32" />
-    <rect x="192" y="320" width="32" height="32" />
-    <rect x="352" y="288" width="32" height="32" />
-    <rect x="480" y="256" width="32" height="96" />
+    <!-- Plank 3 Accents (Y = 272..368) -->
+    <rect x="160" y="272" width="32" height="32" />
+    <rect x="192" y="336" width="32" height="32" />
+    <rect x="352" y="304" width="32" height="32" />
+    <rect x="-16" y="272" width="32" height="96" />
+    <rect x="496" y="272" width="32" height="96" />
 
-    <!-- Plank 4 Accents (Y = 384..480) -->
-    <rect x="64" y="416" width="32" height="32" />
-    <rect x="224" y="384" width="32" height="96" />
-    <rect x="288" y="384" width="32" height="32" />
+    <!-- Plank 4 Accents (Y = 400..496) -->
+    <rect x="64" y="432" width="32" height="32" />
+    <rect x="224" y="400" width="32" height="96" />
+    <rect x="288" y="400" width="32" height="32" />
   </g>
 
   <!-- ========================================================================= -->
   <!-- DARK HORIZONTAL SEAMS (Bare Bones Groove #67502c, 1 texel = 32px height)  -->
   <!-- ========================================================================= -->
   <g id="plank-grooves" fill="#67502c">
-    <!-- Groove 1 (Y = 96..128) -->
-    <rect x="0" y="96" width="512" height="32" />
+    <!-- Boundary Groove (Top/Bottom Y=0/512 wrap) -->
+    <rect x="0" y="-16" width="512" height="32" />
+    <rect x="0" y="496" width="512" height="32" />
 
-    <!-- Groove 2 (Y = 224..256) -->
-    <rect x="0" y="224" width="512" height="32" />
+    <!-- Groove 1 (Y = 112..144) -->
+    <rect x="0" y="112" width="512" height="32" />
 
-    <!-- Groove 3 (Y = 352..384) -->
-    <rect x="0" y="352" width="512" height="32" />
+    <!-- Groove 2 (Y = 240..272) -->
+    <rect x="0" y="240" width="512" height="32" />
 
-    <!-- Groove 4 (Y = 480..512) -->
-    <rect x="0" y="480" width="512" height="32" />
+    <!-- Groove 3 (Y = 368..400) -->
+    <rect x="0" y="368" width="512" height="32" />
   </g>
 </svg>
