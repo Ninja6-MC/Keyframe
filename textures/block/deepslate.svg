@@ -9,9 +9,10 @@
     <rect x="448" y="8" width="64" height="32" fill="#202127" opacity="0.95" />
     <rect x="0" y="40" width="32" height="32" fill="#202127" opacity="0.95" />
     <rect x="256" y="40" width="128" height="32" fill="#202127" opacity="0.95" />
-    <rect x="448" y="40" width="32" height="32" fill="#202127" opacity="0.95" />
+    <rect x="480" y="40" width="32" height="32" fill="#202127" opacity="0.95" />
     <rect x="0" y="72" width="224" height="32" fill="#202127" opacity="0.95" />
-    <rect x="32" y="104" width="128" height="32" fill="#202127" opacity="0.95" />
+    <rect x="448" y="72" width="64" height="32" fill="#202127" opacity="0.95" />
+    <rect x="0" y="104" width="160" height="32" fill="#202127" opacity="0.95" />
     <rect x="256" y="104" width="256" height="32" fill="#202127" opacity="0.95" />
     <rect x="64" y="136" width="64" height="32" fill="#202127" opacity="0.95" />
     <rect x="224" y="136" width="256" height="32" fill="#202127" opacity="0.95" />
@@ -42,8 +43,9 @@
     <rect x="160" y="424" width="128" height="32" fill="#202127" opacity="0.95" />
     <rect x="0" y="456" width="160" height="32" fill="#202127" opacity="0.95" />
     <rect x="288" y="456" width="224" height="32" fill="#202127" opacity="0.95" />
-    <rect x="0" y="488" width="224" height="32" fill="#202127" opacity="0.95" />
-    <rect x="256" y="488" width="256" height="32" fill="#202127" opacity="0.95" />
+    <rect x="0" y="488" width="192" height="32" fill="#202127" opacity="0.95" />
+    <rect x="256" y="488" width="160" height="32" fill="#202127" opacity="0.95" />
+    <rect x="448" y="488" width="64" height="32" fill="#202127" opacity="0.95" />
   </g>
 
   <!-- Clean Metamorphic Strata Plates (Authentic #646464) -->
@@ -53,9 +55,10 @@
     <rect x="448" y="0" width="64" height="32" fill="#646464" />
     <rect x="0" y="32" width="32" height="32" fill="#646464" />
     <rect x="256" y="32" width="128" height="32" fill="#646464" />
-    <rect x="448" y="32" width="32" height="32" fill="#646464" />
+    <rect x="480" y="32" width="32" height="32" fill="#646464" />
     <rect x="0" y="64" width="224" height="32" fill="#646464" />
-    <rect x="32" y="96" width="128" height="32" fill="#646464" />
+    <rect x="448" y="64" width="64" height="32" fill="#646464" />
+    <rect x="0" y="96" width="160" height="32" fill="#646464" />
     <rect x="256" y="96" width="256" height="32" fill="#646464" />
     <rect x="64" y="128" width="64" height="32" fill="#646464" />
     <rect x="224" y="128" width="256" height="32" fill="#646464" />
@@ -86,7 +89,8 @@
     <rect x="160" y="416" width="128" height="32" fill="#646464" />
     <rect x="0" y="448" width="160" height="32" fill="#646464" />
     <rect x="288" y="448" width="224" height="32" fill="#646464" />
-    <rect x="0" y="480" width="224" height="32" fill="#646464" />
-    <rect x="256" y="480" width="256" height="32" fill="#646464" />
+    <rect x="0" y="480" width="192" height="32" fill="#646464" />
+    <rect x="256" y="480" width="160" height="32" fill="#646464" />
+    <rect x="448" y="480" width="64" height="32" fill="#646464" />
   </g>
 </svg>
