@@ -104,6 +104,12 @@ jobs:
       - name: Compiler Guardrails Test Suite
         run: npm run test:guardrails
 
+      # Gates the Balanced Warm Umber soil palette color contracts, relative Rec.709
+      # luminance separations, toroidal seam integrity, grass side overlay transparency,
+      # and portable TextureStudio 3D multiblock preset compatibility (#201).
+      - name: Soil Palette 3D Verification Test Suite
+        run: npm run test:soil-palette-3d
+
       # Gates periodic toroidal boundary continuity (zero seam discontinuity tolerance,
       # Δ = 0) across all non-exempt vector master textures on their defined axes.
       - name: Toroidal Tiling and Seam Audit
