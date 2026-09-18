@@ -15,6 +15,7 @@ import {
   compileAllVariations
 } from "./lib/palette-injector.mjs";
 import { assertBaseSync } from "./lib/base-sync.mjs";
+import { generatePbrMaps } from "./lib/pbr-generator.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -185,6 +186,7 @@ async function rasterizeSvg(srcSvgOrText, destPngPath, size) {
     }
   });
   fs.writeFileSync(destPngPath, rendered.asPng());
+  return rendered;
 }
 
 /**
@@ -192,6 +194,7 @@ async function rasterizeSvg(srcSvgOrText, destPngPath, size) {
  */
 export async function buildResourcePack(targetRes = 512, options = {}) {
   const deploy = Boolean(options.deploy);
+  const pbr = Boolean(options.pbr);
   const paletteName = options.palette || "trailer";
   const rawConcurrency = typeof options.concurrency === "number" && !isNaN(options.concurrency) && options.concurrency > 0
     ? options.concurrency
@@ -202,6 +205,7 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
   console.log("  Keyframe Resource Pack Compiler");
   console.log("  Target Resolution: " + targetRes + "×" + targetRes);
   console.log("  Palette Baseline:  " + paletteName);
+  if (pbr) console.log("  LabPBR 1.3 Pipeline: Enabled");
   if (deploy) console.log("  Auto-Deploy: Enabled");
   console.log("======================================================\n");
 
@@ -283,17 +287,31 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
         });
 
         for (const v of variations) {
+          const varStem = v.filename.replace(/\.svg$/, "");
           const destPng = path.join(targetDir, v.filename.replace(/\.svg$/, ".png"));
-          await rasterizeSvg(v.svg, destPng, targetRes);
+          const renderedVar = await rasterizeSvg(v.svg, destPng, targetRes);
+          if (pbr) {
+            const pbrMaps = generatePbrMaps(varStem, renderedVar.pixels, targetRes, targetRes);
+            fs.writeFileSync(path.join(targetDir, varStem + "_n.png"), pbrMaps.normalMap);
+            fs.writeFileSync(path.join(targetDir, varStem + "_s.png"), pbrMaps.specularMap);
+          }
         }
 
+        const pbrSuffix = pbr ? " (+LabPBR _n/_s)" : "";
         const relLog = path.join(relDir === "." ? "" : relDir, stem + " [16 variations]").replace(/\\/g, "/");
-        return "  ✓ " + relLog + " (palette-injected)";
+        return "  ✓ " + relLog + " (palette-injected)" + pbrSuffix;
       } else if (file.ext === ".svg") {
         const stem = path.basename(file.name, ".svg");
         const destPng = path.join(targetDir, stem + ".png");
-        await rasterizeSvg(file.fullPath, destPng, targetRes);
+        const rendered = await rasterizeSvg(file.fullPath, destPng, targetRes);
         const relLog = path.join(relDir === "." ? "" : relDir, stem + ".png").replace(/\\/g, "/");
+
+        const isOverlay = stem.endsWith("_overlay") || file.relPath.includes("_overlay");
+        if (pbr && !isOverlay) {
+          const pbrMaps = generatePbrMaps(stem, rendered.pixels, targetRes, targetRes);
+          fs.writeFileSync(path.join(targetDir, stem + "_n.png"), pbrMaps.normalMap);
+          fs.writeFileSync(path.join(targetDir, stem + "_s.png"), pbrMaps.specularMap);
+        }
 
         // Check companion .mcmeta files next to this SVG
         const companionInfo = findCompanionMcmeta(file.fullPath, path.dirname(file.fullPath));
@@ -320,7 +338,8 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
           aliasesToCopy.push({ src: destPng, dest: path.join(targetDir, "grass_2.png"), label: grassRel, stem });
         }
 
-        return "  ✓ " + relLog;
+        const pbrSuffix = pbr && !isOverlay ? " (+LabPBR _n/_s)" : "";
+        return "  ✓ " + relLog + pbrSuffix;
       } else {
         // Direct mirror for non-SVG texture assets (.mcmeta, .png, .json)
         const destFile = path.join(targetDir, file.name);
@@ -346,6 +365,21 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
     if (fs.existsSync(sourceMcmeta)) {
       fs.copyFileSync(sourceMcmeta, alias.dest + ".mcmeta");
       console.log("    + " + alias.label + ".mcmeta (alias metadata)");
+    }
+
+    if (pbr) {
+      const srcNormal = alias.src.replace(/\.png$/, "_n.png");
+      const destNormal = alias.dest.replace(/\.png$/, "_n.png");
+      if (fs.existsSync(srcNormal)) {
+        fs.copyFileSync(srcNormal, destNormal);
+        console.log("    + " + alias.label.replace(/\.png$/, "_n.png") + " (alias normal)");
+      }
+      const srcSpec = alias.src.replace(/\.png$/, "_s.png");
+      const destSpec = alias.dest.replace(/\.png$/, "_s.png");
+      if (fs.existsSync(srcSpec)) {
+        fs.copyFileSync(srcSpec, destSpec);
+        console.log("    + " + alias.label.replace(/\.png$/, "_s.png") + " (alias specular)");
+      }
     }
   }
 
@@ -441,7 +475,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const isAll = args.includes("--all");
   const isDeploy = args.includes("--deploy");
-  const options = { deploy: isDeploy };
+  const isPbr = args.includes("--pbr");
+  const options = { deploy: isDeploy, pbr: isPbr };
 
   let concurrency;
   const concurrencyIdx = args.indexOf("--concurrency");
