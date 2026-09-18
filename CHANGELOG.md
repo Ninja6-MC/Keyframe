@@ -13,6 +13,10 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ## [Unreleased]
 
 ### Added
+- Compiler guardrail against loose root SVG masters: `tools/build.mjs` enforces that all
+  vector masters sit in valid category subdirectories (`textures/block/`, `textures/item/`,
+  etc.) before rasterization, failing the build if root-level SVGs are detected. Excised
+  obsolete root-level grass block pack icon fallback (#226).
 - Shared-base contract enforcement for ore masters: `tools/base-sync.json` registers each
   base master and its derivatives, `tools/lib/base-sync.mjs` verifies that the striation
   groove definitions (including every corner radius `rx`) and the `stone_base` placement

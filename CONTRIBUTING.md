@@ -99,7 +99,7 @@ touches nothing else in that repository.
 
 ## 🎨 Vector Texture Authoring Guidelines
 
-All textures in Keyframe are authored as pure vector SVG files in `textures/`.
+All textures in Keyframe are authored as pure vector SVG files organized into category subdirectories under `textures/` (such as `textures/block/`, `textures/item/`, `textures/gui/`, and `textures/particle/`). Root-level SVGs sitting directly in `textures/` are strictly prohibited and rejected by compiler guardrails.
 
 ### 1. Canvas & Grid Alignment
 * **Canvas Size**: Every texture must use a $512\times512$ viewport:
@@ -247,7 +247,7 @@ When feedback or review comments are received on an open pull request:
 
 Before submitting a pull request, please verify:
 
-- [ ] All new textures are authored in `textures/` (e.g., `textures/block/*.svg`, `textures/item/*.svg`) at $512\times512$.
+- [ ] All new textures are authored in category subdirectories under `textures/` (e.g., `textures/block/*.svg`, `textures/item/*.svg`, `textures/gui/*.svg`, `textures/particle/*.svg`) at $512\times512$, with zero loose SVGs at the `textures/` root.
 - [ ] Seamless tiling passes zero-discontinuity check with `npm run test:tiling`.
 - [ ] Ores share the identical base stone background as `stone.svg`, and any new ore is registered in `tools/base-sync.json` (`npm run test:base-sync`).
 - [ ] Pack compiles cleanly with `npm run build`.

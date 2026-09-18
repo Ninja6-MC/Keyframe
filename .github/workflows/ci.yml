@@ -98,6 +98,12 @@ jobs:
       - name: TextureStudio Sync Test Suite
         run: npm run test:sync-studio
 
+      # Gates against root-level loose SVG masters in textures/ and verifies that masters
+      # are organized into valid category subdirectories. Also audits that legacy fallbacks
+      # are completely excised and compiler gate execution occurs before rasterization.
+      - name: Compiler Guardrails Test Suite
+        run: npm run test:guardrails
+
       # Gates periodic toroidal boundary continuity (zero seam discontinuity tolerance,
       # Δ = 0) across all non-exempt vector master textures on their defined axes.
       - name: Toroidal Tiling and Seam Audit
