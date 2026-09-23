@@ -45,9 +45,23 @@ function loadRules() {
       { pattern: "*_side.svg", category: "x-only" },
       { pattern: "*_overlay.svg", category: "exempt" },
       { pattern: "short_grass*.svg", category: "exempt" },
-      { pattern: "tall_grass_*.svg", category: "exempt" }
+      { pattern: "tall_grass_*.svg", category: "exempt" },
+      { pattern: "grass.svg", category: "exempt" }
     ],
-    itemIds: ["cooked_beef", "golden_apple", "compass_nexus", "plot_compass", "spiral_core", "ninja6_token"],
+    itemIds: [
+      "cooked_beef", "golden_apple", "compass_nexus", "plot_compass", "spiral_core", "ninja6_token",
+      "wooden_sword", "wooden_pickaxe", "wooden_axe", "wooden_shovel", "wooden_hoe",
+      "stone_sword", "stone_pickaxe", "stone_axe", "stone_shovel", "stone_hoe",
+      "iron_sword", "iron_pickaxe", "iron_axe", "iron_shovel", "iron_hoe",
+      "golden_sword", "golden_pickaxe", "golden_axe", "golden_shovel", "golden_hoe",
+      "diamond_sword", "diamond_pickaxe", "diamond_axe", "diamond_shovel", "diamond_hoe",
+      "netherite_sword", "netherite_pickaxe", "netherite_axe", "netherite_shovel", "netherite_hoe",
+      "bow", "bow_pulling_0", "bow_pulling_1", "bow_pulling_2",
+      "crossbow_standby", "crossbow_pulling_0", "crossbow_pulling_1", "crossbow_pulling_2",
+      "crossbow_arrow", "crossbow_firework",
+      "shield_base", "shield_base_nopattern", "trident", "mace",
+      "golden_carrot", "baked_potato", "bread", "apple", "cooked_porkchop"
+    ],
     overrides: {}
   };
 }
@@ -100,7 +114,10 @@ export function categorizeTexture(filename, rules, axisOverride = null) {
   // this function is exported and the CLI's `--texture` path can carry a directory, so
   // normalize once here rather than trusting every caller to have stripped it.
   const base = basenameOf(filename);
-  const stem = base.replace(/\.svg$/i, "");
+  // Patterns are written against `<stem>.svg`, so a `.png`, upper-case or extensionless
+  // id is rebuilt from its stem and resolves exactly as its `.svg` master does.
+  const stem = base.replace(/\.(svg|png)$/i, "");
+  const nameWithExt = stem + ".svg";
 
   if (axisOverride) {
     const axes = axisOverride.toLowerCase() === "x" ? ["x"] :
@@ -115,8 +132,8 @@ export function categorizeTexture(filename, rules, axisOverride = null) {
   }
 
   // 1. Explicit overrides
-  if (rules.overrides && (rules.overrides[filename] || rules.overrides[base])) {
-    const ovr = rules.overrides[filename] || rules.overrides[base];
+  if (rules.overrides && (rules.overrides[filename] || rules.overrides[base] || rules.overrides[nameWithExt] || rules.overrides[stem])) {
+    const ovr = rules.overrides[filename] || rules.overrides[base] || rules.overrides[nameWithExt] || rules.overrides[stem];
     const catConfig = rules.categories[ovr.category] || { testAxes: ["x", "y"], tolerance: 0 };
     return {
       category: ovr.category,
@@ -139,7 +156,7 @@ export function categorizeTexture(filename, rules, axisOverride = null) {
   // 3. Glob patterns
   if (rules.patterns) {
     for (const pat of rules.patterns) {
-      if (matchGlob(base, pat.pattern)) {
+      if (matchGlob(nameWithExt, pat.pattern)) {
         const catConfig = rules.categories[pat.category] || { testAxes: [], tolerance: 0 };
         return {
           category: pat.category,
@@ -160,6 +177,14 @@ export function categorizeTexture(filename, rules, axisOverride = null) {
     tolerance: defConfig.tolerance ?? 0,
     reason: "Default toroidal full-block surface"
   };
+}
+
+/**
+ * Resolves a texture identifier or filename directly to its tiling category name
+ * ('toroidal', 'x-only', 'y-only', 'exempt').
+ */
+export function resolveTilingCategory(filename, rules) {
+  return categorizeTexture(filename, rules).category;
 }
 
 // --------------------------------------------------------------------------
