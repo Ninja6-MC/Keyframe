@@ -8,7 +8,7 @@
  * 2. Absolute prohibition of editor namespaces (xmlns:inkscape, xmlns:sodipodi, xmlns:illustrator).
  * 3. Absolute prohibition of embedded raster images (<image>, and <feImage> with a
  *    non-fragment href).
- * 4. Referential integrity for clipPath definitions and url(#id) references,
+ * 4. Referential integrity for clipPath definitions, url(#id) and href="#id" references,
  *    preventing silent @resvg/resvg-js rendering bugs and missing layer artifacts.
  */
 
@@ -77,15 +77,19 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
   const errors = [];
   const clean = stripComments(svgContent);
 
+  // SVG is XML and case-sensitive: resvg ignores `viewbox=`, `ID=` and `<clippath>`, so
+  // element and attribute names below are matched exactly. Attribute names are anchored
+  // on preceding whitespace so `data-viewBox=` or `data-id=` never count.
+
   // 1. Root <svg> element and viewBox verification
-  const rootSvgMatch = clean.match(/<svg\b([^>]*)>/i);
+  const rootSvgMatch = clean.match(/<svg\b([^>]*)>/);
   if (!rootSvgMatch) {
     errors.push(`${filePath}: Missing <svg> root element`);
     return { ok: false, errors };
   }
 
   const svgAttrs = rootSvgMatch[1];
-  const viewBoxMatch = svgAttrs.match(/\bviewBox\s*=\s*(["'])(.*?)\1/i);
+  const viewBoxMatch = svgAttrs.match(/(?:^|\s)viewBox\s*=\s*(["'])(.*?)\1/);
   if (!viewBoxMatch) {
     errors.push(`${filePath}: Missing viewBox attribute (viewBox must be exactly "${REQUIRED_VIEWBOX}")`);
   } else {
@@ -125,11 +129,9 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
     }
   }
 
-  // 4. ClipPath and url(#id) referential integrity
-  // Anchored on preceding whitespace so attributes such as data-id="..." are not
-  // mistaken for id declarations.
+  // 4. ClipPath, url(#id) and href="#id" referential integrity
   const definedIds = new Set();
-  const idRegex = /(?:^|\s)id\s*=\s*(["'])(.*?)\1/gi;
+  const idRegex = /(?:^|\s)id\s*=\s*(["'])(.*?)\1/g;
   let idMatch;
   while ((idMatch = idRegex.exec(clean)) !== null) {
     const id = idMatch[2].trim();
@@ -140,11 +142,11 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
 
   // Inspect <clipPath> definitions
   const clipPathIds = new Set();
-  const clipPathRegex = /<clipPath\b([^>]*)>/gi;
+  const clipPathRegex = /<clipPath\b([^>]*)>/g;
   let cpMatch;
   while ((cpMatch = clipPathRegex.exec(clean)) !== null) {
     const attrs = cpMatch[1];
-    const clipIdMatch = attrs.match(/(?:^|\s)id\s*=\s*(["'])(.*?)\1/i);
+    const clipIdMatch = attrs.match(/(?:^|\s)id\s*=\s*(["'])(.*?)\1/);
     if (!clipIdMatch || !clipIdMatch[2].trim()) {
       errors.push(`${filePath}: <clipPath> element is missing required "id" attribute`);
     } else {
@@ -152,13 +154,31 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
     }
   }
 
-  // Inspect url(#id) references across all attributes and style declarations
+  // Inspect url(#id) references across all attributes and style declarations.
+  // Editors write quotes inside attribute values as &quot;/&apos;, so decode them first.
+  // resvg 2.6 does not resolve a quoted url('#id') at all (fill falls back to black,
+  // clip-path/mask/filter are dropped), so any quoted form is rejected outright.
+  const urlSource = clean.replace(/&quot;|&#0*34;|&#x0*22;/gi, '"').replace(/&apos;|&#0*39;|&#x0*27;/gi, "'");
   const urlRegex = /url\(\s*(["']?)#([^\s)"']+)\1\s*\)/gi;
   let urlMatch;
-  while ((urlMatch = urlRegex.exec(clean)) !== null) {
+  while ((urlMatch = urlRegex.exec(urlSource)) !== null) {
     const refId = urlMatch[2].trim();
+    if (urlMatch[1]) {
+      errors.push(`${filePath}: Quoted reference ${urlMatch[0]} is not resolved by resvg (write url(#${refId}) without quotes)`);
+    }
     if (!definedIds.has(refId)) {
       errors.push(`${filePath}: Missing referenced ID "${refId}" in url(#${refId}) (element with id="${refId}" does not exist in file)`);
+    }
+  }
+
+  // Inspect same-document href="#id" / xlink:href="#id" references (<use>, gradient and
+  // pattern template links, <feImage>); resvg silently drops an unresolved one.
+  const hrefRegex = /(?:^|\s)(?:xlink:)?href\s*=\s*(["'])\s*#(.*?)\1/g;
+  let hrefMatch;
+  while ((hrefMatch = hrefRegex.exec(clean)) !== null) {
+    const refId = hrefMatch[2].trim();
+    if (!definedIds.has(refId)) {
+      errors.push(`${filePath}: Missing referenced ID "${refId}" in href="#${refId}" (element with id="${refId}" does not exist in file)`);
     }
   }
 
@@ -254,7 +274,7 @@ export function runCli() {
     console.log(`        - viewBox: ${REQUIRED_VIEWBOX}`);
     console.log(`        - Editor namespaces: None`);
     console.log(`        - Embedded raster images: None`);
-    console.log(`        - ClipPath and url(#id) references: Fully verified\n`);
+    console.log(`        - ClipPath, url(#id) and href="#id" references: Fully verified\n`);
     process.exit(0);
   } else {
     console.error(`❌ FAIL: Vector master linter detected ${result.errors.length} error(s) across ${result.filesChecked} file(s):\n`);

@@ -110,7 +110,7 @@ All textures in Keyframe are authored as pure vector SVG files organized into ca
   * In Minecraft's default texel grid ($16\times16$), each pixel corresponds to **$32\text{px}$** on the $512\times512$ SVG canvas ($512 / 16 = 32$).
   * Align primary shapes, strata, and blocks to $32\text{px}$ multiples ($0, 32, 64, 96, 128, 160, \dots$).
   * Avoid unintended fractional or sub-pixel coordinates (e.g., $Y=144$ or $Y=208$ which are $4.5\times$ or $6.5\times 32\text{px}$) unless intentionally crafting sub-pixel bevels.
-* **Clean Masters (Machine-Enforced)**: Masters must carry no editor residue (`xmlns:inkscape`, `xmlns:sodipodi`, `xmlns:illustrator`, `<sodipodi:namedview>` and similar), no embedded rasters (`<image>`, or `<feImage>` pointing at a file or data URI), every `<clipPath>` must have an `id`, and every `url(#id)` reference must resolve within the file. The canvas size above and these rules are checked by the vector master linter, which also runs in `npm test` and CI:
+* **Clean Masters (Machine-Enforced)**: Masters must carry no editor residue (`xmlns:inkscape`, `xmlns:sodipodi`, `xmlns:illustrator`, `<sodipodi:namedview>` and similar), no embedded rasters (`<image>`, or `<feImage>` pointing at a file or data URI), every `<clipPath>` must have an `id`, and every `url(#id)` and `href="#id"` reference must resolve within the file. Element and attribute names are case-sensitive (`viewBox`, `id`, `<clipPath>`), and `url()` references must be unquoted, because resvg ignores the other forms. The canvas size above and these rules are checked by the vector master linter, which also runs in `npm test` and CI:
   ```bash
   npm run lint:svg
   ```

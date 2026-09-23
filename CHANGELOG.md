@@ -17,7 +17,9 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   every SVG under `textures/` for a `viewBox` of exactly `0 0 512 512`, no Inkscape,
   Sodipodi or Illustrator namespaces or editor elements, no embedded rasters (`<image>`,
   or `<feImage>` pointing outside the document), and that every `<clipPath>` has an `id`
-  and every `url(#id)` reference resolves. It runs in `npm test` and CI, with its own
+  and every `url(#id)` and `href="#id"` reference resolves. Names are matched
+  case-sensitively and quoted `url('#id')` forms are rejected, as resvg ignores both. It
+  runs in `npm test` and CI, with its own
   suite in `tools/test/vector-linter.test.mjs`.
 - Compiler guardrail against loose root SVG masters: `tools/build.mjs` enforces that all
   vector masters sit in valid category subdirectories (`textures/block/`, `textures/item/`,

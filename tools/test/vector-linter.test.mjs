@@ -9,8 +9,9 @@
  * 3. Forbidden editor namespaces (inkscape, sodipodi, illustrator) are flagged.
  * 4. Forbidden embedded raster images (<image>, raster <feImage>) are flagged while XML
  *    comments are ignored.
- * 5. ClipPath definition integrity and url(#id) referential integrity are enforced, and
- *    data-id attributes do not satisfy a url(#id) reference.
+ * 5. ClipPath definition integrity and url(#id) / href="#id" referential integrity are
+ *    enforced case-sensitively; data-id and ID= do not satisfy a reference, and quoted
+ *    url() forms that resvg ignores are rejected.
  * 6. CLI execution and directory-level linting correctly report aggregate status.
  * 7. package.json and .github/workflows/ci.yml pipeline wiring is enforced.
  */
@@ -133,6 +134,16 @@ console.log("\n[Suite 2] ViewBox Invariant Verification");
   const malformedViewBox = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="invalid-string"><rect width="512" height="512" fill="#000"/></svg>`;
   const resMalformed = lintSvgContent(malformedViewBox, "malformed.svg");
   assertEqual(resMalformed.ok, false, "Malformed viewBox string is rejected");
+
+  // SVG attribute names are case-sensitive; resvg ignores both of these.
+  const lowercaseViewBox = `<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><rect width="512" height="512" fill="#000"/></svg>`;
+  const resLowercase = lintSvgContent(lowercaseViewBox, "lowercase_viewbox.svg");
+  assertEqual(resLowercase.ok, false, 'Lowercase viewbox="0 0 512 512" is rejected');
+  assert(resLowercase.errors[0].includes("Missing viewBox attribute"), "Lowercase viewbox is reported as a missing viewBox");
+
+  const dataViewBox = `<svg xmlns="http://www.w3.org/2000/svg" data-viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/></svg>`;
+  const resDataViewBox = lintSvgContent(dataViewBox, "data_viewbox.svg");
+  assertEqual(resDataViewBox.ok, false, 'data-viewBox="0 0 512 512" does not satisfy the viewBox rule');
 
   const missingRootSvg = `<div>Not an SVG</div>`;
   const resNoSvg = lintSvgContent(missingRootSvg, "nosvg.svg");
@@ -311,6 +322,77 @@ console.log("\n[Suite 5] ClipPath and url(#id) Referential Integrity Verificatio
   </svg>`;
   const resDataIdWithId = lintSvgContent(dataIdWithIdSvg, "data_id_with_id.svg");
   assertEqual(resDataIdWithId.ok, true, "A real id declared next to data-id still resolves url(#id)");
+
+  // Uppercase ID= is not an id in XML; resvg leaves url(#g) unresolved
+  const upperIdSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs><linearGradient ID="g"><stop offset="0" stop-color="#f00"/></linearGradient></defs>
+    <rect width="512" height="512" fill="url(#g)" />
+  </svg>`;
+  const resUpperId = lintSvgContent(upperIdSvg, "upper_id.svg");
+  assertEqual(resUpperId.ok, false, 'url(#g) is rejected when only ID="g" exists');
+  assert(resUpperId.errors.some(e => e.includes('Missing referenced ID "g"')), "Error names the unresolved id g");
+
+  // Lowercase <clippath> is not a clipPath element; resvg draws the target unclipped
+  const lowercaseClipSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <clippath id="c"><rect width="256" height="512" /></clippath>
+    <rect width="512" height="512" clip-path="url(#c)" />
+  </svg>`;
+  const resLowercaseClip = lintSvgContent(lowercaseClipSvg, "lowercase_clippath.svg");
+  assertEqual(resLowercaseClip.ok, false, "clip-path referencing a lowercase <clippath> is rejected");
+  assert(resLowercaseClip.errors.some(e => e.includes("not a <clipPath>")), "Lowercase <clippath> is reported as not a <clipPath>");
+
+  // Same-document fragment hrefs must resolve
+  const useOkSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+    <defs><rect id="r" width="512" height="512" /></defs>
+    <use href="#r" /><use xlink:href="#r" />
+  </svg>`;
+  assertEqual(lintSvgContent(useOkSvg, "use_ok.svg").ok, true, '<use href="#r"> and <use xlink:href="#r"> resolving to an id pass');
+
+  const useMissingSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs><rect id="r" width="512" height="512" /></defs>
+    <use href="#missing" />
+  </svg>`;
+  const resUseMissing = lintSvgContent(useMissingSvg, "use_missing.svg");
+  assertEqual(resUseMissing.ok, false, 'Dangling <use href="#missing"> is rejected');
+  assert(resUseMissing.errors.some(e => e.includes('href="#missing"')), "Error names the dangling href");
+
+  const useXlinkMissingSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+    <use xlink:href="#missing" />
+  </svg>`;
+  assertEqual(lintSvgContent(useXlinkMissingSvg, "use_xlink_missing.svg").ok, false, 'Dangling <use xlink:href="#missing"> is rejected');
+
+  const gradTemplateMissingSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs><linearGradient id="g" href="#nope" /></defs>
+    <rect width="512" height="512" fill="url(#g)" />
+  </svg>`;
+  const resGradTemplate = lintSvgContent(gradTemplateMissingSvg, "grad_template_missing.svg");
+  assertEqual(resGradTemplate.ok, false, "Gradient template link to a missing id is rejected");
+  assert(resGradTemplate.errors.some(e => e.includes('href="#nope"')), "Error names the dangling template href");
+
+  const feImageMissingSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs><filter id="f"><feImage href="#nope" /></filter></defs>
+    <rect width="512" height="512" filter="url(#f)" />
+  </svg>`;
+  assertEqual(lintSvgContent(feImageMissingSvg, "fe_image_missing.svg").ok, false, '<feImage href="#nope"> to a missing id is rejected');
+
+  // resvg does not resolve quoted url() references, in any quoting form
+  const quotedGrad = (ref) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs><linearGradient id="g"><stop offset="0" stop-color="#f00"/></linearGradient></defs>
+    <rect width="512" height="512" ${ref} />
+  </svg>`;
+  const resQuotEntity = lintSvgContent(quotedGrad('style="fill:url(&quot;#nope&quot;)"'), "quot_entity_missing.svg");
+  assertEqual(resQuotEntity.ok, false, "Dangling url(&quot;#nope&quot;) in a style attribute is rejected");
+  assert(resQuotEntity.errors.some(e => e.includes('Missing referenced ID "nope"')), "Entity-quoted dangling reference names nope");
+
+  const resAposEntity = lintSvgContent(quotedGrad('fill="url(&apos;#nope&apos;)"'), "apos_entity_missing.svg");
+  assert(resAposEntity.errors.some(e => e.includes('Missing referenced ID "nope"')), "Dangling url(&apos;#nope&apos;) is rejected");
+
+  const resQuotResolved = lintSvgContent(quotedGrad('style="fill:url(&quot;#g&quot;)"'), "quot_entity_resolved.svg");
+  assertEqual(resQuotResolved.ok, false, "Entity-quoted url(&quot;#g&quot;) is rejected even when #g exists");
+  assert(resQuotResolved.errors.some(e => e.includes("is not resolved by resvg")), "Error explains resvg ignores quoted url()");
+
+  const resSingleQuoted = lintSvgContent(quotedGrad(`fill="url('#g')"`), "single_quoted.svg");
+  assertEqual(resSingleQuoted.ok, false, "Literal url('#g') is rejected even when #g exists");
 }
 
 // -----------------------------------------------------------------------------
