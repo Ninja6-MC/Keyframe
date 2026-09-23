@@ -309,6 +309,635 @@
       "f0": 10,
       "porosity": 0,
       "emission": 0
+    },
+    "iron_ore": {
+      "baseHeight": 215,
+      "smoothness": 40,
+      "f0": 12,
+      "porosity": 5,
+      "emission": 0
+    },
+    "copper_ore": {
+      "baseHeight": 215,
+      "smoothness": 40,
+      "f0": 12,
+      "porosity": 5,
+      "emission": 0
+    },
+    "gold_ore": {
+      "baseHeight": 215,
+      "smoothness": 50,
+      "f0": 15,
+      "porosity": 4,
+      "emission": 0
+    },
+    "redstone_ore": {
+      "baseHeight": 215,
+      "smoothness": 35,
+      "f0": 10,
+      "porosity": 5,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#ff0000",
+          "height": 245,
+          "smoothness": 150,
+          "f0": 20,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#c40000",
+          "height": 235,
+          "smoothness": 130,
+          "f0": 18,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#7a0000",
+          "height": 225,
+          "smoothness": 110,
+          "f0": 16,
+          "porosity": 2,
+          "emission": 0
+        },
+        {
+          "hex": "#7e8187",
+          "height": 215,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        },
+        {
+          "hex": "#5f6268",
+          "height": 160,
+          "smoothness": 30,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 200
+        },
+        {
+          "hex": "#3c3e44",
+          "height": 140,
+          "smoothness": 25,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 160
+        },
+        {
+          "hex": "#a4a7ae",
+          "height": 225,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        }
+      ]
+    },
+    "emerald_ore": {
+      "baseHeight": 215,
+      "smoothness": 35,
+      "f0": 10,
+      "porosity": 5,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#41f384",
+          "height": 250,
+          "smoothness": 225,
+          "f0": 42,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#17dd62",
+          "height": 245,
+          "smoothness": 215,
+          "f0": 40,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#009529",
+          "height": 235,
+          "smoothness": 200,
+          "f0": 38,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#007b18",
+          "height": 225,
+          "smoothness": 190,
+          "f0": 36,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#7e8187",
+          "height": 215,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        },
+        {
+          "hex": "#5f6268",
+          "height": 160,
+          "smoothness": 30,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 200
+        },
+        {
+          "hex": "#3c3e44",
+          "height": 140,
+          "smoothness": 25,
+          "f0": 10,
+          "porosity": 10,
+          "ao": 160
+        },
+        {
+          "hex": "#a4a7ae",
+          "height": 225,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 5,
+          "ao": 255
+        }
+      ]
+    },
+    "lapis_ore": {
+      "baseHeight": 215,
+      "smoothness": 45,
+      "f0": 14,
+      "porosity": 8,
+      "emission": 0
+    },
+    "deepslate_iron_ore": {
+      "baseHeight": 210,
+      "smoothness": 45,
+      "f0": 12,
+      "porosity": 4,
+      "emission": 0
+    },
+    "deepslate_copper_ore": {
+      "baseHeight": 210,
+      "smoothness": 45,
+      "f0": 12,
+      "porosity": 4,
+      "emission": 0
+    },
+    "deepslate_gold_ore": {
+      "baseHeight": 210,
+      "smoothness": 50,
+      "f0": 15,
+      "porosity": 3,
+      "emission": 0
+    },
+    "deepslate_redstone_ore": {
+      "baseHeight": 210,
+      "smoothness": 45,
+      "f0": 10,
+      "porosity": 4,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#ff0000",
+          "height": 245,
+          "smoothness": 150,
+          "f0": 20,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#c40000",
+          "height": 235,
+          "smoothness": 130,
+          "f0": 18,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#7a0000",
+          "height": 225,
+          "smoothness": 110,
+          "f0": 16,
+          "porosity": 2,
+          "emission": 0
+        },
+        {
+          "hex": "#646464",
+          "height": 215,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 4,
+          "ao": 255
+        },
+        {
+          "hex": "#3d3d43",
+          "height": 180,
+          "smoothness": 40,
+          "f0": 10,
+          "porosity": 6,
+          "ao": 210
+        },
+        {
+          "hex": "#202127",
+          "height": 150,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 8,
+          "ao": 170
+        }
+      ]
+    },
+    "deepslate_emerald_ore": {
+      "baseHeight": 210,
+      "smoothness": 45,
+      "f0": 10,
+      "porosity": 4,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#41f384",
+          "height": 250,
+          "smoothness": 225,
+          "f0": 42,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#17dd62",
+          "height": 245,
+          "smoothness": 215,
+          "f0": 40,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#009529",
+          "height": 235,
+          "smoothness": 200,
+          "f0": 38,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#007b18",
+          "height": 225,
+          "smoothness": 190,
+          "f0": 36,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#646464",
+          "height": 215,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 4,
+          "ao": 255
+        },
+        {
+          "hex": "#3d3d43",
+          "height": 180,
+          "smoothness": 40,
+          "f0": 10,
+          "porosity": 6,
+          "ao": 210
+        },
+        {
+          "hex": "#202127",
+          "height": 150,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 8,
+          "ao": 170
+        }
+      ]
+    },
+    "deepslate_lapis_ore": {
+      "baseHeight": 210,
+      "smoothness": 50,
+      "f0": 14,
+      "porosity": 6,
+      "emission": 0
+    },
+    "deepslate_diamond_ore": {
+      "baseHeight": 210,
+      "smoothness": 45,
+      "f0": 10,
+      "porosity": 4,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#137f76",
+          "height": 235,
+          "smoothness": 200,
+          "f0": 44,
+          "porosity": 0,
+          "emission": 20
+        },
+        {
+          "hex": "#4eebd9",
+          "height": 250,
+          "smoothness": 225,
+          "f0": 48,
+          "porosity": 0,
+          "emission": 30
+        },
+        {
+          "hex": "#73f7eb",
+          "height": 250,
+          "smoothness": 225,
+          "f0": 48,
+          "porosity": 0,
+          "emission": 30
+        },
+        {
+          "hex": "#a7fbf3",
+          "height": 255,
+          "smoothness": 235,
+          "f0": 50,
+          "porosity": 0,
+          "emission": 35
+        },
+        {
+          "hex": "#084a44",
+          "height": 225,
+          "smoothness": 190,
+          "f0": 40,
+          "porosity": 0,
+          "emission": 10
+        },
+        {
+          "hex": "#646464",
+          "height": 215,
+          "smoothness": 45,
+          "f0": 10,
+          "porosity": 4,
+          "ao": 255
+        },
+        {
+          "hex": "#3d3d43",
+          "height": 180,
+          "smoothness": 40,
+          "f0": 10,
+          "porosity": 6,
+          "ao": 210
+        },
+        {
+          "hex": "#202127",
+          "height": 150,
+          "smoothness": 35,
+          "f0": 10,
+          "porosity": 8,
+          "ao": 170
+        }
+      ]
+    },
+    "deepslate_coal_ore": {
+      "baseHeight": 210,
+      "smoothness": 45,
+      "f0": 14,
+      "porosity": 6,
+      "emission": 0
+    },
+    "raw_iron_block": {
+      "baseHeight": 225,
+      "smoothness": 80,
+      "f0": 230,
+      "porosity": 0,
+      "emission": 0
+    },
+    "iron_block": {
+      "baseHeight": 220,
+      "smoothness": 190,
+      "f0": 230,
+      "porosity": 0,
+      "emission": 0
+    },
+    "raw_gold_block": {
+      "baseHeight": 225,
+      "smoothness": 90,
+      "f0": 231,
+      "porosity": 0,
+      "emission": 0
+    },
+    "gold_block": {
+      "baseHeight": 220,
+      "smoothness": 210,
+      "f0": 231,
+      "porosity": 0,
+      "emission": 0
+    },
+    "raw_copper_block": {
+      "baseHeight": 225,
+      "smoothness": 80,
+      "f0": 234,
+      "porosity": 0,
+      "emission": 0
+    },
+    "copper_block": {
+      "baseHeight": 220,
+      "smoothness": 180,
+      "f0": 234,
+      "porosity": 0,
+      "emission": 0
+    },
+    "netherite_block": {
+      "baseHeight": 220,
+      "smoothness": 170,
+      "f0": 255,
+      "porosity": 0,
+      "emission": 0
+    },
+    "quartz_block": {
+      "baseHeight": 220,
+      "smoothness": 140,
+      "f0": 16,
+      "porosity": 0,
+      "emission": 0
+    },
+    "smooth_quartz": {
+      "baseHeight": 220,
+      "smoothness": 180,
+      "f0": 16,
+      "porosity": 0,
+      "emission": 0
+    },
+    "basalt": {
+      "baseHeight": 215,
+      "smoothness": 40,
+      "f0": 10,
+      "porosity": 8,
+      "emission": 0
+    },
+    "polished_basalt": {
+      "baseHeight": 220,
+      "smoothness": 120,
+      "f0": 12,
+      "porosity": 4,
+      "emission": 0
+    },
+    "smooth_basalt": {
+      "baseHeight": 218,
+      "smoothness": 100,
+      "f0": 12,
+      "porosity": 5,
+      "emission": 0
+    },
+    "blackstone": {
+      "baseHeight": 215,
+      "smoothness": 45,
+      "f0": 10,
+      "porosity": 6,
+      "emission": 0
+    },
+    "polished_blackstone": {
+      "baseHeight": 220,
+      "smoothness": 130,
+      "f0": 12,
+      "porosity": 3,
+      "emission": 0
+    },
+    "obsidian": {
+      "baseHeight": 220,
+      "smoothness": 210,
+      "f0": 16,
+      "porosity": 0,
+      "emission": 0
+    },
+    "crying_obsidian": {
+      "baseHeight": 220,
+      "smoothness": 210,
+      "f0": 16,
+      "porosity": 0,
+      "emission": 0,
+      "colorFeatures": [
+        {
+          "hex": "#b24cf7",
+          "height": 235,
+          "smoothness": 230,
+          "f0": 16,
+          "porosity": 0,
+          "emission": 180
+        },
+        {
+          "hex": "#8a2be2",
+          "height": 228,
+          "smoothness": 220,
+          "f0": 16,
+          "porosity": 0,
+          "emission": 120
+        },
+        {
+          "hex": "#5c1aa8",
+          "height": 222,
+          "smoothness": 215,
+          "f0": 16,
+          "porosity": 0,
+          "emission": 60
+        },
+        {
+          "hex": "#3b2a54",
+          "height": 225,
+          "smoothness": 210,
+          "f0": 16,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#1d1030",
+          "height": 220,
+          "smoothness": 210,
+          "f0": 16,
+          "porosity": 0,
+          "emission": 0
+        },
+        {
+          "hex": "#0f0a18",
+          "height": 200,
+          "smoothness": 200,
+          "f0": 16,
+          "porosity": 0,
+          "emission": 0,
+          "ao": 200
+        }
+      ]
+    },
+    "amethyst_block": {
+      "baseHeight": 220,
+      "smoothness": 160,
+      "f0": 22,
+      "porosity": 0,
+      "emission": 0
+    },
+    "tuff": {
+      "baseHeight": 210,
+      "smoothness": 25,
+      "f0": 10,
+      "porosity": 25,
+      "emission": 0
+    },
+    "polished_tuff": {
+      "baseHeight": 218,
+      "smoothness": 90,
+      "f0": 10,
+      "porosity": 15,
+      "emission": 0
+    },
+    "calcite": {
+      "baseHeight": 215,
+      "smoothness": 60,
+      "f0": 14,
+      "porosity": 6,
+      "emission": 0
+    },
+    "glass": {
+      "baseHeight": 220,
+      "smoothness": 255,
+      "f0": 16,
+      "porosity": 0,
+      "emission": 0
+    },
+    "tinted_glass": {
+      "baseHeight": 220,
+      "smoothness": 255,
+      "f0": 16,
+      "porosity": 0,
+      "emission": 0
+    },
+    "terracotta": {
+      "baseHeight": 215,
+      "smoothness": 30,
+      "f0": 10,
+      "porosity": 15,
+      "emission": 0
+    },
+    "glazed_terracotta": {
+      "baseHeight": 220,
+      "smoothness": 190,
+      "f0": 14,
+      "porosity": 0,
+      "emission": 0
+    },
+    "concrete": {
+      "baseHeight": 215,
+      "smoothness": 50,
+      "f0": 10,
+      "porosity": 2,
+      "emission": 0
+    },
+    "concrete_powder": {
+      "baseHeight": 212,
+      "smoothness": 15,
+      "f0": 10,
+      "porosity": 45,
+      "emission": 0
     }
   },
   "patterns": [
@@ -339,6 +968,26 @@
     {
       "pattern": "*deepslate*",
       "material": "deepslate"
+    },
+    {
+      "pattern": "*_glazed_terracotta",
+      "material": "glazed_terracotta"
+    },
+    {
+      "pattern": "*terracotta*",
+      "material": "terracotta"
+    },
+    {
+      "pattern": "*_concrete_powder",
+      "material": "concrete_powder"
+    },
+    {
+      "pattern": "*concrete*",
+      "material": "concrete"
+    },
+    {
+      "pattern": "*glass*",
+      "material": "glass"
     }
   ]
 }

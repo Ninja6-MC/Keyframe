@@ -192,6 +192,241 @@ console.log("\n[Suite 2] Material Rules Resolution & Optical Parameters");
   const unknown = resolveMaterial("completely_unknown_block_xyz", rules);
   assertEqual(unknown.baseHeight, 215, "Unknown texture falls back to defaultMaterial baseHeight 215");
   assertEqual(unknown.smoothness, 35, "Unknown texture falls back to defaultMaterial smoothness 35");
+
+  // Stone and Deepslate Ores Matrix Resolution
+  const ironOreMat = resolveMaterial("iron_ore", rules);
+  assertEqual(ironOreMat.smoothness, 40, "iron_ore smoothness is 40");
+  assertEqual(ironOreMat.f0, 12, "iron_ore f0 is 12");
+  assertEqual(ironOreMat.porosity, 5, "iron_ore porosity is 5");
+  assertEqual(ironOreMat.emission, 0, "iron_ore emission is 0");
+  assertEqual(ironOreMat.baseHeight, 215, "iron_ore baseHeight is 215");
+
+  const copperOreMat = resolveMaterial("copper_ore", rules);
+  assertEqual(copperOreMat.smoothness, 40, "copper_ore smoothness is 40");
+  assertEqual(copperOreMat.f0, 12, "copper_ore f0 is 12");
+  assertEqual(copperOreMat.porosity, 5, "copper_ore porosity is 5");
+
+  const goldOreMat = resolveMaterial("gold_ore", rules);
+  assertEqual(goldOreMat.smoothness, 50, "gold_ore smoothness is 50");
+  assertEqual(goldOreMat.f0, 15, "gold_ore f0 is 15");
+  assertEqual(goldOreMat.porosity, 4, "gold_ore porosity is 4");
+
+  const redstoneOreMat = resolveMaterial("redstone_ore", rules);
+  assertEqual(redstoneOreMat.emission, 0, "redstone_ore base emission is 0 (unlit state shares the texture)");
+  assertEqual(redstoneOreMat.baseHeight, 215, "redstone_ore baseHeight is 215");
+  assert(redstoneOreMat.parsedFeatures.length > 0, "redstone_ore scopes dust properties to colorFeatures");
+  assert(
+    redstoneOreMat.parsedFeatures.every((f) => (f.emission ?? 0) === 0),
+    "redstone_ore colorFeatures carry no emission"
+  );
+
+  const emeraldOreMat = resolveMaterial("emerald_ore", rules);
+  assertEqual(emeraldOreMat.smoothness, 35, "emerald_ore host rock smoothness is 35");
+  assertEqual(emeraldOreMat.f0, 10, "emerald_ore host rock f0 is 10");
+  assertEqual(emeraldOreMat.porosity, 5, "emerald_ore host rock porosity is 5");
+  assert(
+    emeraldOreMat.parsedFeatures.some((f) => f.f0 >= 36),
+    "emerald_ore gem F0 is scoped to colorFeatures"
+  );
+
+  const lapisOreMat = resolveMaterial("lapis_ore", rules);
+  assertEqual(lapisOreMat.smoothness, 45, "lapis_ore smoothness is 45");
+  assertEqual(lapisOreMat.f0, 14, "lapis_ore f0 is 14");
+  assertEqual(lapisOreMat.porosity, 8, "lapis_ore porosity is 8");
+
+  const dsIronOre = resolveMaterial("deepslate_iron_ore", rules);
+  assertEqual(dsIronOre.baseHeight, 210, "deepslate_iron_ore baseHeight is 210");
+  assertEqual(dsIronOre.smoothness, 45, "deepslate_iron_ore smoothness is 45");
+  assertEqual(dsIronOre.f0, 12, "deepslate_iron_ore f0 is 12");
+  assertEqual(dsIronOre.porosity, 4, "deepslate_iron_ore porosity is 4");
+
+  const dsCopperOre = resolveMaterial("deepslate_copper_ore", rules);
+  assertEqual(dsCopperOre.baseHeight, 210, "deepslate_copper_ore baseHeight is 210");
+  assertEqual(dsCopperOre.f0, 12, "deepslate_copper_ore f0 is 12");
+
+  const dsGoldOre = resolveMaterial("deepslate_gold_ore", rules);
+  assertEqual(dsGoldOre.baseHeight, 210, "deepslate_gold_ore baseHeight is 210");
+  assertEqual(dsGoldOre.smoothness, 50, "deepslate_gold_ore smoothness is 50");
+  assertEqual(dsGoldOre.f0, 15, "deepslate_gold_ore f0 is 15");
+
+  const dsRedstoneOre = resolveMaterial("deepslate_redstone_ore", rules);
+  assertEqual(dsRedstoneOre.baseHeight, 210, "deepslate_redstone_ore baseHeight is 210");
+  assertEqual(dsRedstoneOre.emission, 0, "deepslate_redstone_ore base emission is 0");
+  assert(
+    dsRedstoneOre.parsedFeatures.every((f) => (f.emission ?? 0) === 0),
+    "deepslate_redstone_ore colorFeatures carry no emission"
+  );
+
+  const dsEmeraldOre = resolveMaterial("deepslate_emerald_ore", rules);
+  assertEqual(dsEmeraldOre.baseHeight, 210, "deepslate_emerald_ore baseHeight is 210");
+  assertEqual(dsEmeraldOre.smoothness, 45, "deepslate_emerald_ore host rock smoothness is 45");
+  assertEqual(dsEmeraldOre.f0, 10, "deepslate_emerald_ore host rock f0 is 10");
+  assert(
+    dsEmeraldOre.parsedFeatures.some((f) => f.f0 >= 36),
+    "deepslate_emerald_ore gem F0 is scoped to colorFeatures"
+  );
+
+  const dsLapisOre = resolveMaterial("deepslate_lapis_ore", rules);
+  assertEqual(dsLapisOre.baseHeight, 210, "deepslate_lapis_ore baseHeight is 210");
+  assertEqual(dsLapisOre.f0, 14, "deepslate_lapis_ore f0 is 14");
+  assertEqual(dsLapisOre.porosity, 6, "deepslate_lapis_ore porosity is 6");
+
+  const dsDiamondOre = resolveMaterial("deepslate_diamond_ore", rules);
+  assertEqual(dsDiamondOre.baseHeight, 210, "deepslate_diamond_ore baseHeight is 210");
+  assertEqual(dsDiamondOre.smoothness, 45, "deepslate_diamond_ore host rock smoothness is 45");
+  assertEqual(dsDiamondOre.f0, 10, "deepslate_diamond_ore host rock f0 is 10");
+  assertEqual(dsDiamondOre.porosity, 4, "deepslate_diamond_ore host rock porosity is 4");
+  assert(
+    dsDiamondOre.parsedFeatures.some((f) => f.f0 >= 48),
+    "deepslate_diamond_ore gem F0 is scoped to colorFeatures"
+  );
+
+  const dsCoalOre = resolveMaterial("deepslate_coal_ore", rules);
+  assertEqual(dsCoalOre.baseHeight, 210, "deepslate_coal_ore baseHeight is 210");
+  assertEqual(dsCoalOre.smoothness, 45, "deepslate_coal_ore smoothness is 45");
+  assertEqual(dsCoalOre.f0, 14, "deepslate_coal_ore f0 is 14");
+  assertEqual(dsCoalOre.porosity, 6, "deepslate_coal_ore porosity is 6");
+
+  // Conductors / Metallic Blocks Resolution (LabPBR 1.3 metal IDs >= 230)
+  const rawIronBlock = resolveMaterial("raw_iron_block", rules);
+  assertEqual(rawIronBlock.f0, 230, "raw_iron_block f0 is metal ID 230");
+  assertEqual(rawIronBlock.porosity, 0, "raw_iron_block porosity is 0");
+  assertEqual(rawIronBlock.smoothness, 80, "raw_iron_block smoothness is 80");
+
+  const ironBlock = resolveMaterial("iron_block", rules);
+  assertEqual(ironBlock.f0, 230, "iron_block f0 is metal ID 230");
+  assertEqual(ironBlock.porosity, 0, "iron_block porosity is 0");
+  assertEqual(ironBlock.smoothness, 190, "iron_block smoothness is 190");
+
+  const rawGoldBlock = resolveMaterial("raw_gold_block", rules);
+  assertEqual(rawGoldBlock.f0, 231, "raw_gold_block f0 is metal ID 231");
+  assertEqual(rawGoldBlock.porosity, 0, "raw_gold_block porosity is 0");
+
+  const goldBlock = resolveMaterial("gold_block", rules);
+  assertEqual(goldBlock.f0, 231, "gold_block f0 is metal ID 231");
+  assertEqual(goldBlock.porosity, 0, "gold_block porosity is 0");
+  assertEqual(goldBlock.smoothness, 210, "gold_block smoothness is 210");
+
+  const rawCopperBlock = resolveMaterial("raw_copper_block", rules);
+  assertEqual(rawCopperBlock.f0, 234, "raw_copper_block f0 is metal ID 234");
+  assertEqual(rawCopperBlock.porosity, 0, "raw_copper_block porosity is 0");
+
+  const copperBlock = resolveMaterial("copper_block", rules);
+  assertEqual(copperBlock.f0, 234, "copper_block f0 is metal ID 234");
+  assertEqual(copperBlock.porosity, 0, "copper_block porosity is 0");
+  assertEqual(copperBlock.smoothness, 180, "copper_block smoothness is 180");
+
+  const netheriteBlock = resolveMaterial("netherite_block", rules);
+  assertEqual(netheriteBlock.f0, 255, "netherite_block f0 is 255 (albedo-driven metal, no LabPBR preset)");
+  assertEqual(netheriteBlock.porosity, 0, "netherite_block porosity is 0");
+  assertEqual(netheriteBlock.smoothness, 170, "netherite_block smoothness is 170");
+
+  // Minerals & Masonry Resolution
+  const quartzBlock = resolveMaterial("quartz_block", rules);
+  assertEqual(quartzBlock.smoothness, 140, "quartz_block smoothness is 140");
+  assertEqual(quartzBlock.f0, 16, "quartz_block f0 is 16");
+  assertEqual(quartzBlock.porosity, 0, "quartz_block porosity is 0");
+
+  const smoothQuartz = resolveMaterial("smooth_quartz", rules);
+  assertEqual(smoothQuartz.smoothness, 180, "smooth_quartz smoothness is 180");
+  assertEqual(smoothQuartz.f0, 16, "smooth_quartz f0 is 16");
+  assertEqual(smoothQuartz.porosity, 0, "smooth_quartz porosity is 0");
+
+  const basalt = resolveMaterial("basalt", rules);
+  assertEqual(basalt.smoothness, 40, "basalt smoothness is 40");
+  assertEqual(basalt.f0, 10, "basalt f0 is 10");
+  assertEqual(basalt.porosity, 8, "basalt porosity is 8");
+
+  const polishedBasalt = resolveMaterial("polished_basalt", rules);
+  assertEqual(polishedBasalt.smoothness, 120, "polished_basalt smoothness is 120");
+  assertEqual(polishedBasalt.porosity, 4, "polished_basalt porosity is 4");
+
+  const smoothBasalt = resolveMaterial("smooth_basalt", rules);
+  assertEqual(smoothBasalt.smoothness, 100, "smooth_basalt smoothness is 100");
+  assertEqual(smoothBasalt.porosity, 5, "smooth_basalt porosity is 5");
+
+  const blackstone = resolveMaterial("blackstone", rules);
+  assertEqual(blackstone.smoothness, 45, "blackstone smoothness is 45");
+  assertEqual(blackstone.porosity, 6, "blackstone porosity is 6");
+
+  const polishedBlackstone = resolveMaterial("polished_blackstone", rules);
+  assertEqual(polishedBlackstone.smoothness, 130, "polished_blackstone smoothness is 130");
+  assertEqual(polishedBlackstone.porosity, 3, "polished_blackstone porosity is 3");
+
+  const obsidian = resolveMaterial("obsidian", rules);
+  assertEqual(obsidian.smoothness, 210, "obsidian smoothness is 210");
+  assertEqual(obsidian.f0, 16, "obsidian f0 is 16");
+  assertEqual(obsidian.porosity, 0, "obsidian porosity is 0");
+
+  const cryingObsidian = resolveMaterial("crying_obsidian", rules);
+  assertEqual(cryingObsidian.smoothness, 210, "crying_obsidian smoothness is 210");
+  assertEqual(cryingObsidian.f0, 16, "crying_obsidian f0 is 16");
+  assertEqual(cryingObsidian.porosity, 0, "crying_obsidian porosity is 0");
+  assertEqual(cryingObsidian.emission, 0, "crying_obsidian base emission is 0 (obsidian matrix)");
+  assert(
+    cryingObsidian.parsedFeatures.some((f) => f.emission === 180),
+    "crying_obsidian emission 180 is scoped to tear colorFeatures"
+  );
+
+  const amethystBlock = resolveMaterial("amethyst_block", rules);
+  assertEqual(amethystBlock.smoothness, 160, "amethyst_block smoothness is 160");
+  assertEqual(amethystBlock.f0, 22, "amethyst_block f0 is 22");
+  assertEqual(amethystBlock.porosity, 0, "amethyst_block porosity is 0");
+
+  const tuff = resolveMaterial("tuff", rules);
+  assertEqual(tuff.smoothness, 25, "tuff smoothness is 25");
+  assertEqual(tuff.porosity, 25, "tuff porosity is 25");
+
+  const polishedTuff = resolveMaterial("polished_tuff", rules);
+  assertEqual(polishedTuff.smoothness, 90, "polished_tuff smoothness is 90");
+  assertEqual(polishedTuff.porosity, 15, "polished_tuff porosity is 15");
+
+  const calcite = resolveMaterial("calcite", rules);
+  assertEqual(calcite.smoothness, 60, "calcite smoothness is 60");
+  assertEqual(calcite.f0, 14, "calcite f0 is 14");
+  assertEqual(calcite.porosity, 6, "calcite porosity is 6");
+
+  // Architectural Resolution
+  const glass = resolveMaterial("glass", rules);
+  assertEqual(glass.smoothness, 255, "glass smoothness is 255");
+  assertEqual(glass.f0, 16, "glass f0 is 16");
+  assertEqual(glass.porosity, 0, "glass porosity is 0");
+
+  const tintedGlass = resolveMaterial("tinted_glass", rules);
+  assertEqual(tintedGlass.smoothness, 255, "tinted_glass smoothness is 255");
+  assertEqual(tintedGlass.f0, 16, "tinted_glass f0 is 16");
+  assertEqual(tintedGlass.porosity, 0, "tinted_glass porosity is 0");
+
+  const terracotta = resolveMaterial("terracotta", rules);
+  assertEqual(terracotta.smoothness, 30, "terracotta smoothness is 30");
+  assertEqual(terracotta.f0, 10, "terracotta f0 is 10");
+  assertEqual(terracotta.porosity, 15, "terracotta porosity is 15");
+
+  const concrete = resolveMaterial("concrete", rules);
+  assertEqual(concrete.smoothness, 50, "concrete smoothness is 50");
+  assertEqual(concrete.f0, 10, "concrete f0 is 10");
+  assertEqual(concrete.porosity, 2, "concrete porosity is 2");
+
+  // Architectural Pattern Resolution
+  const whiteTerracotta = resolveMaterial("white_terracotta", rules);
+  assertEqual(whiteTerracotta.smoothness, 30, "*terracotta* pattern resolves white_terracotta smoothness 30");
+  assertEqual(whiteTerracotta.porosity, 15, "*terracotta* pattern resolves white_terracotta porosity 15");
+
+  const cyanConcrete = resolveMaterial("cyan_concrete", rules);
+  assertEqual(cyanConcrete.smoothness, 50, "*concrete* pattern resolves cyan_concrete smoothness 50");
+  assertEqual(cyanConcrete.porosity, 2, "*concrete* pattern resolves cyan_concrete porosity 2");
+
+  const glazedTerracotta = resolveMaterial("white_glazed_terracotta", rules);
+  assertEqual(glazedTerracotta.smoothness, 190, "*_glazed_terracotta resolves glossy glaze smoothness 190");
+  assertEqual(glazedTerracotta.porosity, 0, "*_glazed_terracotta resolves impermeable glaze porosity 0");
+
+  const concretePowder = resolveMaterial("cyan_concrete_powder", rules);
+  assertEqual(concretePowder.smoothness, 15, "*_concrete_powder resolves granular smoothness 15");
+  assertEqual(concretePowder.porosity, 45, "*_concrete_powder resolves granular porosity 45");
+
+  const stainedGlass = resolveMaterial("blue_stained_glass", rules);
+  assertEqual(stainedGlass.smoothness, 255, "*glass* pattern resolves blue_stained_glass smoothness 255");
+  assertEqual(stainedGlass.f0, 16, "*glass* pattern resolves blue_stained_glass f0 16");
 }
 
 // -----------------------------------------------------------------------------
@@ -378,6 +613,105 @@ console.log("\n[Suite 4] LabPBR 1.3 Specular Map Channel Packing & Gemstone Opti
   };
   const maxSpec = generateSpecularMap("custom", maxEmissionPixels, width, height, { rules: customRules });
   assertEqual(maxSpec[3], 254, "Emission is clamped to maximum 254 (255 reserved)");
+
+  // 4. Conductor / Metal specular map channel packing
+  const testPixels = Buffer.alloc(width * height * 4);
+  for (let i = 0; i < width * height; i++) {
+    testPixels[i * 4] = 128;
+    testPixels[i * 4 + 1] = 128;
+    testPixels[i * 4 + 2] = 128;
+    testPixels[i * 4 + 3] = 255;
+  }
+
+  const ironSpec = generateSpecularMap("iron_block", testPixels, width, height);
+  assertEqual(ironSpec[0], 190, "Iron block specular Red is smoothness 190");
+  assertEqual(ironSpec[1], 230, "Iron block specular Green is LabPBR metal ID 230");
+  assertEqual(ironSpec[2], 0, "Iron block specular Blue is porosity 0 (metal)");
+  assertEqual(ironSpec[3], 0, "Iron block specular Alpha is emission 0");
+
+  const goldSpec = generateSpecularMap("gold_block", testPixels, width, height);
+  assertEqual(goldSpec[0], 210, "Gold block specular Red is smoothness 210");
+  assertEqual(goldSpec[1], 231, "Gold block specular Green is LabPBR metal ID 231");
+  assertEqual(goldSpec[2], 0, "Gold block specular Blue is porosity 0 (metal)");
+
+  const copperSpec = generateSpecularMap("copper_block", testPixels, width, height);
+  assertEqual(copperSpec[0], 180, "Copper block specular Red is smoothness 180");
+  assertEqual(copperSpec[1], 234, "Copper block specular Green is LabPBR metal ID 234");
+  assertEqual(copperSpec[2], 0, "Copper block specular Blue is porosity 0 (metal)");
+
+  const netheriteSpec = generateSpecularMap("netherite_block", testPixels, width, height);
+  assertEqual(netheriteSpec[0], 170, "Netherite block specular Red is smoothness 170");
+  assertEqual(netheriteSpec[1], 255, "Netherite block specular Green is 255 (albedo-driven metal)");
+  assertEqual(netheriteSpec[2], 0, "Netherite block specular Blue is porosity 0 (metal)");
+
+  // 5. Feature-scoped emission and gem F0: only keyed pixels change, the host matrix stays inert
+  const fillHex = (hex) => {
+    const buf = Buffer.alloc(width * height * 4);
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    for (let i = 0; i < width * height; i++) {
+      buf[i * 4] = r;
+      buf[i * 4 + 1] = g;
+      buf[i * 4 + 2] = b;
+      buf[i * 4 + 3] = 255;
+    }
+    return buf;
+  };
+
+  const tearSpec = generateSpecularMap("crying_obsidian", fillHex("#b24cf7"), width, height);
+  assertEqual(tearSpec[3], 180, "Crying obsidian tear pixel Alpha is emission 180");
+  assertEqual(tearSpec[2], 0, "Crying obsidian tear pixel Blue is porosity 0");
+
+  const matrixSpec = generateSpecularMap("crying_obsidian", fillHex("#1d1030"), width, height);
+  assertEqual(matrixSpec[0], 210, "Crying obsidian matrix pixel Red is smoothness 210");
+  assertEqual(matrixSpec[1], 16, "Crying obsidian matrix pixel Green is F0 16");
+  assertEqual(matrixSpec[3], 0, "Crying obsidian matrix pixel Alpha is emission 0");
+
+  const cryingGraySpec = generateSpecularMap("crying_obsidian", testPixels, width, height);
+  assertEqual(cryingGraySpec[3], 0, "Crying obsidian unmatched pixel falls back to base emission 0");
+
+  const dustSpec = generateSpecularMap("redstone_ore", fillHex("#ff0000"), width, height);
+  assert(dustSpec[0] > 35, `Redstone dust pixel is smoother than host rock (actual: ${dustSpec[0]})`);
+  assertEqual(dustSpec[3], 0, "Redstone dust pixel Alpha is emission 0 (unlit state)");
+
+  const redstoneHostSpec = generateSpecularMap("redstone_ore", testPixels, width, height);
+  assertEqual(redstoneHostSpec[3], 0, "Redstone ore host stone Alpha is emission 0");
+
+  const dsRedstoneHostSpec = generateSpecularMap("deepslate_redstone_ore", fillHex("#3d3d43"), width, height);
+  assertEqual(dsRedstoneHostSpec[3], 0, "Deepslate redstone ore host deepslate Alpha is emission 0");
+
+  const emeraldGemSpec = generateSpecularMap("emerald_ore", fillHex("#17dd62"), width, height);
+  assertEqual(emeraldGemSpec[1], 40, "Emerald gem pixel Green is F0 40");
+  const emeraldHostSpec = generateSpecularMap("emerald_ore", fillHex("#7e8187"), width, height);
+  assertEqual(emeraldHostSpec[1], 10, "Emerald ore host stone Green is F0 10");
+
+  const dsDiamondGemSpec = generateSpecularMap("deepslate_diamond_ore", fillHex("#4eebd9"), width, height);
+  assertEqual(dsDiamondGemSpec[1], 48, "Deepslate diamond gem pixel Green is F0 48");
+  const dsDiamondHostSpec = generateSpecularMap("deepslate_diamond_ore", fillHex("#646464"), width, height);
+  assertEqual(dsDiamondHostSpec[1], 10, "Deepslate diamond ore host deepslate Green is F0 10");
+  assertEqual(dsDiamondHostSpec[3], 0, "Deepslate diamond ore host deepslate Alpha is emission 0");
+
+  // 6. Architectural specular maps
+  const glassSpec = generateSpecularMap("glass", testPixels, width, height);
+  assertEqual(glassSpec[0], 255, "Glass specular Red is smoothness 255");
+  assertEqual(glassSpec[1], 16, "Glass specular Green is F0 16");
+  assertEqual(glassSpec[2], 0, "Glass specular Blue is porosity 0");
+
+  const tintedGlassSpec = generateSpecularMap("tinted_glass", testPixels, width, height);
+  assertEqual(tintedGlassSpec[0], 255, "Tinted glass specular Red is smoothness 255");
+  assertEqual(tintedGlassSpec[1], 16, "Tinted glass specular Green is F0 16");
+  assertEqual(tintedGlassSpec[2], 0, "Tinted glass specular Blue is porosity 0");
+
+  const terracottaSpec = generateSpecularMap("terracotta", testPixels, width, height);
+  assertEqual(terracottaSpec[0], 30, "Terracotta specular Red is smoothness 30");
+  assertEqual(terracottaSpec[1], 10, "Terracotta specular Green is F0 10");
+  assertEqual(terracottaSpec[2], 15, "Terracotta specular Blue is porosity 15");
+
+  const concreteSpec = generateSpecularMap("concrete", testPixels, width, height);
+  assertEqual(concreteSpec[0], 50, "Concrete specular Red is smoothness 50");
+  assertEqual(concreteSpec[1], 10, "Concrete specular Green is F0 10");
+  assertEqual(concreteSpec[2], 2, "Concrete specular Blue is porosity 2");
 }
 
 // -----------------------------------------------------------------------------
