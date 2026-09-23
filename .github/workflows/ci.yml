@@ -45,6 +45,15 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      # Gates static SVG vector master invariants (viewBox 512x512, forbidden namespaces,
+      # embedded raster images, and clipPath/url referential integrity) across textures/.
+      - name: Run Vector Master Linter
+        run: npm run lint:svg
+
+      # Verifies automated vector master linter behavior and referential integrity harness.
+      - name: Vector Master Linter Test Suite
+        run: npm run test:vector-linter
+
       # Each tier is its own step rather than a single `--all`, so a failure names the
       # resolution that broke instead of the batch. A matrix would do the same but would
       # report five check names, and a required-check list matches names as plain strings

@@ -110,6 +110,10 @@ All textures in Keyframe are authored as pure vector SVG files organized into ca
   * In Minecraft's default texel grid ($16\times16$), each pixel corresponds to **$32\text{px}$** on the $512\times512$ SVG canvas ($512 / 16 = 32$).
   * Align primary shapes, strata, and blocks to $32\text{px}$ multiples ($0, 32, 64, 96, 128, 160, \dots$).
   * Avoid unintended fractional or sub-pixel coordinates (e.g., $Y=144$ or $Y=208$ which are $4.5\times$ or $6.5\times 32\text{px}$) unless intentionally crafting sub-pixel bevels.
+* **Clean Masters (Machine-Enforced)**: Masters must carry no editor residue (`xmlns:inkscape`, `xmlns:sodipodi`, `xmlns:illustrator`, `<sodipodi:namedview>` and similar), no embedded rasters (`<image>`, or `<feImage>` pointing at a file or data URI), every `<clipPath>` must have an `id`, and every `url(#id)` reference must resolve within the file. The canvas size above and these rules are checked by the vector master linter, which also runs in `npm test` and CI:
+  ```bash
+  npm run lint:svg
+  ```
 
 ### 2. Toroidal Seamless Tiling ($X$ and $Y$ Wrapping)
 Minecraft blocks repeat horizontally and vertically across infinite terrain. **Any element crossing a canvas boundary must wrap seamlessly to the opposite side:**
@@ -248,6 +252,7 @@ When feedback or review comments are received on an open pull request:
 Before submitting a pull request, please verify:
 
 - [ ] All new textures are authored in category subdirectories under `textures/` (e.g., `textures/block/*.svg`, `textures/item/*.svg`, `textures/gui/*.svg`, `textures/particle/*.svg`) at $512\times512$, with zero loose SVGs at the `textures/` root.
+- [ ] Vector masters pass the canvas, editor-residue, raster, and reference checks with `npm run lint:svg`.
 - [ ] Seamless tiling passes zero-discontinuity check with `npm run test:tiling`.
 - [ ] Ores share the identical base stone background as `stone.svg`, and any new ore is registered in `tools/base-sync.json` (`npm run test:base-sync`).
 - [ ] Pack compiles cleanly with `npm run build`.

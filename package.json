@@ -30,7 +30,9 @@
     "test:shader-fixtures": "node tools/test-shader-fixtures.mjs",
     "test:shader-fixtures:render": "node tools/test-shader-fixtures.mjs --render",
     "test:pbr": "node tools/test/pbr-generator.test.mjs",
-    "test": "node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test/base-sync.test.mjs && node tools/test/tiling-rules.test.mjs && node tools/test/sync-studio.test.mjs && node tools/test/build-guardrails.test.mjs && node tools/test/soil-palette-3d.test.mjs && node tools/test-shader-fixtures.mjs && node tools/test/pbr-generator.test.mjs && node tools/test-tiling.mjs"
+    "test": "npm run lint:svg && node tools/test/vector-linter.test.mjs && node tools/test-animation-packager.mjs && node tools/test/palette-injector.test.mjs && node tools/test/base-sync.test.mjs && node tools/test/tiling-rules.test.mjs && node tools/test/sync-studio.test.mjs && node tools/test/build-guardrails.test.mjs && node tools/test/soil-palette-3d.test.mjs && node tools/test-shader-fixtures.mjs && node tools/test/pbr-generator.test.mjs && node tools/test-tiling.mjs",
+    "lint:svg": "node tools/lib/vector-linter.mjs",
+    "test:vector-linter": "node tools/test/vector-linter.test.mjs"
   },
   "keywords": [
     "minecraft",
