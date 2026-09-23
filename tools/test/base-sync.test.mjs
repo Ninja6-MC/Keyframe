@@ -96,6 +96,16 @@ console.log("[Suite 1] Registry Loading");
     stone.sharedSections.includes("defs") && stone.sharedSections.includes("group:stone_base"),
     "Shared sections cover the groove defs (corner radii) and the groove placement group"
   );
+  const deepslate = rules.bases["block/deepslate.svg"];
+  assert(Boolean(deepslate), "block/deepslate.svg is registered as a shared base");
+  assertEqual(deepslate.markerGroupId, "deepslate_base", "Deepslate base declares its marker group id");
+  assert(Array.isArray(deepslate.derivatives), "Deepslate derivatives list is initialized");
+  assertEqual(deepslate.derivatives.length, 0, "Deepslate derivatives list is empty until ores are authored");
+  assert(
+    deepslate.sharedSections.includes("defs") && deepslate.sharedSections.includes("group:deepslate_base"),
+    "Deepslate shared sections cover defs and deepslate_base group"
+  );
+  assert(typeof deepslate.description === "string" && deepslate.description.length > 0, "Deepslate base includes description");
 
   const missing = loadBaseSyncRules(path.join(TEST_TMP, "nope.json"));
   assertEqual(Object.keys(missing.bases).length, 0, "An absent registry degrades to an empty one");
@@ -195,6 +205,24 @@ console.log("\n[Suite 3] Shipped Masters Are In Sync");
     /diamond_ore\.svg/.test(stoneText) && /base-sync/i.test(stoneText),
     "stone.svg header names its derivatives and the enforcing check"
   );
+
+  const deepslateText = fs.readFileSync(path.join(TEXTURES_DIR, "block", "deepslate.svg"), "utf-8");
+  const deepslateDefs = extractSection(deepslateText, "defs");
+  assert(deepslateDefs.value !== null, "deepslate.svg exposes a valid <defs> section");
+  const deepslateGroup = extractSection(deepslateText, "group:deepslate_base");
+  assert(deepslateGroup.value !== null, "deepslate.svg exposes <g id=\"deepslate_base\">");
+  assert(
+    deepslateGroup.value.includes('<rect width="512" height="512" fill="#3d3d43"/>'),
+    "deepslate.svg keeps the full-canvas slate fill inside <g id=\"deepslate_base\">, where it is compared"
+  );
+  assert(
+    deepslateGroup.value.includes('id="crevice_shadows"') && deepslateGroup.value.includes('id="strata_plates"'),
+    "deepslate.svg keeps crevice_shadows and strata_plates inside <g id=\"deepslate_base\">"
+  );
+  assert(
+    /base-sync/i.test(deepslateText) && /deepslate_base/.test(deepslateText),
+    "deepslate.svg header documents the base contract and marker group"
+  );
 }
 
 // -----------------------------------------------------------------------------
@@ -272,6 +300,158 @@ console.log("\n[Suite 4] Drift Detection");
     result.errors.some((e) => e.includes("does not exist")),
     "A registered derivative that is absent from disk is reported"
   );
+}
+
+// -----------------------------------------------------------------------------
+// Suite 4b: Deepslate Strata Drift Detection
+// -----------------------------------------------------------------------------
+console.log("\n[Suite 4b] Deepslate Strata Drift Detection");
+{
+  const DEEPSLATE_FIXTURE_RULES = {
+    version: "test",
+    bases: {
+      "block/deepslate.svg": {
+        markerGroupId: "deepslate_base",
+        sharedSections: ["defs", "group:deepslate_base"],
+        derivatives: ["block/deepslate_diamond_ore.svg"]
+      }
+    }
+  };
+
+  const deepslateBase = [
+    "<svg>",
+    "  <defs>",
+    "  </defs>",
+    "  <g id=\"deepslate_base\">",
+    "    <rect width=\"512\" height=\"512\" fill=\"#3d3d43\" />",
+    "    <g id=\"crevice_shadows\">",
+    "      <rect x=\"0\" y=\"8\" width=\"192\" height=\"32\" fill=\"#202127\" />",
+    "    </g>",
+    "    <g id=\"strata_plates\">",
+    "      <rect x=\"0\" y=\"0\" width=\"192\" height=\"32\" fill=\"#646464\" />",
+    "    </g>",
+    "  </g>",
+    "</svg>"
+  ].join("\n");
+
+  const mockDeepslateOre = [
+    "<svg>",
+    "  <defs>",
+    "  </defs>",
+    "  <g id=\"deepslate_base\">",
+    "    <rect width=\"512\" height=\"512\" fill=\"#3d3d43\" />",
+    "    <g id=\"crevice_shadows\">",
+    "      <rect x=\"0\" y=\"8\" width=\"192\" height=\"32\" fill=\"#202127\" />",
+    "    </g>",
+    "    <g id=\"strata_plates\">",
+    "      <rect x=\"0\" y=\"0\" width=\"192\" height=\"32\" fill=\"#646464\" />",
+    "    </g>",
+    "  </g>",
+    "  <!-- Ore mineral geometry overlaid on top of untouched background -->",
+    "  <g id=\"ore_mineral\">",
+    "    <rect x=\"100\" y=\"100\" width=\"32\" height=\"32\" fill=\"#4eebd9\" />",
+    "  </g>",
+    "</svg>"
+  ].join("\n");
+
+  // Clean mock derivative passes
+  let tree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": mockDeepslateOre
+  });
+  let result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(result.ok, "Mock deepslate ore derivative matches deepslate base cleanly");
+  assertEqual(result.comparisons, 2, "Both defs and group:deepslate_base were compared");
+
+  // Comment and indentation invariance
+  const cosmeticOre = mockDeepslateOre
+    .replace("<!-- Ore mineral", "<!-- Altered note")
+    .replace(/\n\s+/g, "\n        ");
+  tree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": cosmeticOre
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(result.ok, "Comment and indentation differences in deepslate derivative are not drift");
+
+  // Strata plate color drift
+  const plateColorDrift = mockDeepslateOre.replace("fill=\"#646464\"", "fill=\"#555555\"");
+  tree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": plateColorDrift
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(!result.ok, "Strata plate color drift in deepslate derivative is caught");
+  assert(
+    result.errors.some((e) => e.includes("deepslate_base")),
+    "The strata plate drift error names the deepslate_base group"
+  );
+
+  // Crevice shadow geometry drift
+  const creviceDrift = mockDeepslateOre.replace("width=\"192\"", "width=\"128\"");
+  tree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": creviceDrift
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(!result.ok, "Crevice shadow geometry drift in deepslate derivative is caught");
+  assert(
+    result.errors.some((e) => e.includes("deepslate_base")),
+    "The crevice geometry drift error names the deepslate_base group"
+  );
+
+  // Slate background rect drift
+  const slateFillDrift = mockDeepslateOre.replace("fill=\"#3d3d43\"", "fill=\"#2a2a2e\"");
+  tree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": slateFillDrift
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(!result.ok, "Base slate fill color drift (#3d3d43) in deepslate derivative is caught");
+
+  // Missing deepslate_base section in derivative
+  const missingGroupOre = "<svg><defs></defs><g id=\"mineral\"><rect/></g></svg>";
+  tree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": missingGroupOre
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(!result.ok, "Derivative missing deepslate_base group is caught");
+
+  // Unregistered deepslate derivative carrying deepslate_base marker
+  const unregTree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": mockDeepslateOre,
+    "block/deepslate_iron_ore.svg": mockDeepslateOre
+  });
+  result = checkBaseSync(unregTree, DEEPSLATE_FIXTURE_RULES);
+  assert(!result.ok, "Unregistered SVG carrying deepslate_base marker is caught");
+  assert(
+    result.errors.some((e) => e.includes("deepslate_iron_ore.svg") && e.includes("base-sync.json")),
+    "The error names the unlisted deepslate derivative and instructs registration"
+  );
+
+  // Real textures/block/deepslate.svg against mock derivative
+  const realDeepslate = fs.readFileSync(path.join(TEXTURES_DIR, "block", "deepslate.svg"), "utf-8");
+  const mockRealOre = realDeepslate.replace(
+    "</svg>",
+    "  <g id=\"mineral_crystals\"><rect x=\"64\" y=\"64\" width=\"32\" height=\"32\" fill=\"#10ffff\"/></g>\n</svg>"
+  );
+  tree = makeFixtureTree({
+    "block/deepslate.svg": realDeepslate,
+    "block/deepslate_diamond_ore.svg": mockRealOre
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(result.ok, "Mock derivative based on live textures/block/deepslate.svg validates cleanly");
+
+  // Drift against live textures/block/deepslate.svg
+  const driftedRealOre = mockRealOre.replace("fill=\"#646464\"", "fill=\"#555555\"");
+  tree = makeFixtureTree({
+    "block/deepslate.svg": realDeepslate,
+    "block/deepslate_diamond_ore.svg": driftedRealOre
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(!result.ok, "Drift against live textures/block/deepslate.svg is caught");
 }
 
 // -----------------------------------------------------------------------------
