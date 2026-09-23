@@ -18,7 +18,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { matchGlob, globToRegExp, basenameOf, categorizeTexture } from "../test-tiling.mjs";
+import { matchGlob, globToRegExp, basenameOf, categorizeTexture, resolveTilingCategory } from "../test-tiling.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -323,10 +323,136 @@ console.log("\n[11] The shipped rules exempt exactly the intended masters");
 
   // Every rules-file pattern must be reachable. A pattern matching nothing is either a
   // typo or dead weight, and a dead pattern is exactly how #199 hid for as long as it did.
+  // A pattern lands in the same change as the first master it matches; there is no
+  // allowlist for rules written ahead of their textures.
   const unreachable = rules.patterns
     .map(p => p.pattern)
     .filter(p => p !== "grass.svg" && !shipped.some(f => matchGlob(f, p)));
   assertEqual(unreachable.join(", "), "", "Every pattern in tiling-rules.json matches at least one shipped master");
+}
+
+// --------------------------------------------------------------------------
+console.log("\n[12] Extension and case variants resolve like the `.svg` master");
+// --------------------------------------------------------------------------
+{
+  // Every pattern is written against `<stem>.svg`. A `.png`, upper-case or bare id must
+  // give the answer its master gives, never fall through to the default category.
+  const variants = [
+    ["oak_log.svg", ["oak_log", "oak_log.png", "oak_log.SVG", "block/oak_log.png"]],
+    ["grass_block_side.svg", ["grass_block_side", "grass_block_side.png", "grass_block_side.PNG"]],
+    ["short_grass_1.svg", ["short_grass_1", "short_grass_1.png", "block\\short_grass_1.png"]],
+    ["tall_grass_top.svg", ["tall_grass_top", "tall_grass_top.SVG"]],
+    ["grass_block_side_overlay.svg", ["grass_block_side_overlay", "grass_block_side_overlay.png"]]
+  ];
+
+  for (const [master, ids] of variants) {
+    const expected = categorizeTexture(master, rules);
+    for (const id of ids) {
+      const got = categorizeTexture(id, rules);
+      assertEqual(got.category, expected.category, `'${id}' resolves to ${expected.category}, like ${master}`);
+      assertEqual(got.testAxes.join(","), expected.testAxes.join(","), `'${id}' is audited on the same axes as ${master}`);
+      assertEqual(resolveTilingCategory(id, rules), got.category, `resolveTilingCategory('${id}') agrees with categorizeTexture`);
+    }
+  }
+
+  // An unknown extension is not stripped: it stays part of the name.
+  assertEqual(
+    resolveTilingCategory("grass_block_side.txt", rules),
+    "toroidal",
+    "Only .svg and .png are stripped, so 'grass_block_side.txt' does not match *_side.svg"
+  );
+}
+
+// --------------------------------------------------------------------------
+console.log("\n[13] Pillar-shaped vanilla names keep their full audit");
+// --------------------------------------------------------------------------
+{
+  // #88 requires oak_log's toroidal tiling to be verified: logs placed side by side show
+  // the X seam, so the shipped master is audited on both axes, not Y only.
+  const oakLog = categorizeTexture("oak_log.svg", rules);
+  assertEqual(oakLog.category, "toroidal", "The shipped oak_log.svg is audited as toroidal");
+  assertEqual(oakLog.testAxes.join(","), "x,y", "oak_log.svg is audited on both X and Y");
+  assertEqual(categorizeTexture("oak_log_top.svg", rules).testAxes.join(","), "x,y", "oak_log_top.svg is audited on both X and Y");
+
+  // Real vanilla 1.21 textures ending in `_stem` that are not pillars: crop stems are
+  // cutouts and mushroom_stem is a full cube. None may be narrowed to a Y-only audit by a
+  // broad `*_stem.svg` rule.
+  for (const f of ["pumpkin_stem.svg", "melon_stem.svg", "attached_pumpkin_stem.svg",
+                   "attached_melon_stem.svg", "mushroom_stem.svg"]) {
+    assert(resolveTilingCategory(f, rules) !== "y-only", `${f} is not audited as a Y-only pillar`);
+  }
+}
+
+// --------------------------------------------------------------------------
+console.log("\n[14] Epic 13 item textures are exempt by their vanilla texture stems");
+// --------------------------------------------------------------------------
+{
+  // Stems are the vanilla 1.21 `textures/item/` names (and `textures/entity/` for the
+  // shield, which has no item texture), not the in-game display names.
+  const toolSets = [];
+  for (const material of ["wooden", "stone", "iron", "golden", "diamond", "netherite"]) {
+    for (const tool of ["sword", "pickaxe", "axe", "shovel", "hoe"]) {
+      toolSets.push(`${material}_${tool}`);
+    }
+  }
+
+  const epic13Items = [
+    // #175 survival tools: six materials x sword, pickaxe, axe, shovel, hoe
+    ...toolSets,
+    // #176 ranged combat and defense, including every animation-state texture
+    "bow", "bow_pulling_0", "bow_pulling_1", "bow_pulling_2",
+    "crossbow_standby", "crossbow_pulling_0", "crossbow_pulling_1", "crossbow_pulling_2",
+    "crossbow_arrow", "crossbow_firework",
+    "shield_base", "shield_base_nopattern", "trident", "mace",
+    // #177 food and sustenance
+    "golden_apple", "cooked_beef", "golden_carrot", "baked_potato", "bread", "apple", "cooked_porkchop"
+  ];
+  assertEqual(toolSets.length, 30, "The tool suite covers 6 materials x 5 tool types");
+
+  for (const itemId of epic13Items) {
+    assert(rules.itemIds.includes(itemId), `'${itemId}' is listed in itemIds`);
+    for (const id of [itemId, `${itemId}.svg`, `item/${itemId}.svg`, `${itemId}.png`]) {
+      const c = categorizeTexture(id, rules);
+      assertEqual(c.category, "exempt", `'${id}' resolves to exempt`);
+      assertEqual(c.testAxes.length, 0, `'${id}' is audited on no axis`);
+    }
+  }
+
+  // Ids that are not vanilla texture stems must not be listed: `steak` is `cooked_beef`,
+  // `crossbow` has only state textures, `shield` has no item texture, and `porkchop` is
+  // the raw item while #177 ships `cooked_porkchop`.
+  for (const bogus of ["steak", "crossbow", "shield", "porkchop"]) {
+    assert(!rules.itemIds.includes(bogus), `'${bogus}' is not listed in itemIds`);
+  }
+
+  for (const itemId of ["compass_nexus", "plot_compass", "spiral_core", "ninja6_token"]) {
+    assertEqual(resolveTilingCategory(itemId, rules), "exempt", `Pre-existing item '${itemId}' resolves to exempt`);
+  }
+}
+
+// --------------------------------------------------------------------------
+console.log("\n[15] itemIds match exact stems, never substrings");
+// --------------------------------------------------------------------------
+{
+  // Real vanilla item textures that contain, or are contained in, a listed id without
+  // being listed themselves. Each resolves on its own stem.
+  const cases = [
+    ["bowl.svg", "contains 'bow'"],
+    ["enchanted_golden_apple.svg", "contains 'golden_apple'"],
+    ["carrot.svg", "is contained in 'golden_carrot'"],
+    ["potato.svg", "is contained in 'baked_potato'"],
+    ["porkchop.svg", "is contained in 'cooked_porkchop'"]
+  ];
+  for (const [f, why] of cases) {
+    assertEqual(resolveTilingCategory(f, rules), "toroidal", `${f} is not exempted (${why})`);
+  }
+
+  // Standard terrain blocks still fall through to toroidal, and sides stay X only.
+  for (const f of ["stone.svg", "deepslate.svg", "dirt.svg", "sand.svg", "gravel.svg"]) {
+    assertEqual(resolveTilingCategory(f, rules), "toroidal", `${f} is toroidal`);
+  }
+  assertEqual(resolveTilingCategory("grass_block_side.svg", rules), "x-only", "grass_block_side is x-only");
+  assertEqual(resolveTilingCategory("dirt_path_side.svg", rules), "x-only", "dirt_path_side is x-only");
 }
 
 console.log("\n=======================================================");
