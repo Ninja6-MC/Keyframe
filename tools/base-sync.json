@@ -6,11 +6,23 @@
     "block/stone.svg": {
       "description": "Stone master. Every stone-variant ore overlays its mineral geometry on an untouched copy of this file's background, so the groove definitions (with their corner radii) and the stone_base group - whose first child is the full-canvas slate fill - must be identical in each derivative or ore blocks stop blending with surrounding stone in caves. Anything shared must sit inside one of the listed sharedSections; a shared element left as a loose sibling is compared by nothing.",
       "markerGroupId": "stone_base",
-      "sharedSections": ["defs", "group:stone_base"],
+      "sharedSections": [
+        "defs",
+        "group:stone_base"
+      ],
       "derivatives": [
         "block/coal_ore.svg",
         "block/diamond_ore.svg"
       ]
+    },
+    "block/deepslate.svg": {
+      "description": "Deepslate strata master. All deepslate-variant ores overlay mineral geometry on an untouched copy of this background.",
+      "markerGroupId": "deepslate_base",
+      "sharedSections": [
+        "defs",
+        "group:deepslate_base"
+      ],
+      "derivatives": []
     }
   }
 }

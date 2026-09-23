@@ -131,10 +131,12 @@ Minecraft blocks repeat horizontally and vertically across infinite terrain. **A
 
 ### 3. Ore & Material Consistency
 * **Shared Base Patterns**: Ore textures (e.g., `diamond_ore.svg`, `iron_ore.svg`, `gold_ore.svg`, `coal_ore.svg`) **must inherit the exact same stone background** (striation layout, positions, corner radius `rx`) as [`textures/block/stone.svg`](textures/block/stone.svg).
+* **Deepslate Variants**: Deepslate ore textures (e.g., `deepslate_diamond_ore.svg`) derive from [`textures/block/deepslate.svg`](textures/block/deepslate.svg) instead, and must copy its `<defs>` and `<g id="deepslate_base">` group (slate fill, crevice shadows and strata plates) verbatim.
 * **Ore Gems / Crystals**: Embed crystal shapes cleanly over the base stone layer without modifying or displacing the shared stone background pattern.
 * **This is enforced, not just documented.** The shared sections are the `<defs>` groove
   definitions (which carry every corner radius `rx`) and the `<g id="stone_base">` group,
-  whose first child is the full-canvas slate fill.
+  whose first child is the full-canvas slate fill; for deepslate variants they are the
+  `<defs>` block and the `<g id="deepslate_base">` group.
   [`tools/base-sync.json`](tools/base-sync.json) registers each base and its
   derivatives, and `tools/lib/base-sync.mjs` compares them — ignoring comments and
   indentation, so only real geometry counts. `npm run build` fails on drift before it
@@ -145,13 +147,14 @@ Minecraft blocks repeat horizontally and vertically across infinite terrain. **A
   around them. It is now the group's first child, which changes neither document order nor
   paint order. If you add a shared element, put it inside a compared section or the check
   does not see it.
-* **Editing `stone.svg` means editing every derivative in the same commit.** That is the
-  whole point of the gate: the author who changes the stone master is the one who gets the
-  signal, rather than the drift surfacing later as an ore that no longer blends into
-  surrounding stone in caves.
-* **Authoring a new ore? Add it to the `derivatives` list in `tools/base-sync.json`.** A
-  file that copies `<g id="stone_base">` without being registered is reported as an error,
-  so a new ore cannot silently opt out of the contract.
+* **Editing `stone.svg` or `deepslate.svg` means editing every derivative in the same
+  commit.** That is the whole point of the gate: the author who changes a base master is
+  the one who gets the signal, rather than the drift surfacing later as an ore that no
+  longer blends into surrounding stone or deepslate in caves.
+* **Authoring a new ore? Add it to the `derivatives` list of its base entry in
+  `tools/base-sync.json`** (`block/stone.svg` or `block/deepslate.svg`). A file that
+  copies `<g id="stone_base">` or `<g id="deepslate_base">` without being registered is
+  reported as an error, so a new ore cannot silently opt out of the contract.
 
 ### 4. Art Direction & Shading
 * **Cinematic Aesthetic**: Saturated, warm, joyful palette matching Minecraft promotional cinematics and update trailers.
