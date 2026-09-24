@@ -13,6 +13,10 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ## [Unreleased]
 
 ### Added
+- Compiler guardrail against loose root SVG masters: `tools/build.mjs` enforces that all
+  vector masters sit in valid category subdirectories (`textures/block/`, `textures/item/`,
+  etc.) before rasterization, failing the build if root-level SVGs are detected. Excised
+  obsolete root-level grass block pack icon fallback (#226).
 - Vector master linter gate: `tools/lib/vector-linter.mjs` (`npm run lint:svg`) checks
   every SVG under `textures/` for a `viewBox` of exactly `0 0 512 512`, no Inkscape,
   Sodipodi or Adobe namespace URI under any prefix (including one declared through
@@ -23,10 +27,6 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   to, pointing at an element of the matching type, and `href` unprefixed or under an
   xlink-bound prefix. It runs in `npm test` and CI, with its own suite in
   `tools/test/vector-linter.test.mjs`.
-- Compiler guardrail against loose root SVG masters: `tools/build.mjs` enforces that all
-  vector masters sit in valid category subdirectories (`textures/block/`, `textures/item/`,
-  etc.) before rasterization, failing the build if root-level SVGs are detected. Excised
-  obsolete root-level grass block pack icon fallback (#226).
 - Shared-base contract enforcement for ore masters: `tools/base-sync.json` registers each
   base master and its derivatives, `tools/lib/base-sync.mjs` verifies that the striation
   groove definitions (including every corner radius `rx`) and the `stone_base` placement
