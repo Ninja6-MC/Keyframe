@@ -14,6 +14,10 @@
  *    url() forms that resvg ignores are rejected.
  * 6. CLI execution and directory-level linting correctly report aggregate status.
  * 7. package.json and .github/workflows/ci.yml pipeline wiring is enforced.
+ * 8. Only reference forms resvg honours pass: url() in any other case or spacing, on a
+ *    property resvg does not apply it to, at the wrong element type or outside the
+ *    document is rejected, as are href under a non-xlink prefix and editor namespaces
+ *    bound to any prefix or declared through <!ENTITY>.
  */
 
 import fs from "node:fs";
@@ -482,6 +486,98 @@ console.log("\n[Suite 7] Package.json and CI Pipeline Wiring Verification");
     ciContent.includes("npm run test:vector-linter"),
     '.github/workflows/ci.yml runs "npm run test:vector-linter"'
   );
+}
+
+// -----------------------------------------------------------------------------
+// Suite 8: Only Reference Forms resvg Honours Pass
+// -----------------------------------------------------------------------------
+// Every rejected fixture below was rendered with @resvg/resvg-js 2.6.2 and draws wrong:
+// the clip, mask or filter is dropped, the fill falls back to black or transparent, the
+// <use> draws nothing, or (for the namespace cases) editor residue survives into the
+// master. Every accepted fixture renders as written.
+console.log("\n[Suite 8] Only Reference Forms resvg Honours Pass");
+{
+  const DEFS = `<defs>
+    <clipPath id="c"><rect width="256" height="512"/></clipPath>
+    <linearGradient id="g"><stop offset="0" stop-color="#0f0"/></linearGradient>
+    <pattern id="p" width="32" height="32" patternUnits="userSpaceOnUse"><rect width="16" height="16"/></pattern>
+    <rect id="r" width="256" height="512" fill="#00f"/>
+    <mask id="m"><rect width="256" height="512" fill="#fff"/></mask>
+    <filter id="f"><feFlood flood-color="#0f0"/></filter>
+    <marker id="mk" markerWidth="8" markerHeight="8"><rect width="8" height="8"/></marker>
+  </defs>`;
+  const doc = (body, { head = "", ns = "" } = {}) =>
+    `${head}<svg xmlns="http://www.w3.org/2000/svg" ${ns} viewBox="0 0 512 512">${DEFS}${body}</svg>`;
+
+  const rejected = [
+    // url() function spelled in a case resvg does not recognise
+    ['clip-path="URL(#c)" attribute', doc(`<rect width="512" height="512" clip-path="URL(#c)"/>`), "not recognised by resvg"],
+    ['clip-path="Url(#c)" attribute', doc(`<rect width="512" height="512" clip-path="Url(#c)"/>`), "not recognised by resvg"],
+    ['style="clip-path:URL(#c)"', doc(`<rect width="512" height="512" style="clip-path:URL(#c)"/>`), "not recognised by resvg"],
+    ['fill="URL(#g)" attribute', doc(`<rect width="512" height="512" fill="URL(#g)"/>`), "not recognised by resvg"],
+    ["<style> rule fill:URL(#g)", doc(`<style>.a{fill:URL(#g)}</style><rect class="a" width="512" height="512"/>`), "not recognised by resvg"],
+    ["<style> CDATA rule fill:uRl(#g)", doc(`<style><![CDATA[.a{fill:uRl(#g)}]]></style><rect class="a" width="512" height="512"/>`), "not recognised by resvg"],
+    ['entity-encoded fill="&#85;RL(#g)"', doc(`<rect width="512" height="512" fill="&#85;RL(#g)"/>`), "not recognised by resvg"],
+    ['clip-path="url (#c)" with a space before the parenthesis', doc(`<rect width="512" height="512" clip-path="url (#c)"/>`), "not recognised by resvg"],
+    // property names resvg does not apply a url() on
+    ['upper-case attribute CLIP-PATH="url(#c)"', doc(`<rect width="512" height="512" CLIP-PATH="url(#c)"/>`), "is not applied by resvg"],
+    ['upper-case style="FILL:url(#g)"', doc(`<rect width="512" height="512" style="FILL:url(#g)"/>`), "is not applied by resvg"],
+    ["upper-case <style> rule FILL:url(#g)", doc(`<style>.a{FILL:url(#g)}</style><rect class="a" width="512" height="512"/>`), "is not applied by resvg"],
+    ['marker shorthand marker="url(#mk)"', doc(`<path d="M0 0 L32 32" stroke="#000" marker="url(#mk)"/>`), "is not applied by resvg"],
+    // url() pointing at an element of the wrong type
+    ['fill="url(#r)" pointing at a <rect>', doc(`<rect width="512" height="512" fill="url(#r)"/>`), 'Invalid fill reference "#r"'],
+    ['stroke="url(#c)" pointing at a <clipPath>', doc(`<rect width="512" height="512" stroke="url(#c)"/>`), 'Invalid stroke reference "#c"'],
+    ['style="fill:url(#m)" pointing at a <mask>', doc(`<rect width="512" height="512" style="fill:url(#m)"/>`), 'Invalid fill reference "#m"'],
+    ['mask="url(#c)" pointing at a <clipPath>', doc(`<rect width="512" height="512" mask="url(#c)"/>`), 'Invalid mask reference "#c"'],
+    ['filter="url(#g)" pointing at a gradient', doc(`<rect width="512" height="512" filter="url(#g)"/>`), 'Invalid filter reference "#g"'],
+    ['marker-start="url(#g)" pointing at a gradient', doc(`<path d="M0 0 L32 32" stroke="#000" marker-start="url(#g)"/>`), 'Invalid marker-start reference "#g"'],
+    ["<style> rule mask:url(#f) pointing at a <filter>", doc(`<style>.a{mask:url(#f)}</style><rect class="a" width="512" height="512"/>`), 'Invalid mask reference "#f"'],
+    ["clip-path to a <clipPath> in a foreign namespace", doc(`<clipPath xmlns="http://example.com/x" id="fc"><rect width="256" height="512"/></clipPath><rect width="512" height="512" clip-path="url(#fc)"/>`), "not a <clipPath>"],
+    // references that leave the document
+    ['<use href="other.svg#r">', doc(`<use href="other.svg#r"/>`), "Non-fragment reference"],
+    ['<use xlink:href="other.svg#r">', doc(`<use xlink:href="other.svg#r"/>`, { ns: 'xmlns:xlink="http://www.w3.org/1999/xlink"' }), "Non-fragment reference"],
+    ['fill="url(other.svg#g)"', doc(`<rect width="512" height="512" fill="url(other.svg#g)"/>`), "Non-fragment reference"],
+    ['style="clip-path:url(https://example.com/a.svg#c)"', doc(`<rect width="512" height="512" style="clip-path:url(https://example.com/a.svg#c)"/>`), "Non-fragment reference"],
+    // href under a prefix other than xlink:
+    ['<feImage x:href="data:..."> with x bound to xlink', doc(`<filter id="fi"><feImage x:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUg=="/></filter><rect width="512" height="512" filter="url(#fi)"/>`, { ns: 'xmlns:x="http://www.w3.org/1999/xlink"' }), "Forbidden embedded raster image (<feImage x:href="],
+    ['<use x:href="#missing"> with x bound to xlink', doc(`<use x:href="#missing"/>`, { ns: 'xmlns:x="http://www.w3.org/1999/xlink"' }), 'Missing referenced ID "missing" in x:href="#missing"'],
+    ['<use q:href="#missing"> with q bound to xlink on the element', doc(`<use xmlns:q="http://www.w3.org/1999/xlink" q:href="#missing"/>`), 'Missing referenced ID "missing"'],
+    ['<use foo:href="#r"> with foo not bound to xlink', doc(`<use foo:href="#r"/>`, { ns: 'xmlns:foo="http://example.com/foo"' }), "is ignored by resvg"],
+    // editor namespaces declared under a different prefix
+    ["Inkscape namespace bound to ns1", doc(`<rect width="512" height="512" ns1:label="x"/>`, { ns: 'xmlns:ns1="http://www.inkscape.org/namespaces/inkscape"' }), 'Inkscape namespace "http://www.inkscape.org/namespaces/inkscape"'],
+    ["Sodipodi namespace bound to sp", doc(`<rect width="512" height="512"/>`, { ns: 'xmlns:sp="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"' }), "Sodipodi namespace"],
+    ["Illustrator namespace declared through <!ENTITY>", doc(`<rect width="512" height="512" i:knockout="Off"/>`, {
+      head: `<?xml version="1.0"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [\n  <!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">\n  <!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">\n]>\n`,
+      ns: 'xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"'
+    }), '"xmlns:i" (Adobe namespace "http://ns.adobe.com/AdobeIllustrator/10.0/")'],
+    ["Adobe namespace as a default namespace on a child", doc(`<g xmlns="http://ns.adobe.com/Variables/1.0/"/>`), "Adobe namespace"]
+  ];
+
+  for (const [label, svg, expected] of rejected) {
+    const res = lintSvgContent(svg, "fixture.svg");
+    assertEqual(res.ok, false, `${label} is rejected`);
+    assert(res.errors.some((e) => e.includes(expected)), `${label} reports "${expected}"`);
+  }
+
+  const accepted = [
+    ['clip-path="url(#c)"', doc(`<rect width="512" height="512" clip-path="url(#c)"/>`)],
+    ['clip-path="url( #c )" with inner whitespace', doc(`<rect width="512" height="512" clip-path="url( #c )"/>`)],
+    ['fill="url(#g)" and stroke="url(#p)"', doc(`<rect width="512" height="512" fill="url(#g)" stroke="url(#p)"/>`)],
+    ['fill="url(#g) #f00" with a fallback colour', doc(`<rect width="512" height="512" fill="url(#g) #f00"/>`)],
+    ['entity-encoded fill="&#117;rl(#g)"', doc(`<rect width="512" height="512" fill="&#117;rl(#g)"/>`)],
+    ["<style> rules with fill, mask and filter", doc(`<style>.a{fill:url(#g);mask:url(#m)} .b{filter:url(#f)}</style><rect class="a b" width="512" height="512"/>`)],
+    ['style="fill:url(#g) !important"', doc(`<rect width="512" height="512" style="fill:url(#g) !important"/>`)],
+    ["marker-start/mid/end pointing at a <marker>", doc(`<path d="M0 0 L32 32" stroke="#000" marker-start="url(#mk)" marker-mid="url(#mk)" style="marker-end:url(#mk)"/>`)],
+    ["clip-path to an svg:-prefixed <clipPath>", doc(`<svg:clipPath id="sc"><rect width="256" height="512"/></svg:clipPath><rect width="512" height="512" clip-path="url(#sc)"/>`, { ns: 'xmlns:svg="http://www.w3.org/2000/svg"' })],
+    ['<use x:href="#r"> with x bound to xlink', doc(`<use x:href="#r"/>`, { ns: 'xmlns:x="http://www.w3.org/1999/xlink"' })],
+    ['<feImage x:href="#r"> with x bound to xlink', doc(`<filter id="fi"><feImage x:href="#r"/></filter><rect width="512" height="512" filter="url(#fi)"/>`, { ns: 'xmlns:x="http://www.w3.org/1999/xlink"' })],
+    ["url() text inside a <desc> is not a reference", doc(`<desc>Uses URL(#c) for the clip</desc><rect width="512" height="512"/>`)]
+  ];
+
+  for (const [label, svg] of accepted) {
+    const res = lintSvgContent(svg, "fixture.svg");
+    assert(res.ok, `${label} is accepted${res.ok ? "" : `: ${res.errors.join(" | ")}`}`);
+  }
 }
 
 console.log("\n=======================================================");

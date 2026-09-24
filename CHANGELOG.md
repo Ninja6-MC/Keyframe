@@ -15,12 +15,14 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ### Added
 - Vector master linter gate: `tools/lib/vector-linter.mjs` (`npm run lint:svg`) checks
   every SVG under `textures/` for a `viewBox` of exactly `0 0 512 512`, no Inkscape,
-  Sodipodi or Illustrator namespaces or editor elements, no embedded rasters (`<image>`,
-  or `<feImage>` pointing outside the document), and that every `<clipPath>` has an `id`
-  and every `url(#id)` and `href="#id"` reference resolves. Names are matched
-  case-sensitively and quoted `url('#id')` forms are rejected, as resvg ignores both. It
-  runs in `npm test` and CI, with its own
-  suite in `tools/test/vector-linter.test.mjs`.
+  Sodipodi or Adobe namespace URI under any prefix (including one declared through
+  `<!ENTITY>`) and no editor elements, no embedded rasters (`<image>`, or `<feImage>`
+  pointing outside the document under any `href` prefix), and that every `<clipPath>` has
+  an `id`. Every `url()` and `href` reference must be one resvg honours: a same-document
+  `#id` that resolves, `url(` in lowercase and unquoted, on a property resvg applies it
+  to, pointing at an element of the matching type, and `href` unprefixed or under an
+  xlink-bound prefix. It runs in `npm test` and CI, with its own suite in
+  `tools/test/vector-linter.test.mjs`.
 - Compiler guardrail against loose root SVG masters: `tools/build.mjs` enforces that all
   vector masters sit in valid category subdirectories (`textures/block/`, `textures/item/`,
   etc.) before rasterization, failing the build if root-level SVGs are detected. Excised

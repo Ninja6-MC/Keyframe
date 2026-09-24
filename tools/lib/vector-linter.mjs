@@ -5,11 +5,16 @@
  *
  * Enforces production-grade vector constraints across all SVG masters in textures/:
  * 1. Root viewBox is exactly "0 0 512 512" (512x512 master resolution requirement).
- * 2. Absolute prohibition of editor namespaces (xmlns:inkscape, xmlns:sodipodi, xmlns:illustrator).
+ * 2. Absolute prohibition of editor namespaces: Inkscape, Sodipodi and Adobe namespace
+ *    URIs under any prefix (including URIs declared through <!ENTITY>), plus the
+ *    xmlns:inkscape, xmlns:sodipodi and xmlns:illustrator prefixes.
  * 3. Absolute prohibition of embedded raster images (<image>, and <feImage> with a
- *    non-fragment href).
+ *    non-fragment href under any prefix).
  * 4. Referential integrity for clipPath definitions, url(#id) and href="#id" references,
- *    preventing silent @resvg/resvg-js rendering bugs and missing layer artifacts.
+ *    preventing silent @resvg/resvg-js rendering bugs and missing layer artifacts. Only
+ *    the forms resvg honours pass: lowercase unquoted same-document url(#id) on fill,
+ *    stroke, clip-path, mask, filter or marker-start/mid/end pointing at an element of
+ *    the matching type, and same-document href="#id" under no prefix or an xlink-bound one.
  */
 
 import fs from "node:fs";
@@ -28,6 +33,175 @@ export const FORBIDDEN_NAMESPACES = Object.freeze([
   "xmlns:sodipodi",
   "xmlns:illustrator"
 ]);
+
+export const SVG_NS = "http://www.w3.org/2000/svg";
+export const XLINK_NS = "http://www.w3.org/1999/xlink";
+
+/**
+ * Editor namespace URIs, matched case-insensitively as a prefix of the declared URI.
+ * Every Adobe namespace (Illustrator, Graphs, SaveForWeb, Variables, XMP, ...) sits
+ * under ns.adobe.com.
+ */
+export const FORBIDDEN_NAMESPACE_URIS = Object.freeze([
+  { editor: "Inkscape", uri: "http://www.inkscape.org/namespaces/inkscape" },
+  { editor: "Sodipodi", uri: "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" },
+  { editor: "Sodipodi", uri: "http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd" },
+  { editor: "Adobe", uri: "http://ns.adobe.com/" },
+  { editor: "Adobe", uri: "adobe:ns:meta/" }
+]);
+
+/**
+ * The properties on which resvg applies a url(#id) reference, and the SVG elements each
+ * one accepts as a target. Property names are case-sensitive in resvg, and the `marker`
+ * shorthand is not applied at all.
+ */
+export const URL_REFERENCE_TARGETS = Object.freeze({
+  fill: ["linearGradient", "radialGradient", "pattern"],
+  stroke: ["linearGradient", "radialGradient", "pattern"],
+  "clip-path": ["clipPath"],
+  mask: ["mask"],
+  filter: ["filter"],
+  "marker-start": ["marker"],
+  "marker-mid": ["marker"],
+  "marker-end": ["marker"]
+});
+
+function editorForUri(uri) {
+  const normalized = uri.trim().toLowerCase();
+  const hit = FORBIDDEN_NAMESPACE_URIS.find((ns) => normalized.startsWith(ns.uri.toLowerCase()));
+  return hit ? hit.editor : null;
+}
+
+function truncate(text, max = 48) {
+  return text.length > max ? `${text.slice(0, max)}...` : text;
+}
+
+const PREDEFINED_ENTITIES = { lt: "<", gt: ">", amp: "&", quot: '"', apos: "'" };
+
+function decodeXml(text, entities, depth = 0) {
+  return text.replace(/&(#x[0-9a-fA-F]+|#[0-9]+|[A-Za-z_][\w.-]*);/g, (whole, ref) => {
+    if (ref[0] === "#") {
+      const code = ref[1] === "x" ? parseInt(ref.slice(2), 16) : parseInt(ref.slice(1), 10);
+      try {
+        return String.fromCodePoint(code);
+      } catch {
+        return whole;
+      }
+    }
+    if (ref in PREDEFINED_ENTITIES) return PREDEFINED_ENTITIES[ref];
+    if (entities.has(ref) && depth < 8) return decodeXml(entities.get(ref), entities, depth + 1);
+    return whole;
+  });
+}
+
+function splitQName(qname) {
+  const i = qname.indexOf(":");
+  return i === -1 ? { prefix: "", local: qname } : { prefix: qname.slice(0, i), local: qname.slice(i + 1) };
+}
+
+function parseDeclarations(cssText, where) {
+  const decls = [];
+  for (const part of cssText.split(";")) {
+    const colon = part.indexOf(":");
+    if (colon === -1) continue;
+    const property = part.slice(0, colon).trim();
+    if (property) decls.push({ property, value: part.slice(colon + 1), where: `"${property}" ${where}` });
+  }
+  return decls;
+}
+
+/**
+ * Tokenizes an SVG document (comments already stripped) into elements with decoded
+ * attribute values and in-scope namespace bindings, internal DTD entity declarations,
+ * and every property declaration that can carry a url() reference: attributes, style
+ * attributes and <style> rules.
+ */
+export function parseSvgDocument(clean) {
+  const entityDecls = [];
+  const entities = new Map();
+  const entityRegex = /<!ENTITY\s+([^\s%"']+)\s+(?:"([^"]*)"|'([^']*)')\s*>/g;
+  let entityMatch;
+  while ((entityMatch = entityRegex.exec(clean)) !== null) {
+    const name = entityMatch[1];
+    const raw = entityMatch[2] ?? entityMatch[3];
+    if (!entities.has(name)) entities.set(name, raw);
+  }
+  for (const [name, raw] of entities) {
+    entityDecls.push({ name, value: decodeXml(raw, entities) });
+  }
+
+  const elements = [];
+  const declarations = [];
+  const stack = [];
+  let styleText = null;
+
+  const tokenRegex = /<!\[CDATA\[([\s\S]*?)\]\]>|<!DOCTYPE(?:[^[>]|\[[\s\S]*?\])*>|<\?[\s\S]*?\?>|<(\/?)([^\s/>!?]+)((?:[^>"']|"[^"]*"|'[^']*')*?)(\/?)>/g;
+  let lastIndex = 0;
+  let token;
+  while ((token = tokenRegex.exec(clean)) !== null) {
+    if (styleText !== null) {
+      styleText += decodeXml(clean.slice(lastIndex, token.index), entities);
+      if (token[1] !== undefined) styleText += token[1];
+    }
+    lastIndex = tokenRegex.lastIndex;
+
+    const [, , closing, qname, rawAttrs, selfClosing] = token;
+    if (!qname) continue;
+
+    if (closing) {
+      const openIdx = stack.map((e) => e.name).lastIndexOf(qname);
+      if (openIdx !== -1) {
+        for (const el of stack.splice(openIdx)) {
+          if (el.local === "style" && styleText !== null) {
+            const css = styleText.replace(/\/\*[\s\S]*?\*\//g, "");
+            const blockRegex = /\{([^{}]*)\}/g;
+            let block;
+            while ((block = blockRegex.exec(css)) !== null) {
+              declarations.push(...parseDeclarations(block[1], "in <style>"));
+            }
+            styleText = null;
+          }
+        }
+      }
+      continue;
+    }
+
+    const attrs = [];
+    const attrRegex = /([^\s=]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g;
+    let attrMatch;
+    while ((attrMatch = attrRegex.exec(rawAttrs)) !== null) {
+      const name = attrMatch[1];
+      attrs.push({ name, ...splitQName(name), value: decodeXml(attrMatch[2] ?? attrMatch[3], entities) });
+    }
+
+    const parentScope = stack.length ? stack[stack.length - 1].scope : new Map([["xml", "http://www.w3.org/XML/1998/namespace"]]);
+    const scope = new Map(parentScope);
+    for (const attr of attrs) {
+      if (attr.name === "xmlns") scope.set("", attr.value.trim());
+      else if (attr.prefix === "xmlns") scope.set(attr.local, attr.value.trim());
+    }
+
+    const { prefix, local } = splitQName(qname);
+    const el = { name: qname, prefix, local, ns: scope.get(prefix), attrs, scope };
+    elements.push(el);
+
+    for (const attr of attrs) {
+      if (attr.name === "xmlns" || attr.prefix === "xmlns") continue;
+      if (attr.name === "style") {
+        declarations.push(...parseDeclarations(attr.value, `in style attribute on <${qname}>`));
+      } else {
+        declarations.push({ property: attr.name, value: attr.value, where: `"${attr.name}" attribute on <${qname}>` });
+      }
+    }
+
+    if (!selfClosing) {
+      stack.push(el);
+      if (local === "style") styleText = "";
+    }
+  }
+
+  return { elements, entityDecls, declarations };
+}
 
 /**
  * Strips XML comments so documentation and commented references do not cause false positives.
@@ -78,8 +252,8 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
   const clean = stripComments(svgContent);
 
   // SVG is XML and case-sensitive: resvg ignores `viewbox=`, `ID=` and `<clippath>`, so
-  // element and attribute names below are matched exactly. Attribute names are anchored
-  // on preceding whitespace so `data-viewBox=` or `data-id=` never count.
+  // element and attribute names below are matched exactly. The viewBox attribute name is
+  // anchored on preceding whitespace so `data-viewBox=` never counts.
 
   // 1. Root <svg> element and viewBox verification
   const rootSvgMatch = clean.match(/<svg\b([^>]*)>/);
@@ -100,11 +274,30 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
     }
   }
 
-  // 2. Forbidden editor namespaces & editor residue
-  for (const ns of FORBIDDEN_NAMESPACES) {
-    const nsRegex = new RegExp(`\\b${ns}\\b`, "i");
-    if (nsRegex.test(clean)) {
-      errors.push(`${filePath}: Forbidden editor namespace detected: "${ns}"`);
+  const doc = parseSvgDocument(clean);
+
+  // 2. Forbidden editor namespaces & editor residue. Editors are identified by namespace
+  // URI, not prefix: Inkscape may bind its namespace to `ns1`, and Illustrator writes
+  // `xmlns:i="&ns_ai;"` with the URI declared in an internal <!ENTITY>.
+  for (const entity of doc.entityDecls) {
+    const editor = editorForUri(entity.value);
+    if (editor) {
+      errors.push(`${filePath}: Forbidden editor namespace detected: ${editor} URI in <!ENTITY ${entity.name} "${entity.value}">`);
+    }
+  }
+
+  const reportedNsDecls = new Set();
+  for (const el of doc.elements) {
+    for (const attr of el.attrs) {
+      if (attr.name !== "xmlns" && !attr.name.startsWith("xmlns:")) continue;
+      const editor = editorForUri(attr.value);
+      const byPrefix = FORBIDDEN_NAMESPACES.includes(attr.name);
+      if (!editor && !byPrefix) continue;
+      const key = `${attr.name}=${attr.value}`;
+      if (reportedNsDecls.has(key)) continue;
+      reportedNsDecls.add(key);
+      const detail = editor ? ` (${editor} namespace "${attr.value}")` : "";
+      errors.push(`${filePath}: Forbidden editor namespace detected: "${attr.name}"${detail}`);
     }
   }
 
@@ -119,76 +312,98 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
   }
 
   // <feImage> renders an external or data-URI raster inside a filter just like <image>.
-  // Only a same-document fragment reference (href="#id") keeps the source vector.
-  const feImageRegex = /<(?:[a-zA-Z0-9_-]+:)?feImage\b([^>]*)>/gi;
-  let feImageMatch;
-  while ((feImageMatch = feImageRegex.exec(clean)) !== null) {
-    const hrefMatch = feImageMatch[1].match(/(?:^|\s)(?:xlink:)?href\s*=\s*(["'])(.*?)\1/i);
-    if (hrefMatch && !hrefMatch[2].trim().startsWith("#")) {
-      errors.push(`${filePath}: Forbidden embedded raster image (<feImage href="${hrefMatch[2]}">) detected`);
+  // Only a same-document fragment reference (href="#id") keeps the source vector. Any
+  // attribute whose local name is href counts, whatever its prefix: resvg honours
+  // `x:href` when `x` is bound to the xlink namespace.
+  for (const el of doc.elements) {
+    if (el.local.toLowerCase() !== "feimage") continue;
+    for (const attr of el.attrs) {
+      if (attr.local.toLowerCase() === "href" && !attr.value.trim().startsWith("#")) {
+        errors.push(`${filePath}: Forbidden embedded raster image (<feImage ${attr.name}="${truncate(attr.value)}">) detected`);
+      }
     }
   }
 
   // 4. ClipPath, url(#id) and href="#id" referential integrity
-  const definedIds = new Set();
-  const idRegex = /(?:^|\s)id\s*=\s*(["'])(.*?)\1/g;
-  let idMatch;
-  while ((idMatch = idRegex.exec(clean)) !== null) {
-    const id = idMatch[2].trim();
-    if (id) {
-      definedIds.add(id);
+  const idTargets = new Map();
+  for (const el of doc.elements) {
+    const idAttr = el.attrs.find((a) => a.name === "id");
+    const id = idAttr ? idAttr.value.trim() : "";
+    if (id && !idTargets.has(id)) {
+      idTargets.set(id, el);
     }
-  }
-
-  // Inspect <clipPath> definitions
-  const clipPathIds = new Set();
-  const clipPathRegex = /<clipPath\b([^>]*)>/g;
-  let cpMatch;
-  while ((cpMatch = clipPathRegex.exec(clean)) !== null) {
-    const attrs = cpMatch[1];
-    const clipIdMatch = attrs.match(/(?:^|\s)id\s*=\s*(["'])(.*?)\1/);
-    if (!clipIdMatch || !clipIdMatch[2].trim()) {
+    if (el.local === "clipPath" && !id) {
       errors.push(`${filePath}: <clipPath> element is missing required "id" attribute`);
-    } else {
-      clipPathIds.add(clipIdMatch[2].trim());
     }
   }
 
-  // Inspect url(#id) references across all attributes and style declarations.
-  // Editors write quotes inside attribute values as &quot;/&apos;, so decode them first.
-  // resvg 2.6 does not resolve a quoted url('#id') at all (fill falls back to black,
-  // clip-path/mask/filter are dropped), so any quoted form is rejected outright.
-  const urlSource = clean.replace(/&quot;|&#0*34;|&#x0*22;/gi, '"').replace(/&apos;|&#0*39;|&#x0*27;/gi, "'");
-  const urlRegex = /url\(\s*(["']?)#([^\s)"']+)\1\s*\)/gi;
-  let urlMatch;
-  while ((urlMatch = urlRegex.exec(urlSource)) !== null) {
-    const refId = urlMatch[2].trim();
-    if (urlMatch[1]) {
-      errors.push(`${filePath}: Quoted reference ${urlMatch[0]} is not resolved by resvg (write url(#${refId}) without quotes)`);
-    }
-    if (!definedIds.has(refId)) {
-      errors.push(`${filePath}: Missing referenced ID "${refId}" in url(#${refId}) (element with id="${refId}" does not exist in file)`);
-    }
-  }
-
-  // Inspect same-document href="#id" / xlink:href="#id" references (<use>, gradient and
-  // pattern template links, <feImage>); resvg silently drops an unresolved one.
-  const hrefRegex = /(?:^|\s)(?:xlink:)?href\s*=\s*(["'])\s*#(.*?)\1/g;
-  let hrefMatch;
-  while ((hrefMatch = hrefRegex.exec(clean)) !== null) {
-    const refId = hrefMatch[2].trim();
-    if (!definedIds.has(refId)) {
-      errors.push(`${filePath}: Missing referenced ID "${refId}" in href="#${refId}" (element with id="${refId}" does not exist in file)`);
+  // href: resvg reads an unprefixed href or one whose prefix is bound to the xlink
+  // namespace, and only resolves a same-document fragment. Everything else is dropped.
+  for (const el of doc.elements) {
+    for (const attr of el.attrs) {
+      if (attr.local !== "href") continue;
+      if (attr.prefix && el.scope.get(attr.prefix) !== XLINK_NS) {
+        errors.push(`${filePath}: Attribute ${attr.name}="${truncate(attr.value)}" is ignored by resvg (prefix "${attr.prefix}" is not bound to ${XLINK_NS})`);
+        continue;
+      }
+      const target = attr.value.trim();
+      if (el.local === "feImage" && !target.startsWith("#")) continue; // reported as a raster above
+      if (!/^#[^\s#]+$/.test(target)) {
+        errors.push(`${filePath}: Non-fragment reference ${attr.name}="${truncate(attr.value)}" (only same-document href="#id" references are allowed)`);
+        continue;
+      }
+      const refId = target.slice(1);
+      if (!idTargets.has(refId)) {
+        errors.push(`${filePath}: Missing referenced ID "${refId}" in ${attr.name}="#${refId}" (element with id="${refId}" does not exist in file)`);
+      }
     }
   }
 
-  // Inspect clip-path attributes specifically referencing clip paths
-  const clipPathRefRegex = /(?:clip-path\s*=\s*["']\s*url\(\s*["']?#([^\s)"']+)["']?\s*\)|clip-path\s*:\s*url\(\s*["']?#([^\s)"']+)["']?\s*\))/gi;
-  let cprefMatch;
-  while ((cprefMatch = clipPathRefRegex.exec(clean)) !== null) {
-    const refId = (cprefMatch[1] || cprefMatch[2]).trim();
-    if (definedIds.has(refId) && !clipPathIds.has(refId)) {
-      errors.push(`${filePath}: Invalid clip-path reference "#${refId}": element exists but is not a <clipPath>`);
+  // url(): every spelling of the function in any attribute, style attribute or <style>
+  // rule is inspected. resvg only honours exactly `url(#id)` (lowercase, no space before
+  // the parenthesis, unquoted, same-document) on a lowercase property it knows, pointing
+  // at an element of the type that property needs. Anything else renders silently wrong
+  // (unclipped, black, or invisible), so anything else is an error.
+  for (const decl of doc.declarations) {
+    const fnRegex = /(?<![\w-])url\s*\(/gi;
+    let fnMatch;
+    while ((fnMatch = fnRegex.exec(decl.value)) !== null) {
+      const rest = decl.value.slice(fnMatch.index);
+      const parsed = rest.match(/^url\s*\(\s*(["']?)([^"')]*?)\s*\1\s*\)/i);
+      const snippet = parsed ? parsed[0] : truncate(rest.split(/[;\s]/)[0]);
+      const where = decl.where;
+
+      if (!rest.startsWith("url(")) {
+        errors.push(`${filePath}: ${snippet} in ${where} is not recognised by resvg (write url(#id): lowercase, with no space before "(")`);
+      }
+      if (!parsed) {
+        errors.push(`${filePath}: Malformed reference ${snippet} in ${where}`);
+        continue;
+      }
+      const [, quote, rawTarget] = parsed;
+      const target = rawTarget.trim();
+      if (quote) {
+        errors.push(`${filePath}: Quoted reference ${snippet} is not resolved by resvg (write url(${target}) without quotes)`);
+      }
+      if (!/^#[^\s#]+$/.test(target)) {
+        errors.push(`${filePath}: Non-fragment reference ${snippet} in ${where} (only same-document url(#id) references are allowed)`);
+        continue;
+      }
+
+      const refId = target.slice(1);
+      const targetEl = idTargets.get(refId);
+      if (!targetEl) {
+        errors.push(`${filePath}: Missing referenced ID "${refId}" in url(#${refId}) (element with id="${refId}" does not exist in file)`);
+        continue;
+      }
+
+      const allowed = URL_REFERENCE_TARGETS[decl.property];
+      if (!allowed) {
+        errors.push(`${filePath}: url(#${refId}) in ${where} is not applied by resvg (url() references are only honoured on ${Object.keys(URL_REFERENCE_TARGETS).join(", ")}; property names are case-sensitive)`);
+      } else if (targetEl.ns !== SVG_NS || !allowed.includes(targetEl.local)) {
+        const expected = allowed.map((t) => `<${t}>`).join(" or ");
+        errors.push(`${filePath}: Invalid ${decl.property} reference "#${refId}": element exists but is not a ${expected} (found <${targetEl.name}>)`);
+      }
     }
   }
 
