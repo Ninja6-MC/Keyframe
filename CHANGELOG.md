@@ -13,6 +13,15 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ## [Unreleased]
 
 ### Added
+- LabPBR 1.3 material matrix in `tools/lib/pbr-rules.json`: stone and deepslate ores,
+  metal blocks (hardcoded metal IDs 230/231/234, albedo-driven `255` for netherite),
+  raw ore blocks (dielectric), minerals and masonry, glass, terracotta, glazed
+  terracotta, concrete and concrete powder. Gem, glass, quartz and obsidian F0 is
+  derived from refractive index as linear `((n-1)/(n+1))^2 * 255`. Gem F0 and crying
+  obsidian tear emission are scoped to `colorFeatures` so the host rock stays at F0 10
+  and non-emissive. Quartz, basalt and blackstone faces resolve through stem patterns
+  (`quartz_block_*`, `basalt_*`, `polished_basalt_*`, `blackstone_*`), and a test checks
+  every material key against the vanilla 1.21.6 block texture stems (#53).
 - Compiler guardrail against loose root SVG masters: `tools/build.mjs` enforces that all
   vector masters sit in valid category subdirectories (`textures/block/`, `textures/item/`,
   etc.) before rasterization, failing the build if root-level SVGs are detected. Excised
