@@ -9,6 +9,7 @@
 *.mjs           text eol=lf
 *.js            text eol=lf
 *.json          text eol=lf
+*.py            text eol=lf
 LICENSE         text eol=lf
 .gitattributes  text eol=lf
 .editorconfig   text eol=lf

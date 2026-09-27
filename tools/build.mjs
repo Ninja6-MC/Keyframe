@@ -227,6 +227,7 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
 
   // 1. Generate pack.mcmeta (Universal 1.20 - 1.21.4+ support)
   const mcmeta = {
+    keyframe_version: JSON.parse(fs.readFileSync(path.join(ROOT_DIR, "package.json"), "utf-8")).version,
     pack: {
       pack_format: 46,
       supported_formats: {
