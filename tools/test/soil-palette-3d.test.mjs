@@ -107,14 +107,19 @@ console.log("[Suite 1] Palette Hex Contracts & Luminance Measurements");
   assert(pathSideSvg.includes("#cfa567"), "dirt_path_side.svg overhang matches path top #cfa567");
 
   // Grass side hexes
+  const grassOverlaySvg = fs.readFileSync(path.join(DEFAULT_TEXTURES_DIR, "block", "grass_block_side_overlay.svg"), "utf-8");
+  const grassTopSvg = fs.readFileSync(path.join(DEFAULT_TEXTURES_DIR, "block", "grass_block_top.svg"), "utf-8");
   assert(grassSideSvg.includes("#c77d38"), "grass_block_side.svg base matches dirt #c77d38");
-  assert(grassSideSvg.includes("#9ac636"), "grass_block_side.svg carries pre-baked trailer green #9ac636");
+  assert(grassOverlaySvg.includes("#b8b8b8"), "grass_block_side_overlay.svg carries calibrated grayscale turf overhang #b8b8b8");
+  assert(grassTopSvg.includes("#b8b8b8"), "grass_block_top.svg base turf matches overhang #b8b8b8");
+  assert(grassTopSvg.includes("#f0f0f0"), "grass_block_top.svg carries strata plates #f0f0f0");
+  assert(grassTopSvg.includes("#686868"), "grass_block_top.svg carries crevice shadows #686868");
 
   // Luminance contract bounds
   const Y_dirt = hexToLuminance("#c77d38");
   const Y_coarse = hexToLuminance("#9e5d22");
   const Y_pathTop = hexToLuminance("#cfa567");
-  const Y_grassOverhang = hexToLuminance("#9ac636");
+  const Y_grassOverhang = hexToLuminance("#b8b8b8");
   const Y_strata = hexToLuminance("#e6c793");
   const Y_crevice = hexToLuminance("#83581f");
 
@@ -134,7 +139,7 @@ console.log("\n[Suite 2] Quantitative Luminance Separation & Contrast Metrics");
   const Y_dirt = hexToLuminance("#c77d38");
   const Y_coarse = hexToLuminance("#9e5d22");
   const Y_pathTop = hexToLuminance("#cfa567");
-  const Y_grassOverhang = hexToLuminance("#9ac636");
+  const Y_grassOverhang = hexToLuminance("#b8b8b8");
   const Y_strata = hexToLuminance("#e6c793");
   const Y_crevice = hexToLuminance("#83581f");
 
@@ -199,34 +204,44 @@ console.log("\n[Suite 3] Toroidal Seam Integrity Contract");
 }
 
 // -----------------------------------------------------------------------------
-// Suite 4: Overlay Transparency & Zero Double-Tinting Contract
+// Suite 4: Grayscale Overlay Contract & Zero Color Skew (Issue #60)
 // -----------------------------------------------------------------------------
-console.log("\n[Suite 4] Overlay Transparency & Zero Double-Tinting Contract");
+console.log("\n[Suite 4] Grayscale Overlay Contract & Zero Color Skew");
 {
   const overlayPath = path.join(DEFAULT_TEXTURES_DIR, "block", "grass_block_side_overlay.svg");
   assert(fs.existsSync(overlayPath), "grass_block_side_overlay.svg exists");
 
   const overlayContent = fs.readFileSync(overlayPath, "utf-8");
 
-  // Assert zero graphical drawing elements
-  const drawElementPatterns = [
-    /<rect\b/i,
-    /<path\b/i,
-    /<circle\b/i,
-    /<ellipse\b/i,
-    /<polygon\b/i,
-    /<polyline\b/i,
-    /<line\b/i,
-    /<image\b/i,
-    /<use\b/i
-  ];
-  for (const pattern of drawElementPatterns) {
-    assert(!pattern.test(overlayContent), `grass_block_side_overlay.svg contains zero ${pattern.source} tags`);
+  // Verify presence of stepped overhang path
+  assert(overlayContent.includes("<path"), "grass_block_side_overlay.svg defines stepped turf overhang path");
+  assert(overlayContent.includes("#b8b8b8"), "grass_block_side_overlay.svg carries calibrated grayscale turf #b8b8b8");
+
+  // Assert pure grayscale contract across all hex codes (R == G == B) to prevent color skew
+  const hexMatches = overlayContent.match(/#[0-9a-fA-F]{6}/g) || [];
+  assert(hexMatches.length > 0, "grass_block_side_overlay.svg specifies hex fill colors");
+  for (const hex of hexMatches) {
+    const r = hex.slice(1, 3).toLowerCase();
+    const g = hex.slice(3, 5).toLowerCase();
+    const b = hex.slice(5, 7).toLowerCase();
+    assertEqual(r, g, `Overlay hex ${hex} has R == G for pure grayscale calibration`);
+    assertEqual(g, b, `Overlay hex ${hex} has G == B for pure grayscale calibration`);
+  }
+
+  // Also assert grass_block_top.svg maintains pure grayscale calibration
+  const topContent = fs.readFileSync(path.join(DEFAULT_TEXTURES_DIR, "block", "grass_block_top.svg"), "utf-8");
+  const topHexMatches = topContent.match(/#[0-9a-fA-F]{6}/g) || [];
+  for (const hex of topHexMatches) {
+    const r = hex.slice(1, 3).toLowerCase();
+    const g = hex.slice(3, 5).toLowerCase();
+    const b = hex.slice(5, 7).toLowerCase();
+    assertEqual(r, g, `Top hex ${hex} has R == G for pure grayscale calibration`);
+    assertEqual(g, b, `Top hex ${hex} has G == B for pure grayscale calibration`);
   }
 
   assert(
-    overlayContent.includes("100% Transparent Overlay") || overlayContent.includes("Transparent"),
-    "grass_block_side_overlay.svg documents its transparent intent"
+    overlayContent.includes("GRAYSCALE TINT") || overlayContent.includes("Grayscale"),
+    "grass_block_side_overlay.svg documents its grayscale tint contract intent"
   );
 }
 
