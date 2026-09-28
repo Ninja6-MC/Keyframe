@@ -51,26 +51,82 @@ download a casual visitor gets.
   `[Unreleased]` entries moved under a real heading. The release workflow enforces this and
   will fail the release otherwise. Pre-releases may ship without one.
 
-### Step 2: Cut the tag
+### Step 2: Build and verify the candidate
+
+From the current `main` commit, dispatch **Release** with `operation=candidate` and
+`tag=v0.MINOR.PATCH[-alpha.N|-beta.N]`. The workflow builds the five ZIPs once,
+records the source SHA, tag, version, channel, run ID and attempt, artifact name,
+destinations, exact filenames and SHA-256 digests in `candidate.json`, and retains
+the candidate artifact for 30 days.
+
+A separate job downloads the retained artifact. It rejects missing, extra or changed
+ZIPs, checks ZIP integrity, the embedded version in `pack.mcmeta`, the resolution,
+`pack.png` (128x128), and the complete source-derived inventory under `assets/`
+including compatibility aliases. Every PNG is decoded and checked against its
+source dimensions at the intended resolution; animation metadata must match the
+frame layout. The release profile is the default trailer palette without PBR maps,
+so unrequested normal/specular maps and other extra assets are rejected. The artifact
+test suite exercises the downloaded ZIP bytes at every resolution and verifies that
+rehashed corrupt images, incorrect dimensions, missing aliases and extra entries
+fail. It then runs `npm test` for source and compiler coverage. A passing
+run retains `evidence.json` for 30 days with the candidate ID, manifest digest,
+per-ZIP digests and verification run. The source tests exercise the compiler;
+the direct ZIP checks exercise the finished packs. They do not visually inspect
+textures in Minecraft, which remains a release review step.
+
+If a candidate run fails, re-run it with **Re-run all jobs**. Artifact names carry the
+run attempt, so re-running only the failed `verify` job starts a new attempt that cannot
+find the earlier attempt's candidate, and it always fails.
+
+Use a successful candidate run ID and attempt. The attempt must be the latest attempt of
+that run: promotion checks it against the run's current attempt, so re-running the
+candidate run after it passed makes the earlier attempt unpromotable. Do not edit or
+repack its ZIPs.
+
+### Step 3: Cut the tag
 
 ```bash
 git checkout main && git pull
-git tag v0.1.0-alpha.1
+git tag v0.1.0-alpha.1 <candidate-source-sha>
 git push origin v0.1.0-alpha.1
 ```
 
-### Step 3: Automated CI actions
+### Step 4: Approve and promote
 
-`release.yml` then compiles the five resolutions (512×, 256×, 128×, 64×, 32×), attaches
-them to a GitHub Release, and sets the pre-release flag from the tag. Release notes come
-from the matching `CHANGELOG.md` section where one exists, with GitHub's generated notes
-appended.
+Dispatch **Release** on the exact tag ref with `operation=promote`, the same
+`tag`, `candidate_run_id` and `candidate_run_attempt`. A tag push alone never
+publishes. The publisher waits for the maintainer's approval in the protected
+`release` environment; only `v*` tag deployments are allowed and administrator
+bypass is disabled. Approval is for that candidate and GitHub Releases destination.
+
+After approval, the publisher downloads the retained candidate and test evidence.
+It checks the successful originating run, manifest, ZIPs, evidence, package version,
+channel and the tag's current source commit. It then creates a draft GitHub Release,
+uploads exactly the tested ZIPs, downloads each published asset to compare its digest,
+and makes the release public only after all five assets match. The pre-release flag
+comes from the tag. Changelog notes remain the release body, with generated notes
+appended. The stable changelog section is mandatory.
+
+The workflow has no build or packaging step after verification. Only its protected
+publisher job has `contents: write`.
+
+### Retry and reconciliation
+
+Rerun promotion with the same candidate run ID and attempt while both retained
+artifacts remain available. The publisher compares release identity, source,
+channel and every existing asset's downloaded digest, then uploads only missing
+matching ZIPs. It never replaces an asset. Missing or expired artifacts, a moved
+tag, changed bytes, an unknown asset or different release metadata stop the run.
+The maintainer must inspect and reconcile the public release before retrying;
+the workflow does not rebuild or silently repair conflicting bytes. A draft with
+all matching assets can be finalized by a retry. GitHub Releases is the only
+destination, so there is no cross-destination ordering.
 
 ## 4. Repository Secrets
 
 **None.** The release path uses only the workflow's own `GITHUB_TOKEN`, granted
-`contents: write` on the publishing job alone. Nothing here needs a registry token, because
-nothing is published to a registry.
+`contents: write` and `actions: read` on the protected publishing job alone.
+Candidate and verification jobs have `contents: read`; nothing is published to a registry.
 
 ## 5. Distribution — deliberately GitHub-only, for now
 
@@ -89,18 +145,14 @@ section in the same pull request.
 
 ## 6. Validating the Release Path
 
-`release.yml` runs only on a pushed `v*` tag and on `workflow_dispatch`. No pull request
-ever triggers it, so a green pull-request check says nothing about whether the release job
-works. A `workflow_dispatch` run from a branch is not a substitute either: `github.ref` is
-then outside `refs/tags/`, so the publishing step's `if: startsWith(github.ref,
-'refs/tags/')` guard skips it and only the build and notes steps are proven. Only a real
-tag exercises the whole path.
+`release.yml` runs only through `workflow_dispatch`. The pull-request CI builds all five
+packs and runs the release validator's negative tests, but cannot prove environment approval
+or GitHub Releases API behavior. A candidate dispatch proves retention and downloaded-pack
+verification. Only a tag-ref promotion after maintainer approval exercises publication.
 
-**A bump to any action used only in `release.yml` therefore cannot be validated by CI.**
-Either exercise the path — push a pre-release tag, let the run publish, verify the attached
-zips, then delete the release and the tag — or say plainly in the pull request that the bump
-was merged unexercised. Either is acceptable; treating a green tick as though it had covered
-the release job is not.
+**A bump to an action used only in `release.yml` is not covered by pull-request CI.**
+Exercise a candidate dispatch and record the result. Publisher-only changes require an
+approved tag-ref promotion before their publication path can be called exercised.
 
 ### Exercise record
 

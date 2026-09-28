@@ -7,115 +7,119 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
+    inputs:
+      operation:
+        description: Build a candidate or promote an existing candidate
+        required: true
+        type: choice
+        options: [candidate, promote]
+      tag:
+        description: Intended v0.x.y tag
+        required: true
+        type: string
+      candidate_run_id:
+        description: Successful candidate run ID (promotion only)
+        required: false
+        type: string
+      candidate_run_attempt:
+        description: Candidate attempt number (promotion only)
+        required: false
+        default: "1"
+        type: string
 
-# Read-only by default. The one job that needs to write does so explicitly below; on a
-# normal (non-reusable) run a job's `permissions:` REPLACES this rather than being capped
-# by it, so narrowing here costs the release step nothing.
 permissions:
   contents: read
 
 jobs:
-  build-and-release:
+  candidate:
+    if: inputs.operation == 'candidate' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # creates the release and uploads the pack zips
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Nothing here does an authenticated git operation, so the token does not need
-          # to be left behind in .git/config for later steps or actions to find.
           persist-credentials: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 20
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Compile Multi-Resolution Resource Packs
-        run: node tools/build.mjs --all
-
-      # The tier is derived from the tag rather than chosen by hand. Any SemVer
-      # pre-release suffix - the hyphen in v0.1.0-alpha.1 - makes it a pre-release, which
-      # is what stops an alpha appearing as the download a casual visitor gets.
-      - name: Derive Version And Channel
-        id: vars
-        run: |
-          TAG="${GITHUB_REF_NAME}"
-          VERSION="${TAG#v}"
-          BASE_VERSION="${VERSION%%-*}"
-          case "$VERSION" in
-            *-*) PRERELEASE=true ;;
-            *)   PRERELEASE=false ;;
-          esac
-          {
-            echo "version=$VERSION"
-            echo "baseVersion=$BASE_VERSION"
-            echo "prerelease=$PRERELEASE"
-          } >> "$GITHUB_OUTPUT"
-
-      # A stable release tagged while CHANGELOG.md still says only [Unreleased] would
-      # otherwise publish five zips with no record of what changed and nobody noticing.
-      # Pre-releases may ship without a section; a stable release may not.
-      - name: Check Changelog And Collect Release Notes
-        id: notes
+          cache: npm
+      - run: npm ci
+      - run: python3 -m pip install -r tools/requirements-release.txt
+      - run: node tools/build.mjs --all
+      - name: Record candidate
         env:
-          VERSION: ${{ steps.vars.outputs.version }}
-          BASE_VERSION: ${{ steps.vars.outputs.baseVersion }}
-          PRERELEASE: ${{ steps.vars.outputs.prerelease }}
-        run: |
-          extract() {
-            awk -v header="## [$1]" '
-              index($0, header) == 1 { found = 1; next }
-              found && /^## / { exit }
-              found { print }
-            ' CHANGELOG.md
-          }
-
-          # An exact pre-release heading wins if one exists, otherwise the heading for the
-          # version being worked towards.
-          NOTES="$(extract "$VERSION")"
-          [ -z "${NOTES//[[:space:]]/}" ] && NOTES="$(extract "$BASE_VERSION")"
-
-          if [ -z "${NOTES//[[:space:]]/}" ]; then
-            if [ "$PRERELEASE" != "true" ]; then
-              echo "CHANGELOG.md has no '## [$BASE_VERSION]' section."
-              echo
-              echo "A stable release must document what changed. Move the [Unreleased]"
-              echo "entries under a '## [$BASE_VERSION]' heading, merge that to main,"
-              echo "and re-tag. See RELEASE_PROCESS.md section 3."
-              exit 1
-            fi
-            echo "No changelog section for $VERSION; pre-releases may ship without one."
-            NOTES="Pre-release. See CHANGELOG.md [Unreleased] for work in progress."
-          fi
-
-          {
-            echo "body<<KEYFRAME_NOTES_EOF"
-            echo "$NOTES"
-            echo "KEYFRAME_NOTES_EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Create GitHub Release & Attach Resource Packs
-        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
-        if: startsWith(github.ref, 'refs/tags/')
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: python3 tools/release.py manifest dist "$RELEASE_TAG"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          files: |
-            dist/Keyframe-512x.zip
-            dist/Keyframe-256x.zip
-            dist/Keyframe-128x.zip
-            dist/Keyframe-64x.zip
-            dist/Keyframe-32x.zip
-          draft: false
-          prerelease: ${{ steps.vars.outputs.prerelease }}
-          body: ${{ steps.notes.outputs.body }}
-          # Appended below the changelog body above, not instead of it.
-          generate_release_notes: true
+          name: keyframe-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            dist/Keyframe-*.zip
+            dist/candidate.json
+          if-no-files-found: error
+          retention-days: 30
+  verify:
+    if: inputs.operation == 'candidate' && github.ref == 'refs/heads/main'
+    needs: candidate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: python3 -m pip install -r tools/requirements-release.txt
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: keyframe-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate
+      - name: Check downloaded packs before tests
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: python3 tools/release.py validate candidate "$RELEASE_TAG" "$GITHUB_SHA"
+      - name: Test downloaded candidate bytes
+        env:
+          KEYFRAME_CANDIDATE_DIR: candidate
+        run: python3 tools/test/release.test.py
+      - run: npm test
+      - name: Bind passing tests to downloaded bytes
+        run: python3 tools/release.py evidence candidate evidence
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: keyframe-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/evidence.json
+          if-no-files-found: error
+          retention-days: 30
+  publish:
+    if: inputs.operation == 'promote' && startsWith(github.ref, 'refs/tags/v') && inputs.tag == github.ref_name
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          run-id: ${{ inputs.candidate_run_id }}
+          github-token: ${{ github.token }}
+          name: keyframe-candidate-${{ inputs.candidate_run_id }}-${{ inputs.candidate_run_attempt }}
+          path: candidate
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          run-id: ${{ inputs.candidate_run_id }}
+          github-token: ${{ github.token }}
+          name: keyframe-evidence-${{ inputs.candidate_run_id }}-${{ inputs.candidate_run_attempt }}
+          path: evidence
+      - run: python3 -m pip install -r tools/requirements-release.txt
+      - name: Recheck candidate and publish exact packs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+        run: python3 tools/release.py publish candidate evidence "$RELEASE_TAG" "$GITHUB_SHA" "$CANDIDATE_RUN_ID"

@@ -226,14 +226,12 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
   fs.mkdirSync(ITEMS_DIR, { recursive: true });
 
   // 1. Generate pack.mcmeta (Universal 1.20 - 1.21.4+ support)
+  const profile = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, "tools", "pack-profile.json"), "utf-8"));
   const mcmeta = {
+    keyframe_version: JSON.parse(fs.readFileSync(path.join(ROOT_DIR, "package.json"), "utf-8")).version,
     pack: {
-      pack_format: 46,
-      supported_formats: {
-        min_inclusive: 15,
-        max_inclusive: 46
-      },
-      description: "§6Keyframe §8- §a" + targetRes + "x§r\n§7The Cinematic Trailer Vector Pack"
+      ...profile,
+      description: profile.description.replaceAll("{resolution}", String(targetRes))
     }
   };
 
