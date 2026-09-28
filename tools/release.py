@@ -307,15 +307,18 @@ def check_evidence(candidate, evidence_dir, manifest):
 
 
 class SameHostAuthRedirect(urllib.request.HTTPRedirectHandler):
-    """Follow redirects, but keep the token on the host it was issued for.
+    """Follow redirects, but keep the token on the origin it was issued for.
 
     Asset downloads redirect to a CDN host; urllib would otherwise copy the
-    Authorization header onto that request.
+    Authorization header onto that request. The scheme is part of the origin, so
+    an https-to-http redirect on the same host also drops it rather than sending
+    the token in plaintext.
     """
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
-        if redirected is not None and urllib.parse.urlsplit(newurl).netloc != urllib.parse.urlsplit(req.full_url).netloc:
+        old, new = urllib.parse.urlsplit(req.full_url), urllib.parse.urlsplit(newurl)
+        if redirected is not None and (new.scheme, new.netloc) != (old.scheme, old.netloc):
             redirected.remove_header("Authorization")
         return redirected
 

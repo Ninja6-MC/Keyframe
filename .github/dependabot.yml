@@ -4,7 +4,7 @@
 # A copy at the repository root parses fine, shows up in review and never runs; the
 # symptom is silence, not a red check. Do not move it up a level.
 #
-# It exists because release.yml pins three third-party actions to commit SHAs and
+# It exists because release.yml pins four third-party actions to commit SHAs and
 # publishes the pack zips users download. A pin with no updater is worse than no pin.
 #
 # WHY THIS EXISTS. Workflow actions in this org are pinned to commit SHAs, not tags:

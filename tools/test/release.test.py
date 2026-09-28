@@ -8,6 +8,7 @@ import tempfile
 import threading
 import unittest
 from unittest.mock import patch
+import urllib.request
 import zipfile
 
 from PIL import Image
@@ -284,6 +285,16 @@ class ReleaseCandidateTests(unittest.TestCase):
             body = release.api("GET", f"http://127.0.0.1:{api_server.server_port}/asset", accept="application/octet-stream")
         self.assertEqual(body, b"pack")
         self.assertEqual(seen, {"api": "Bearer secret", "cdn": None})
+
+    def test_token_is_not_forwarded_on_scheme_downgrade(self):
+        handler = release.SameHostAuthRedirect()
+
+        def follow(newurl):
+            req = urllib.request.Request("https://api.github.com/asset", headers={"Authorization": "Bearer secret"})
+            return handler.redirect_request(req, None, 302, "Found", {}, newurl)
+
+        self.assertIsNone(follow("http://api.github.com/asset").get_header("Authorization"))
+        self.assertEqual(follow("https://api.github.com/other").get_header("Authorization"), "Bearer secret")
 
 
 class ArtifactInventoryTests(unittest.TestCase):
