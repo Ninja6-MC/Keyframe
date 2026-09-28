@@ -8,6 +8,8 @@ import unittest
 from unittest.mock import patch
 import zipfile
 
+from PIL import Image
+
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import release
@@ -38,7 +40,11 @@ class ReleaseCandidateTests(unittest.TestCase):
         self.addCleanup(self.package.stop)
         inventory = patch.object(
             release, "expected_assets",
-            return_value={"assets/minecraft/textures/block/stone.png"},
+            side_effect=lambda resolution, pbr=False: {
+                "pack.mcmeta": None, "pack.png": (128, 128),
+                "assets/minecraft/textures/block/stone.png": (resolution, resolution),
+                "assets/minecraft/textures/block/grass.png": (resolution, resolution),
+            },
         )
         inventory.start()
         self.addCleanup(inventory.stop)
@@ -48,6 +54,12 @@ class ReleaseCandidateTests(unittest.TestCase):
             return {"version": self.version}
         return json.loads(Path(path).read_text(encoding="utf-8"))
 
+    @staticmethod
+    def png(width, height):
+        output = io.BytesIO()
+        Image.new("RGBA", (width, height), (120, 60, 30, 255)).save(output, format="PNG")
+        return output.getvalue()
+
     def pack(self, size, version=None, include_icon=True):
         output = io.BytesIO()
         with zipfile.ZipFile(output, "w") as archive:
@@ -56,8 +68,9 @@ class ReleaseCandidateTests(unittest.TestCase):
                 "pack": {"pack_format": 46, "description": f"Keyframe {size}x"},
             }))
             if include_icon:
-                archive.writestr("pack.png", release.PNG + b"icon")
-            archive.writestr("assets/minecraft/textures/block/stone.png", release.PNG + b"stone")
+                archive.writestr("pack.png", self.png(128, 128))
+            archive.writestr("assets/minecraft/textures/block/stone.png", self.png(size, size))
+            archive.writestr("assets/minecraft/textures/block/grass.png", self.png(size, size))
         return output.getvalue()
 
     def make_packs(self):
@@ -99,6 +112,52 @@ class ReleaseCandidateTests(unittest.TestCase):
                 (self.candidate / "unexpected.zip").unlink(missing_ok=True)
                 self.manifest["files"][target.name] = release.digest(original)
                 self.save()
+
+    def rewrite_pack(self, changed=None, removed=(), added=None):
+        target = self.candidate / release.PACKS[0]
+        output = io.BytesIO()
+        with zipfile.ZipFile(target) as original, zipfile.ZipFile(output, "w") as archive:
+            for entry in original.infolist():
+                if entry.filename not in removed:
+                    archive.writestr(entry, (changed or {}).get(entry.filename, original.read(entry)))
+            for name, data in (added or {}).items():
+                archive.writestr(name, data)
+        target.write_bytes(output.getvalue())
+        # Rehash deliberately: these failures must come from artifact tests, not digest checks.
+        self.manifest["files"][target.name] = release.digest(target.read_bytes())
+        self.save()
+
+    def test_rehashed_malformed_truncated_and_wrong_dimension_pngs(self):
+        for asset in ("pack.png", "assets/minecraft/textures/block/stone.png"):
+            for data in (release.PNG + b"not-an-image", self.png(512, 512)[:-12],
+                         self.png(32, 32), self.png(512, 1024)):
+                with self.subTest(asset=asset, bytes=len(data)):
+                    self.rewrite_pack(changed={asset: data})
+                    with self.assertRaises(ValueError):
+                        release.validate(self.candidate, self.tag, self.source)
+                    self.make_packs()
+
+    def test_rehashed_missing_alias_and_extra_internal_entries(self):
+        self.rewrite_pack(removed=("assets/minecraft/textures/block/grass.png",))
+        with self.assertRaisesRegex(ValueError, "inventory mismatch"):
+            release.validate(self.candidate, self.tag, self.source)
+        self.make_packs()
+        for name, data in (("assets/minecraft/textures/block/extra.png", self.png(512, 512)),
+                           ("assets/minecraft/models/extra.json", b"{}"),
+                           ("assets/minecraft/textures/block/stone_n.png", self.png(512, 512))):
+            with self.subTest(name=name):
+                self.rewrite_pack(added={name: data})
+                with self.assertRaisesRegex(ValueError, "inventory mismatch"):
+                    release.validate(self.candidate, self.tag, self.source)
+                self.make_packs()
+
+    def test_corrupted_download_cannot_receive_passing_evidence(self):
+        self.rewrite_pack(changed={"assets/minecraft/textures/block/stone.png": release.PNG + b"bad"})
+        destination = self.root / "evidence"
+        with patch.dict(os.environ, {"GITHUB_RUN_ID": "42", "GITHUB_RUN_ATTEMPT": "1"}):
+            with self.assertRaisesRegex(ValueError, "Invalid PNG"):
+                release.evidence(self.candidate, destination)
+        self.assertFalse(destination.exists())
 
     def test_tag_and_identity_mismatch(self):
         for tag, source in (("v0.1.0-beta.1", self.source), (self.tag, "b" * 40)):
@@ -194,6 +253,116 @@ class ReleaseCandidateTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 release.publish(self.candidate, evidence_dir, self.tag, self.source, "42")
             api.assert_not_called()
+
+
+class ArtifactInventoryTests(unittest.TestCase):
+    def setUp(self):
+        self.root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.root)
+        previous = Path.cwd()
+        os.chdir(self.root)
+        self.addCleanup(os.chdir, previous)
+        source = Path("textures/block")
+        source.mkdir(parents=True)
+        Path("tools/lib").mkdir(parents=True)
+        Path("tools/lib/animation-packager.mjs").write_text("export const DEFAULT_ANIMATION_PRESETS = {\n  lava: {},\n};")
+        Path("pack_template/assets/minecraft/models/block").mkdir(parents=True)
+        Path("pack_template/assets/minecraft/models/block/stone.json").write_text("{}")
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"/>'
+        for stem in ("stone", "short_grass", "short_grass_1", "short_grass_2", "grass_block_side_overlay", "wool.template"):
+            (source / (stem + ".svg")).write_text(svg)
+        (source / "water.svg").write_text(svg.replace("512 512", "512 1536"))
+        (source / "water.svg.mcmeta").write_text('{"animation":{"frames":[0,1,2]}}')
+
+    def pack(self, inventory, size=32):
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, "w") as archive:
+            for name, dimensions in inventory.items():
+                if dimensions:
+                    data = ReleaseCandidateTests.png(*dimensions)
+                elif name == "pack.mcmeta":
+                    data = json.dumps({"keyframe_version": "0.1.0-alpha.1", "pack": {
+                        "pack_format": 46, "description": f"Keyframe {size}x"}})
+                elif name.endswith(".png.mcmeta"):
+                    data = '{"animation":{"frames":[0,1,2]}}'
+                else:
+                    data = '{}'
+                archive.writestr(name, data)
+        return output.getvalue()
+
+    def test_complete_generated_inventory_and_pbr_missing_map(self):
+        plain = release.expected_assets(32)
+        inventory = release.expected_assets(32, pbr=True)
+        base = "assets/minecraft/textures/block/"
+        self.assertIn(base + "red_wool.png", plain)
+        self.assertNotIn(base + "wool.template.png", plain)
+        self.assertIn(base + "grass_2.png", plain)
+        self.assertEqual(inventory[base + "water.png"], (32, 96))
+        self.assertIn(base + "grass_n.png", inventory)
+        self.assertIn(base + "red_wool_s.png", inventory)
+        self.assertNotIn(base + "grass_block_side_overlay_n.png", inventory)
+        release.check_pack(self.pack(plain), "Keyframe-32x.zip", "0.1.0-alpha.1")
+        release.check_pack(self.pack(inventory), "Keyframe-32x.zip", "0.1.0-alpha.1", pbr=True)
+        for missing in (base + "grass_n.png", base + "red_wool_s.png", base + "grass_1.png"):
+            with self.subTest(missing=missing):
+                incomplete = {name: value for name, value in inventory.items() if name != missing}
+                with self.assertRaisesRegex(ValueError, "inventory mismatch"):
+                    release.check_pack(self.pack(incomplete), "Keyframe-32x.zip", "0.1.0-alpha.1", pbr=True)
+
+    def test_compiled_animation_folder_inventory(self):
+        frames = Path("textures/block/lava")
+        frames.mkdir()
+        for index in range(3):
+            (frames / f"{index}.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"/>')
+        inventory = release.expected_assets(32)
+        self.assertEqual(inventory["assets/minecraft/textures/block/lava.png"], (32, 96))
+        self.assertIn("assets/minecraft/textures/block/lava.png.mcmeta", inventory)
+        release.check_pack(self.pack(inventory), "Keyframe-32x.zip", "0.1.0-alpha.1")
+
+    def test_animation_layout_and_frame_indices(self):
+        release.check_animation({"animation": {"frames": [0, {"index": 2, "time": 4}]}}, (32, 96), 32, "water")
+        for metadata in ({"animation": {"frames": [3]}}, {"animation": {"height": 31}},
+                         {"animation": {"frames": [{"index": 0, "time": 0}]}},
+                         {"animation": {"frametime": 0}}):
+            with self.subTest(metadata=metadata), self.assertRaises(ValueError):
+                release.check_animation(metadata, (32, 96), 32, "water")
+
+
+@unittest.skipUnless(os.environ.get("KEYFRAME_CANDIDATE_DIR"), "No downloaded candidate supplied")
+class DownloadedArtifactTests(unittest.TestCase):
+    def test_candidate_bytes_and_rehashed_corruptions(self):
+        candidate = Path(os.environ["KEYFRAME_CANDIDATE_DIR"]).resolve()
+        manifest = release.read_json(candidate / "candidate.json")
+        release.validate(candidate, manifest["tag"], manifest["source_sha"])
+        originals = {name: (candidate / name).read_bytes() for name in release.PACKS}
+        for name, data in originals.items():
+            size = int(name.removeprefix("Keyframe-").removesuffix("x.zip"))
+            for mutation in ("malformed", "truncated", "dimensions", "alias", "extra"):
+                with self.subTest(pack=name, mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                    changed = Path(temporary)
+                    shutil.copytree(candidate, changed, dirs_exist_ok=True)
+                    output = io.BytesIO()
+                    with zipfile.ZipFile(io.BytesIO(data)) as original, zipfile.ZipFile(output, "w") as archive:
+                        for entry in original.infolist():
+                            payload = original.read(entry)
+                            if entry.filename == "assets/minecraft/textures/block/grass.png" and mutation == "alias":
+                                continue
+                            if entry.filename == "assets/minecraft/textures/block/stone.png":
+                                if mutation == "malformed":
+                                    payload = release.PNG + b"not-an-image"
+                                elif mutation == "truncated":
+                                    payload = payload[:-12]
+                                elif mutation == "dimensions":
+                                    payload = ReleaseCandidateTests.png(size // 2, size // 2)
+                            archive.writestr(entry, payload)
+                        if mutation == "extra":
+                            archive.writestr("assets/minecraft/models/unexpected.json", "{}")
+                    (changed / name).write_bytes(output.getvalue())
+                    changed_manifest = {**manifest, "files": {**manifest["files"], name: release.digest(output.getvalue())}}
+                    (changed / "candidate.json").write_text(json.dumps(changed_manifest), encoding="utf-8")
+                    with self.assertRaises(ValueError):
+                        release.validate(changed, manifest["tag"], manifest["source_sha"])
+        self.assertEqual(originals, {name: (candidate / name).read_bytes() for name in release.PACKS})
 
 
 if __name__ == "__main__":

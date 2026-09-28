@@ -73,14 +73,19 @@ jobs:
       - name: Build 512x Pack
         run: npm run build:512
 
-      - name: Release Promotion Test Suite
-        run: python3 tools/test/release.test.py
+      - name: Install Release Verification Dependencies
+        run: python3 -m pip install -r tools/requirements-release.txt
 
       - name: Validate Built Release Candidate
         run: |
           TAG="v$(node -p "require('./package.json').version")"
           python3 tools/release.py manifest dist "$TAG"
           python3 tools/release.py validate dist "$TAG" "$GITHUB_SHA"
+
+      - name: Release Promotion Test Suite
+        env:
+          KEYFRAME_CANDIDATE_DIR: dist
+        run: python3 tools/test/release.test.py
 
       - name: Animation Packager Test Suite
         run: npm run test:animation

@@ -61,7 +61,14 @@ the candidate artifact for 30 days.
 
 A separate job downloads the retained artifact. It rejects missing, extra or changed
 ZIPs, checks ZIP integrity, the embedded version in `pack.mcmeta`, the resolution,
-`pack.png` and the block textures under `assets/`, then runs `npm test`. A passing
+`pack.png` (128×128), and the complete source-derived inventory under `assets/`
+including compatibility aliases. Every PNG is decoded and checked against its
+source dimensions at the intended resolution; animation metadata must match the
+frame layout. The release profile is the default trailer palette without PBR maps,
+so unrequested normal/specular maps and other extra assets are rejected. The artifact
+test suite exercises the downloaded ZIP bytes at every resolution and verifies that
+rehashed corrupt images, incorrect dimensions, missing aliases and extra entries
+fail. It then runs `npm test` for source and compiler coverage. A passing
 run retains `evidence.json` for 30 days with the candidate ID, manifest digest,
 per-ZIP digests and verification run. The source tests exercise the compiler;
 the direct ZIP checks exercise the finished packs. They do not visually inspect

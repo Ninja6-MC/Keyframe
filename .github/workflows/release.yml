@@ -38,6 +38,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: python3 -m pip install -r tools/requirements-release.txt
       - run: node tools/build.mjs --all
       - name: Record candidate
         env:
@@ -64,6 +65,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: python3 -m pip install -r tools/requirements-release.txt
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: keyframe-candidate-${{ github.run_id }}-${{ github.run_attempt }}
@@ -72,6 +74,10 @@ jobs:
         env:
           RELEASE_TAG: ${{ inputs.tag }}
         run: python3 tools/release.py validate candidate "$RELEASE_TAG" "$GITHUB_SHA"
+      - name: Test downloaded candidate bytes
+        env:
+          KEYFRAME_CANDIDATE_DIR: candidate
+        run: python3 tools/test/release.test.py
       - run: npm test
       - name: Bind passing tests to downloaded bytes
         run: python3 tools/release.py evidence candidate evidence
@@ -104,6 +110,7 @@ jobs:
           github-token: ${{ github.token }}
           name: keyframe-evidence-${{ inputs.candidate_run_id }}-${{ inputs.candidate_run_attempt }}
           path: evidence
+      - run: python3 -m pip install -r tools/requirements-release.txt
       - name: Recheck candidate and publish exact packs
         env:
           GH_TOKEN: ${{ github.token }}
