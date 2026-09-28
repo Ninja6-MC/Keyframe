@@ -63,10 +63,7 @@ class ReleaseCandidateTests(unittest.TestCase):
     def pack(self, size, version=None, include_icon=True):
         output = io.BytesIO()
         with zipfile.ZipFile(output, "w") as archive:
-            archive.writestr("pack.mcmeta", json.dumps({
-                "keyframe_version": version or self.version,
-                "pack": {"pack_format": 46, "description": f"Keyframe {size}x"},
-            }))
+            archive.writestr("pack.mcmeta", json.dumps(release.expected_metadata(size, version or self.version)))
             if include_icon:
                 archive.writestr("pack.png", self.png(128, 128))
             archive.writestr("assets/minecraft/textures/block/stone.png", self.png(size, size))
@@ -265,6 +262,8 @@ class ArtifactInventoryTests(unittest.TestCase):
         source = Path("textures/block")
         source.mkdir(parents=True)
         Path("tools/lib").mkdir(parents=True)
+        profile_source = Path(__file__).resolve().parents[1] / "pack-profile.json"
+        Path("tools/pack-profile.json").write_bytes(profile_source.read_bytes())
         Path("tools/lib/animation-packager.mjs").write_text("export const DEFAULT_ANIMATION_PRESETS = {\n  lava: {},\n};")
         Path("pack_template/assets/minecraft/models/block").mkdir(parents=True)
         Path("pack_template/assets/minecraft/models/block/stone.json").write_text("{}")
@@ -281,8 +280,7 @@ class ArtifactInventoryTests(unittest.TestCase):
                 if dimensions:
                     data = ReleaseCandidateTests.png(*dimensions)
                 elif name == "pack.mcmeta":
-                    data = json.dumps({"keyframe_version": "0.1.0-alpha.1", "pack": {
-                        "pack_format": 46, "description": f"Keyframe {size}x"}})
+                    data = json.dumps(release.expected_metadata(size, "0.1.0-alpha.1"))
                 elif name.endswith(".png.mcmeta"):
                     data = '{"animation":{"frames":[0,1,2]}}'
                 else:
@@ -337,7 +335,11 @@ class DownloadedArtifactTests(unittest.TestCase):
         originals = {name: (candidate / name).read_bytes() for name in release.PACKS}
         for name, data in originals.items():
             size = int(name.removeprefix("Keyframe-").removesuffix("x.zip"))
-            for mutation in ("malformed", "truncated", "dimensions", "alias", "extra"):
+            metadata_mutations = ("format_negative", "format_wrong", "format_bool", "format_float", "format_missing",
+                                  "supported_missing", "supported_list", "minimum_wrong", "maximum_wrong",
+                                  "minimum_missing", "maximum_missing", "minimum_bool", "maximum_float",
+                                  "description_missing", "description_wrong", "pack_null", "metadata_list")
+            for mutation in ("malformed", "truncated", "dimensions", "alias", "extra", *metadata_mutations):
                 with self.subTest(pack=name, mutation=mutation), tempfile.TemporaryDirectory() as temporary:
                     changed = Path(temporary)
                     shutil.copytree(candidate, changed, dirs_exist_ok=True)
@@ -345,6 +347,44 @@ class DownloadedArtifactTests(unittest.TestCase):
                     with zipfile.ZipFile(io.BytesIO(data)) as original, zipfile.ZipFile(output, "w") as archive:
                         for entry in original.infolist():
                             payload = original.read(entry)
+                            if entry.filename == "pack.mcmeta" and mutation in metadata_mutations:
+                                metadata = json.loads(payload)
+                                pack = metadata["pack"]
+                                if mutation == "format_negative":
+                                    pack["pack_format"] = -1
+                                elif mutation == "format_wrong":
+                                    pack["pack_format"] = 47
+                                elif mutation == "format_bool":
+                                    pack["pack_format"] = True
+                                elif mutation == "format_float":
+                                    pack["pack_format"] = 46.0
+                                elif mutation == "format_missing":
+                                    del pack["pack_format"]
+                                elif mutation == "supported_missing":
+                                    del pack["supported_formats"]
+                                elif mutation == "supported_list":
+                                    pack["supported_formats"] = [15, 46]
+                                elif mutation.startswith("minimum_"):
+                                    field = "min_inclusive"
+                                    if mutation == "minimum_missing":
+                                        del pack["supported_formats"][field]
+                                    else:
+                                        pack["supported_formats"][field] = True if mutation == "minimum_bool" else 14
+                                elif mutation.startswith("maximum_"):
+                                    field = "max_inclusive"
+                                    if mutation == "maximum_missing":
+                                        del pack["supported_formats"][field]
+                                    else:
+                                        pack["supported_formats"][field] = 46.0 if mutation == "maximum_float" else 47
+                                elif mutation == "description_missing":
+                                    del pack["description"]
+                                elif mutation == "description_wrong":
+                                    pack["description"] = f"Misadvertised {size}x pack"
+                                elif mutation == "pack_null":
+                                    metadata["pack"] = None
+                                elif mutation == "metadata_list":
+                                    metadata = []
+                                payload = json.dumps(metadata)
                             if entry.filename == "assets/minecraft/textures/block/grass.png" and mutation == "alias":
                                 continue
                             if entry.filename == "assets/minecraft/textures/block/stone.png":

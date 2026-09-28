@@ -61,7 +61,7 @@ the candidate artifact for 30 days.
 
 A separate job downloads the retained artifact. It rejects missing, extra or changed
 ZIPs, checks ZIP integrity, the embedded version in `pack.mcmeta`, the resolution,
-`pack.png` (128×128), and the complete source-derived inventory under `assets/`
+`pack.png` (128x128), and the complete source-derived inventory under `assets/`
 including compatibility aliases. Every PNG is decoded and checked against its
 source dimensions at the intended resolution; animation metadata must match the
 frame layout. The release profile is the default trailer palette without PBR maps,

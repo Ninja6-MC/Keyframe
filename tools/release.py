@@ -163,6 +163,29 @@ def check_animation(metadata, dimensions, resolution, label):
         fail(f"Invalid animation frametime: {label}")
 
 
+def expected_metadata(resolution, version):
+    profile = read_json("tools/pack-profile.json")
+    return {
+        "keyframe_version": version,
+        "pack": {**profile, "description": profile["description"].replace("{resolution}", str(resolution))},
+    }
+
+
+def same_json_types_and_values(actual, expected):
+    # JSON boolean and integer values must remain distinct despite Python's True == 1.
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(expected, dict):
+        return actual.keys() == expected.keys() and all(
+            same_json_types_and_values(actual[key], value) for key, value in expected.items()
+        )
+    if isinstance(expected, list):
+        return len(actual) == len(expected) and all(
+            same_json_types_and_values(left, right) for left, right in zip(actual, expected)
+        )
+    return actual == expected
+
+
 def check_pack(data, name, version, pbr=False):
     if name not in PACKS:
         fail("Unexpected pack filename")
@@ -182,11 +205,8 @@ def check_pack(data, name, version, pbr=False):
             if "pack.mcmeta" not in names or "pack.png" not in names:
                 fail("Pack metadata or icon missing")
             metadata = json.loads(archive.read("pack.mcmeta"))
-            if metadata.get("keyframe_version") != version:
-                fail("Embedded pack version differs from candidate")
-            pack = metadata.get("pack", {})
-            if not isinstance(pack.get("pack_format"), int) or f"{size}x" not in pack.get("description", ""):
-                fail("Pack metadata does not match resolution")
+            if not same_json_types_and_values(metadata, expected_metadata(int(size), version)):
+                fail("Pack metadata does not match source release profile")
             if set(names) != set(inventory):
                 missing = sorted(set(inventory) - set(names))
                 extra = sorted(set(names) - set(inventory))
