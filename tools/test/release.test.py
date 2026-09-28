@@ -1,9 +1,11 @@
+import http.server
 import io
 import json
 import os
 from pathlib import Path
 import shutil
 import tempfile
+import threading
 import unittest
 from unittest.mock import patch
 import zipfile
@@ -250,6 +252,38 @@ class ReleaseCandidateTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 release.publish(self.candidate, evidence_dir, self.tag, self.source, "42")
             api.assert_not_called()
+
+    def test_token_is_not_forwarded_to_redirect_host(self):
+        seen = {}
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                seen[self.server.name] = self.headers.get("Authorization")
+                if self.server.name == "api":
+                    self.send_response(302)
+                    self.send_header("Location", f"http://127.0.0.1:{cdn.server_port}/asset")
+                    self.end_headers()
+                    return
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"pack")
+
+            def log_message(self, *args):
+                pass
+
+        servers = []
+        for name in ("api", "cdn"):
+            server = http.server.HTTPServer(("127.0.0.1", 0), Handler)
+            server.name = name
+            threading.Thread(target=server.serve_forever, daemon=True).start()
+            self.addCleanup(server.server_close)
+            self.addCleanup(server.shutdown)
+            servers.append(server)
+        api_server, cdn = servers
+        with patch.dict(os.environ, {"GH_TOKEN": "secret"}):
+            body = release.api("GET", f"http://127.0.0.1:{api_server.server_port}/asset", accept="application/octet-stream")
+        self.assertEqual(body, b"pack")
+        self.assertEqual(seen, {"api": "Bearer secret", "cdn": None})
 
 
 class ArtifactInventoryTests(unittest.TestCase):

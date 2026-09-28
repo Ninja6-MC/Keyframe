@@ -306,6 +306,23 @@ def check_evidence(candidate, evidence_dir, manifest):
         fail("Passing test evidence does not match candidate")
 
 
+class SameHostAuthRedirect(urllib.request.HTTPRedirectHandler):
+    """Follow redirects, but keep the token on the host it was issued for.
+
+    Asset downloads redirect to a CDN host; urllib would otherwise copy the
+    Authorization header onto that request.
+    """
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if redirected is not None and urllib.parse.urlsplit(newurl).netloc != urllib.parse.urlsplit(req.full_url).netloc:
+            redirected.remove_header("Authorization")
+        return redirected
+
+
+OPENER = urllib.request.build_opener(SameHostAuthRedirect)
+
+
 def api(method, url, payload=None, accept="application/vnd.github+json"):
     token = os.environ["GH_TOKEN"]
     data = json.dumps(payload).encode() if isinstance(payload, dict) else payload
@@ -316,7 +333,7 @@ def api(method, url, payload=None, accept="application/vnd.github+json"):
                  **({"Content-Type": "application/json" if isinstance(payload, dict) else "application/octet-stream"} if payload is not None else {})},
     )
     try:
-        with urllib.request.urlopen(request, timeout=60) as response:
+        with OPENER.open(request, timeout=60) as response:
             body = response.read()
             if accept == "application/octet-stream" or url.startswith("https://uploads.github.com/"):
                 return body
