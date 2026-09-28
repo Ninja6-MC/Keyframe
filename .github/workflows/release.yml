@@ -1,3 +1,9 @@
+# Third-party actions are pinned to commit SHAs, not tags: a tag can be repointed at new
+# code with no diff, no review and no notification. This workflow holds `contents: write`
+# and publishes the zips users download, so it is the one that matters most.
+#
+# The pin goes stale in silence, so .github/dependabot.yml is the other half of the trade.
+# Do not add a pin here without checking that file still covers this workflow.
 name: Release
 
 on:
