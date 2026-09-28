@@ -74,7 +74,14 @@ per-ZIP digests and verification run. The source tests exercise the compiler;
 the direct ZIP checks exercise the finished packs. They do not visually inspect
 textures in Minecraft, which remains a release review step.
 
-Use a successful candidate run ID and attempt. Do not edit or repack its ZIPs.
+If a candidate run fails, re-run it with **Re-run all jobs**. Artifact names carry the
+run attempt, so re-running only the failed `verify` job starts a new attempt that cannot
+find the earlier attempt's candidate, and it always fails.
+
+Use a successful candidate run ID and attempt. The attempt must be the latest attempt of
+that run: promotion checks it against the run's current attempt, so re-running the
+candidate run after it passed makes the earlier attempt unpromotable. Do not edit or
+repack its ZIPs.
 
 ### Step 3: Cut the tag
 
