@@ -12,6 +12,14 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 
 ## [Unreleased]
 
+### Changed
+- Grass block texturing calibrated for dynamic engine biome colormap multiplication:
+  `textures/block/grass_block_top.svg` authored in calibrated grayscale (`#b8b8b8` base turf,
+  `#f0f0f0` strata plates, `#686868` crevice shadows), `textures/block/grass_block_side.svg`
+  updated to pure Balanced Warm Umber soil base (`#c77d38`), and `textures/block/grass_block_side_overlay.svg`
+  authored with matching calibrated grayscale stepped overhang (`#b8b8b8`). Guarantees seamless
+  top-to-side color harmony across all vanilla biomes with zero color skew (#60).
+
 ### Added
 - LabPBR 1.3 material matrix in `tools/lib/pbr-rules.json`: stone and deepslate ores,
   metal blocks (hardcoded metal IDs 230/231/234, albedo-driven `255` for netherite),

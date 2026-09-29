@@ -1,29 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
-  <!-- OFFICIAL MINECRAFT TRAILER STYLE: GRASS BLOCK TOP                         -->
-  <!-- 3D Rectangular Strata Plates with Deepslate-Style Popup Effect            -->
+  <!-- KEYFRAME TRAILER STYLE: GRASS BLOCK TOP (GRAYSCALE TINT CONTRACT)         -->
+  <!-- 3D Rectangular Strata Plates calibrated for engine biome colormap         -->
   <!-- ========================================================================= -->
 
-  <!-- Warm Sunlit Meadow Green Base -->
-  <rect width="512" height="512" fill="#9ac636" />
+  <!-- Base Turf Layer (Calibrated for Biome Colormap Multiplication) -->
+  <rect width="512" height="512" fill="#b8b8b8" />
 
-  <!-- 3D Crevice Drop Shadows (Deepslate-Style +8px Offset) -->
+  <!-- 3D Crevice Drop Shadows (Crisp +8px Offset) -->
   <g id="crevice_shadows" shape-rendering="crispEdges">
-    <rect x="15" y="58" width="300" height="28" fill="#49660c" opacity="0.95" />
-    <rect x="260" y="186" width="225" height="28" fill="#49660c" opacity="0.95" />
-    <rect x="25" y="314" width="150" height="28" fill="#49660c" opacity="0.95" />
+    <rect x="15" y="58" width="300" height="28" fill="#686868" opacity="0.95" />
+    <rect x="260" y="186" width="225" height="28" fill="#686868" opacity="0.95" />
+    <rect x="25" y="314" width="150" height="28" fill="#686868" opacity="0.95" />
     <!-- Row 4 Toroidal Wrap -->
-    <rect x="0" y="442" width="130" height="28" fill="#49660c" opacity="0.95" />
-    <rect x="360" y="442" width="152" height="28" fill="#49660c" opacity="0.95" />
+    <rect x="0" y="442" width="130" height="28" fill="#686868" opacity="0.95" />
+    <rect x="360" y="442" width="152" height="28" fill="#686868" opacity="0.95" />
   </g>
 
-  <!-- Clean Raised Strata Plates (Authentic #d2f068) -->
+  <!-- Clean Raised Strata Plates (High-Key Sunlit Highlights) -->
   <g id="strata_plates" shape-rendering="crispEdges">
-    <rect x="15" y="50" width="300" height="28" fill="#d2f068" />
-    <rect x="260" y="178" width="225" height="28" fill="#d2f068" />
-    <rect x="25" y="306" width="150" height="28" fill="#d2f068" />
+    <rect x="15" y="50" width="300" height="28" fill="#f0f0f0" />
+    <rect x="260" y="178" width="225" height="28" fill="#f0f0f0" />
+    <rect x="25" y="306" width="150" height="28" fill="#f0f0f0" />
     <!-- Row 4 Toroidal Wrap -->
-    <rect x="0" y="434" width="130" height="28" fill="#d2f068" />
-    <rect x="360" y="434" width="152" height="28" fill="#d2f068" />
+    <rect x="0" y="434" width="130" height="28" fill="#f0f0f0" />
+    <rect x="360" y="434" width="152" height="28" fill="#f0f0f0" />
   </g>
 </svg>
