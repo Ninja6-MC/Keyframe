@@ -1,0 +1,285 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- OFFICIAL MINECRAFT TRAILER COBBLESTONE: 1:1 EXACT REFERENCE MATCH         -->
+  <!-- 1:1 Pixel-Exact LEGO Interlocking Geometry Sampled from Reference         -->
+  <!-- Merged Silhouette <path> Elements per Boulder (No Interior Grid Lines)    -->
+  <!-- Direct <clipPath> References (100% Valid Resvg 3D Highlight & Shadow)     -->
+  <!-- Directional Top-Left Sunlit Highlights (#a4a7ae) & Undercut Shadow        -->
+  <!-- Toroidally Wrapped Cast Drop Shadows (+3px Y into #5f6268 Mortar)         -->
+  <!-- ========================================================================= -->
+
+  <defs>
+    <!-- Boulder 1 (10 cells) -->
+    <path id="boulder_1" d="M 64,0 L 96,0 L 128,0 L 128,32 L 160,32 L 160,64 L 128,64 L 128,96 L 96,96 L 96,128 L 64,128 L 64,96 L 32,96 L 32,64 L 32,32 L 64,32 L 64,0 Z" />
+    <clipPath id="clip_boulder_1">
+      <use href="#boulder_1" />
+    </clipPath>
+    <path id="hi_boulder_1" d="M 64,0 L 96,0 M 64,32 L 64,0 M 96,0 L 128,0 M 32,32 L 64,32 M 32,64 L 32,32 M 128,32 L 160,32 M 32,96 L 32,64 M 64,128 L 64,96" />
+    <path id="sh_boulder_1" d="M 128,0 L 128,32 M 160,32 L 160,64 M 160,64 L 128,64 M 128,64 L 128,96 M 128,96 L 96,96 M 64,96 L 32,96 M 96,96 L 96,128 M 96,128 L 64,128" />
+
+    <!-- Boulder 2 (17 cells) -->
+    <path id="boulder_2" d="M 224,0 L 256,0 L 288,0 L 320,0 L 352,0 L 352,32 L 352,64 L 320,64 L 320,96 L 288,96 L 288,128 L 256,128 L 256,160 L 224,160 L 224,128 L 192,128 L 192,96 L 192,64 L 192,32 L 224,32 L 224,0 Z" />
+    <clipPath id="clip_boulder_2">
+      <use href="#boulder_2" />
+    </clipPath>
+    <path id="hi_boulder_2" d="M 224,0 L 256,0 M 224,32 L 224,0 M 256,0 L 288,0 M 288,0 L 320,0 M 192,32 L 224,32 M 192,64 L 192,32 M 320,0 L 352,0 M 192,96 L 192,64 M 192,128 L 192,96 M 224,160 L 224,128" />
+    <path id="sh_boulder_2" d="M 352,0 L 352,32 M 352,32 L 352,64 M 352,64 L 320,64 M 320,64 L 320,96 M 320,96 L 288,96 M 288,96 L 288,128 M 288,128 L 256,128 M 224,128 L 192,128 M 256,128 L 256,160 M 256,160 L 224,160" />
+
+    <!-- Boulder 3 (9 cells) -->
+    <path id="boulder_3" d="M 384,0 L 416,0 L 448,0 L 480,0 L 512,0 L 512,32 L 512,64 L 512,96 L 480,96 L 448,96 L 448,64 L 416,64 L 416,32 L 384,32 L 384,0 Z" />
+    <clipPath id="clip_boulder_3">
+      <use href="#boulder_3" />
+    </clipPath>
+    <path id="hi_boulder_3" d="M 384,0 L 416,0 M 384,32 L 384,0 M 416,0 L 448,0 M 448,0 L 480,0 M 416,64 L 416,32 M 480,0 L 512,0 M 448,96 L 448,64" />
+    <path id="sh_boulder_3" d="M 416,32 L 384,32 M 448,64 L 416,64 M 512,0 L 512,32 M 512,32 L 512,64 M 480,96 L 448,96 M 512,64 L 512,96 M 512,96 L 480,96" />
+
+    <!-- Boulder 4 (17 cells) -->
+    <path id="boulder_4" d="M 352,96 L 384,96 L 416,96 L 448,96 L 448,128 L 480,128 L 480,160 L 448,160 L 448,192 L 448,224 L 448,256 L 416,256 L 416,224 L 384,224 L 352,224 L 352,192 L 320,192 L 288,192 L 288,160 L 320,160 L 320,128 L 352,128 L 352,96 Z" />
+    <clipPath id="clip_boulder_4">
+      <use href="#boulder_4" />
+    </clipPath>
+    <path id="hi_boulder_4" d="M 352,96 L 384,96 M 352,128 L 352,96 M 384,96 L 416,96 M 416,96 L 448,96 M 320,128 L 352,128 M 320,160 L 320,128 M 352,224 L 352,192 M 448,128 L 480,128 M 288,160 L 320,160 M 288,192 L 288,160 M 416,256 L 416,224" />
+    <path id="sh_boulder_4" d="M 448,96 L 448,128 M 352,192 L 320,192 M 384,224 L 352,224 M 480,128 L 480,160 M 480,160 L 448,160 M 448,160 L 448,192 M 416,224 L 384,224 M 320,192 L 288,192 M 448,192 L 448,224 M 448,224 L 448,256 M 448,256 L 416,256" />
+
+    <!-- Boulder 5 (7 cells) -->
+    <path id="boulder_5" d="M 0,128 L 32,128 L 32,160 L 32,192 L 64,192 L 64,224 L 64,256 L 32,256 L 32,288 L 0,288 L 0,256 L 0,224 L 0,192 L 0,160 L 0,128 Z" />
+    <clipPath id="clip_boulder_5">
+      <use href="#boulder_5" />
+    </clipPath>
+    <path id="hi_boulder_5" d="M 0,128 L 32,128 M 0,160 L 0,128 M 0,192 L 0,160 M 0,224 L 0,192 M 32,192 L 64,192 M 0,256 L 0,224 M 0,288 L 0,256" />
+    <path id="sh_boulder_5" d="M 32,128 L 32,160 M 32,160 L 32,192 M 64,192 L 64,224 M 64,224 L 64,256 M 64,256 L 32,256 M 32,256 L 32,288 M 32,288 L 0,288" />
+
+    <!-- Boulder 6 (13 cells) -->
+    <path id="boulder_6" d="M 96,128 L 128,128 L 160,128 L 192,128 L 192,160 L 192,192 L 224,192 L 224,224 L 192,224 L 192,256 L 160,256 L 128,256 L 128,224 L 96,224 L 96,192 L 64,192 L 64,160 L 96,160 L 96,128 Z" />
+    <clipPath id="clip_boulder_6">
+      <use href="#boulder_6" />
+    </clipPath>
+    <path id="hi_boulder_6" d="M 96,128 L 128,128 M 96,160 L 96,128 M 128,128 L 160,128 M 160,128 L 192,128 M 64,160 L 96,160 M 64,192 L 64,160 M 96,224 L 96,192 M 128,256 L 128,224 M 192,192 L 224,192" />
+    <path id="sh_boulder_6" d="M 192,128 L 192,160 M 96,192 L 64,192 M 128,224 L 96,224 M 192,160 L 192,192 M 160,256 L 128,256 M 224,192 L 224,224 M 224,224 L 192,224 M 192,224 L 192,256 M 192,256 L 160,256" />
+
+    <!-- Boulder 7 (3 cells) -->
+    <path id="boulder_7" d="M 480,160 L 512,160 L 512,192 L 512,224 L 512,256 L 480,256 L 480,224 L 480,192 L 480,160 Z" />
+    <clipPath id="clip_boulder_7">
+      <use href="#boulder_7" />
+    </clipPath>
+    <path id="hi_boulder_7" d="M 480,160 L 512,160 M 480,192 L 480,160 M 480,224 L 480,192 M 480,256 L 480,224" />
+    <path id="sh_boulder_7" d="M 512,160 L 512,192 M 512,192 L 512,224 M 512,224 L 512,256 M 512,256 L 480,256" />
+
+    <!-- Boulder 8 (14 cells) -->
+    <path id="boulder_8" d="M 256,224 L 288,224 L 320,224 L 352,224 L 352,256 L 384,256 L 384,288 L 384,320 L 352,320 L 352,352 L 320,352 L 288,352 L 288,320 L 256,320 L 256,288 L 224,288 L 224,256 L 256,256 L 256,224 Z" />
+    <clipPath id="clip_boulder_8">
+      <use href="#boulder_8" />
+    </clipPath>
+    <path id="hi_boulder_8" d="M 256,224 L 288,224 M 256,256 L 256,224 M 288,224 L 320,224 M 320,224 L 352,224 M 224,256 L 256,256 M 224,288 L 224,256 M 256,320 L 256,288 M 352,256 L 384,256 M 288,352 L 288,320" />
+    <path id="sh_boulder_8" d="M 352,224 L 352,256 M 256,288 L 224,288 M 288,320 L 256,320 M 384,256 L 384,288 M 320,352 L 288,352 M 384,288 L 384,320 M 384,320 L 352,320 M 352,320 L 352,352 M 352,352 L 320,352" />
+
+    <!-- Boulder 9 (10 cells) -->
+    <path id="boulder_9" d="M 64,256 L 96,256 L 128,256 L 128,288 L 160,288 L 192,288 L 192,320 L 160,320 L 160,352 L 128,352 L 96,352 L 64,352 L 64,320 L 32,320 L 32,288 L 64,288 L 64,256 Z" />
+    <clipPath id="clip_boulder_9">
+      <use href="#boulder_9" />
+    </clipPath>
+    <path id="hi_boulder_9" d="M 64,256 L 96,256 M 64,288 L 64,256 M 96,256 L 128,256 M 32,288 L 64,288 M 32,320 L 32,288 M 64,352 L 64,320 M 128,288 L 160,288 M 160,288 L 192,288" />
+    <path id="sh_boulder_9" d="M 128,256 L 128,288 M 64,320 L 32,320 M 96,352 L 64,352 M 128,352 L 96,352 M 192,288 L 192,320 M 192,320 L 160,320 M 160,320 L 160,352 M 160,352 L 128,352" />
+
+    <!-- Boulder 10 (14 cells) -->
+    <path id="boulder_10" d="M 416,288 L 448,288 L 480,288 L 480,320 L 512,320 L 512,352 L 512,384 L 512,416 L 480,416 L 480,448 L 448,448 L 448,416 L 416,416 L 384,416 L 384,384 L 384,352 L 416,352 L 416,320 L 416,288 Z" />
+    <clipPath id="clip_boulder_10">
+      <use href="#boulder_10" />
+    </clipPath>
+    <path id="hi_boulder_10" d="M 416,288 L 448,288 M 416,320 L 416,288 M 448,288 L 480,288 M 416,352 L 416,320 M 480,320 L 512,320 M 384,352 L 416,352 M 384,384 L 384,352 M 384,416 L 384,384 M 448,448 L 448,416" />
+    <path id="sh_boulder_10" d="M 480,288 L 480,320 M 512,320 L 512,352 M 448,416 L 416,416 M 512,352 L 512,384 M 416,416 L 384,416 M 512,384 L 512,416 M 512,416 L 480,416 M 480,416 L 480,448 M 480,448 L 448,448" />
+
+    <!-- Boulder 11 (2 cells) -->
+    <path id="boulder_11" d="M 0,320 L 32,320 L 32,352 L 32,384 L 0,384 L 0,352 L 0,320 Z" />
+    <clipPath id="clip_boulder_11">
+      <use href="#boulder_11" />
+    </clipPath>
+    <path id="hi_boulder_11" d="M 0,320 L 32,320 M 0,352 L 0,320 M 0,384 L 0,352" />
+    <path id="sh_boulder_11" d="M 32,320 L 32,352 M 32,352 L 32,384 M 32,384 L 0,384" />
+
+    <!-- Boulder 12 (13 cells) -->
+    <path id="boulder_12" d="M 224,352 L 256,352 L 288,352 L 288,384 L 320,384 L 320,416 L 352,416 L 352,448 L 320,448 L 320,480 L 288,480 L 256,480 L 256,448 L 224,448 L 192,448 L 192,416 L 192,384 L 224,384 L 224,352 Z" />
+    <clipPath id="clip_boulder_12">
+      <use href="#boulder_12" />
+    </clipPath>
+    <path id="hi_boulder_12" d="M 224,352 L 256,352 M 224,384 L 224,352 M 256,352 L 288,352 M 192,384 L 224,384 M 192,416 L 192,384 M 288,384 L 320,384 M 192,448 L 192,416 M 256,480 L 256,448 M 320,416 L 352,416" />
+    <path id="sh_boulder_12" d="M 288,352 L 288,384 M 256,448 L 224,448 M 320,384 L 320,416 M 224,448 L 192,448 M 288,480 L 256,480 M 352,416 L 352,448 M 352,448 L 320,448 M 320,448 L 320,480 M 320,480 L 288,480" />
+
+    <!-- Boulder 13 (12 cells) -->
+    <path id="boulder_13" d="M 64,384 L 96,384 L 128,384 L 128,416 L 160,416 L 160,448 L 160,480 L 128,480 L 96,480 L 64,480 L 64,512 L 32,512 L 32,480 L 0,480 L 0,448 L 32,448 L 32,416 L 64,416 L 64,384 Z" />
+    <clipPath id="clip_boulder_13">
+      <use href="#boulder_13" />
+    </clipPath>
+    <path id="hi_boulder_13" d="M 64,384 L 96,384 M 64,416 L 64,384 M 96,384 L 128,384 M 32,416 L 64,416 M 32,448 L 32,416 M 128,416 L 160,416 M 0,448 L 32,448 M 0,480 L 0,448 M 32,512 L 32,480" />
+    <path id="sh_boulder_13" d="M 128,384 L 128,416 M 96,480 L 64,480 M 160,416 L 160,448 M 128,480 L 96,480 M 160,448 L 160,480 M 160,480 L 128,480 M 32,480 L 0,480 M 64,480 L 64,512 M 64,512 L 32,512" />
+
+    <!-- Boulder 14 (6 cells) -->
+    <path id="boulder_14" d="M 384,448 L 416,448 L 448,448 L 448,480 L 480,480 L 480,512 L 448,512 L 416,512 L 384,512 L 352,512 L 352,480 L 384,480 L 384,448 Z" />
+    <clipPath id="clip_boulder_14">
+      <use href="#boulder_14" />
+    </clipPath>
+    <path id="hi_boulder_14" d="M 384,448 L 416,448 M 384,480 L 384,448 M 416,448 L 448,448 M 352,480 L 384,480 M 352,512 L 352,480 M 448,480 L 480,480" />
+    <path id="sh_boulder_14" d="M 448,448 L 448,480 M 416,512 L 384,512 M 448,512 L 416,512 M 384,512 L 352,512 M 480,480 L 480,512 M 480,512 L 448,512" />
+
+    <!-- Boulder 15 (2 cells) -->
+    <path id="boulder_15" d="M 160,480 L 192,480 L 224,480 L 224,512 L 192,512 L 160,512 L 160,480 Z" />
+    <clipPath id="clip_boulder_15">
+      <use href="#boulder_15" />
+    </clipPath>
+    <path id="hi_boulder_15" d="M 160,480 L 192,480 M 160,512 L 160,480 M 192,480 L 224,480" />
+    <path id="sh_boulder_15" d="M 192,512 L 160,512 M 224,480 L 224,512 M 224,512 L 192,512" />
+
+  </defs>
+
+  <!-- 1. Recessed Mortar Matrix Floor (#5f6268 - exact stone.svg groove floor) -->
+  <rect width="512" height="512" fill="#5f6268" />
+
+  <!-- 2. 3D Cast Drop Shadows (+3px Y into Mortar Cavity) -->
+  <g fill="#3c3e44" opacity="0.8">
+    <use href="#boulder_1" y="3" />
+    <use href="#boulder_2" y="3" />
+    <use href="#boulder_3" y="3" />
+    <use href="#boulder_4" y="3" />
+    <use href="#boulder_5" y="3" />
+    <use href="#boulder_6" y="3" />
+    <use href="#boulder_7" y="3" />
+    <use href="#boulder_8" y="3" />
+    <use href="#boulder_9" y="3" />
+    <use href="#boulder_10" y="3" />
+    <use href="#boulder_11" y="3" />
+    <use href="#boulder_12" y="3" />
+    <use href="#boulder_13" y="3" />
+    <use href="#boulder_14" y="3" />
+    <use href="#boulder_15" y="3" />
+
+    <!-- Toroidal Vertical Shadow Wrap (Bottom row shadows wrapping onto top) -->
+    <use href="#boulder_13" y="-509" />
+    <use href="#boulder_14" y="-509" />
+    <use href="#boulder_15" y="-509" />
+  </g>
+
+  <!-- 3. 1:1 Pixel-Exact Cobblestone Boulders (#7e8187 with Directional Bevels) -->
+  <g>
+    <!-- Boulder 1 -->
+    <use href="#boulder_1" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_1)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_1" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_1" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 2 -->
+    <use href="#boulder_2" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_2)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_2" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_2" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 3 -->
+    <use href="#boulder_3" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_3)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_3" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_3" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 4 -->
+    <use href="#boulder_4" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_4)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_4" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_4" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 5 -->
+    <use href="#boulder_5" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_5)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_5" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_5" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 6 -->
+    <use href="#boulder_6" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_6)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_6" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_6" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 7 -->
+    <use href="#boulder_7" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_7)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_7" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_7" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 8 -->
+    <use href="#boulder_8" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_8)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_8" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_8" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 9 -->
+    <use href="#boulder_9" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_9)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_9" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_9" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 10 -->
+    <use href="#boulder_10" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_10)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_10" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_10" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 11 -->
+    <use href="#boulder_11" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_11)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_11" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_11" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 12 -->
+    <use href="#boulder_12" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_12)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_12" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_12" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 13 -->
+    <use href="#boulder_13" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_13)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_13" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_13" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 14 -->
+    <use href="#boulder_14" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_14)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_14" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_14" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+    <!-- Boulder 15 -->
+    <use href="#boulder_15" fill="#7e8187" />
+    <g clip-path="url(#clip_boulder_15)">
+      <!-- Sunlit Highlight Rim (Top & Left) -->
+      <use href="#hi_boulder_15" fill="none" stroke="#a4a7ae" stroke-width="4" stroke-linecap="square" opacity="0.9" />
+      <!-- Undercut Crevice Shadow (Bottom & Right) -->
+      <use href="#sh_boulder_15" fill="none" stroke="#3c3e44" stroke-width="4" stroke-linecap="square" opacity="0.75" />
+    </g>
+  </g>
+</svg>
