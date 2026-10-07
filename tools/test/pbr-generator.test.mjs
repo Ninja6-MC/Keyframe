@@ -803,6 +803,10 @@ console.log("\n[Suite 5] Periodic Boundary Continuity & Toroidal Seams");
   assertEqual(resolveTilingCategory("dirt_path_side", tilingRules), "x-only", "dirt_path_side resolves to x-only category");
   assertEqual(resolveTilingCategory("short_grass", tilingRules), "exempt", "short_grass resolves to exempt category");
   assertEqual(resolveTilingCategory("grass_block_side_overlay", tilingRules), "exempt", "grass_block_side_overlay resolves to exempt category");
+  assertEqual(resolveTilingCategory("grass_block_side.png", tilingRules), "x-only", "grass_block_side.png resolves to x-only category");
+  assertEqual(resolveTilingCategory("grass_block_side.SVG", tilingRules), "x-only", "grass_block_side.SVG resolves to x-only category");
+  assertEqual(resolveTilingCategory("grass_block_side_overlay.png", tilingRules), "exempt", "grass_block_side_overlay.png resolves to exempt category");
+  assertEqual(resolveTilingCategory("grass_block_side_overlay.SVG", tilingRules), "exempt", "grass_block_side_overlay.SVG resolves to exempt category");
 }
 
 // -----------------------------------------------------------------------------

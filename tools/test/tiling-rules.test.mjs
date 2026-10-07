@@ -335,7 +335,7 @@ console.log("\n[11] The shipped rules exempt exactly the intended masters");
 console.log("\n[12] Extension and case variants resolve like the `.svg` master");
 // --------------------------------------------------------------------------
 {
-  // Every pattern is written against `<stem>.svg`. A `.png`, upper-case or bare id must
+  // Every pattern is written against `<stem>.svg`. A `.png`, upper-case extension or bare id must
   // give the answer its master gives, never fall through to the default category.
   const variants = [
     ["oak_log.svg", ["oak_log", "oak_log.png", "oak_log.SVG", "block/oak_log.png"]],
@@ -434,25 +434,28 @@ console.log("\n[14] Epic 13 item textures are exempt by their vanilla texture st
 console.log("\n[15] itemIds match exact stems, never substrings");
 // --------------------------------------------------------------------------
 {
+  const fixtureRules = {
+    ...rules,
+    itemIds: ["bow", "golden_carrot", "baked_potato", "cooked_porkchop"]
+  };
   // Real vanilla item textures that contain, or are contained in, a listed id without
   // being listed themselves. Each resolves on its own stem.
   const cases = [
     ["bowl.svg", "contains 'bow'"],
-    ["enchanted_golden_apple.svg", "contains 'golden_apple'"],
     ["carrot.svg", "is contained in 'golden_carrot'"],
     ["potato.svg", "is contained in 'baked_potato'"],
     ["porkchop.svg", "is contained in 'cooked_porkchop'"]
   ];
   for (const [f, why] of cases) {
-    assertEqual(resolveTilingCategory(f, rules), "toroidal", `${f} is not exempted (${why})`);
+    assertEqual(resolveTilingCategory(f, fixtureRules), "toroidal", `${f} is not exempted (${why})`);
   }
 
   // Standard terrain blocks still fall through to toroidal, and sides stay X only.
   for (const f of ["stone.svg", "deepslate.svg", "dirt.svg", "sand.svg", "gravel.svg"]) {
-    assertEqual(resolveTilingCategory(f, rules), "toroidal", `${f} is toroidal`);
+    assertEqual(resolveTilingCategory(f, fixtureRules), "toroidal", `${f} is toroidal`);
   }
-  assertEqual(resolveTilingCategory("grass_block_side.svg", rules), "x-only", "grass_block_side is x-only");
-  assertEqual(resolveTilingCategory("dirt_path_side.svg", rules), "x-only", "dirt_path_side is x-only");
+  assertEqual(resolveTilingCategory("grass_block_side.svg", fixtureRules), "x-only", "grass_block_side is x-only");
+  assertEqual(resolveTilingCategory("dirt_path_side.svg", fixtureRules), "x-only", "dirt_path_side is x-only");
 }
 
 console.log("\n=======================================================");

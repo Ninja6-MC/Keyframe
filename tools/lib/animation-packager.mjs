@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Resvg } from "@resvg/resvg-js";
+import { loadTilingRules } from "./tiling-resolver.mjs";
 
 /**
  * Built-in animation profiles for vanilla Minecraft and Keyframe cinematic aesthetic
@@ -362,7 +363,8 @@ export function processAnimatedTextures(texturesDir, targetDirs, targetRes = 512
   }
 
   const { blocksDir, itemsDir } = targetDirs;
-  const ITEM_IDS = options.itemIds || new Set(["cooked_beef", "golden_apple", "compass_nexus", "plot_compass", "spiral_core", "ninja6_token"]);
+  const itemIds = options.itemIds ?? (loadTilingRules()?.itemIds || []);
+  const ITEM_IDS = itemIds instanceof Set ? itemIds : new Set(itemIds);
   const results = [];
 
   function scanDirectory(dir, defaultIsItem = false) {

@@ -13,6 +13,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
+import {
+  loadTilingRules,
+  basenameOf,
+  globToRegExp,
+  matchGlob,
+  categorizeTexture,
+  resolveTilingCategory
+} from "./lib/tiling-resolver.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,166 +34,18 @@ const DEFAULT_OUT_DIR = path.join(ROOT_DIR, "dist", "tiling_tests");
 // --------------------------------------------------------------------------
 
 function loadRules() {
-  if (fs.existsSync(RULES_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(RULES_FILE, "utf-8"));
-    } catch (err) {
-      console.warn(`[WARN] Failed to parse ${RULES_FILE}: ${err.message}. Using built-in defaults.`);
-    }
-  }
-  return {
-    defaultCategory: "toroidal",
-    categories: {
-      toroidal: { testAxes: ["x", "y"], tolerance: 0 },
-      "x-only": { testAxes: ["x"], tolerance: 0 },
-      "y-only": { testAxes: ["y"], tolerance: 0 },
-      exempt: { testAxes: [] }
-    },
-    patterns: [
-      { pattern: "*_side.svg", category: "x-only" },
-      { pattern: "*_overlay.svg", category: "exempt" },
-      { pattern: "short_grass*.svg", category: "exempt" },
-      { pattern: "tall_grass_*.svg", category: "exempt" },
-      { pattern: "grass.svg", category: "exempt" }
-    ],
-    itemIds: [
-      "cooked_beef", "golden_apple", "compass_nexus", "plot_compass", "spiral_core", "ninja6_token",
-      "wooden_sword", "wooden_pickaxe", "wooden_axe", "wooden_shovel", "wooden_hoe",
-      "stone_sword", "stone_pickaxe", "stone_axe", "stone_shovel", "stone_hoe",
-      "iron_sword", "iron_pickaxe", "iron_axe", "iron_shovel", "iron_hoe",
-      "golden_sword", "golden_pickaxe", "golden_axe", "golden_shovel", "golden_hoe",
-      "diamond_sword", "diamond_pickaxe", "diamond_axe", "diamond_shovel", "diamond_hoe",
-      "netherite_sword", "netherite_pickaxe", "netherite_axe", "netherite_shovel", "netherite_hoe",
-      "bow", "bow_pulling_0", "bow_pulling_1", "bow_pulling_2",
-      "crossbow_standby", "crossbow_pulling_0", "crossbow_pulling_1", "crossbow_pulling_2",
-      "crossbow_arrow", "crossbow_firework",
-      "shield_base", "shield_base_nopattern", "trident", "mace",
-      "golden_carrot", "baked_potato", "bread", "apple", "cooked_porkchop"
-    ],
-    overrides: {}
-  };
+  return loadTilingRules(RULES_FILE);
 }
 
-/** Normalizes a texture path - relative, absolute, POSIX or Windows - to its basename. */
-export function basenameOf(filename) {
-  return path.basename(String(filename).replace(/\\/g, "/"));
-}
-
-// Regex metacharacters that must survive translation as literals. `*` and `?` are
-// deliberately absent: they are the two wildcards and are translated separately. `.`
-// appears in every pattern in tiling-rules.json and must never match an arbitrary
-// character, or `*_side.svg` would also match a file called `oak_logXsvg`.
-const GLOB_METACHARS = /[.+^${}()|[\]\\]/g;
-
-const globRegexCache = new Map();
-
-/**
- * Translates a glob into an anchored RegExp. `*` matches any run of characters (including
- * none) in any position, `?` matches exactly one, and every other character is literal.
- * The expression is anchored at both ends, so the whole name must match.
- */
-export function globToRegExp(pattern) {
-  const cached = globRegexCache.get(pattern);
-  if (cached) return cached;
-  const body = pattern
-    .replace(GLOB_METACHARS, "\\$&")
-    .replace(/\*/g, ".*")
-    .replace(/\?/g, ".");
-  const regex = new RegExp(`^${body}$`);
-  globRegexCache.set(pattern, regex);
-  return regex;
-}
-
-/**
- * Matches one glob against a texture name. Patterns in tiling-rules.json address the
- * **basename**, never the path a texture was discovered at, so `short_grass.svg` and
- * `block/short_grass.svg` give the same answer.
- *
- * The previous implementation special-cased only leading and trailing `*` and otherwise
- * fell through to string equality, so every rule with an interior wildcard
- * (`tall_grass_*.svg`, `short_grass*.svg`) was dead and never fired.
- */
-export function matchGlob(filename, pattern) {
-  return globToRegExp(pattern).test(basenameOf(filename));
-}
-
-export function categorizeTexture(filename, rules, axisOverride = null) {
-  // Rules address the basename. `findSvgFiles` already hands over `entry.filename`, but
-  // this function is exported and the CLI's `--texture` path can carry a directory, so
-  // normalize once here rather than trusting every caller to have stripped it.
-  const base = basenameOf(filename);
-  // Patterns are written against `<stem>.svg`, so a `.png`, upper-case or extensionless
-  // id is rebuilt from its stem and resolves exactly as its `.svg` master does.
-  const stem = base.replace(/\.(svg|png)$/i, "");
-  const nameWithExt = stem + ".svg";
-
-  if (axisOverride) {
-    const axes = axisOverride.toLowerCase() === "x" ? ["x"] :
-                 axisOverride.toLowerCase() === "y" ? ["y"] :
-                 axisOverride.toLowerCase() === "xy" ? ["x", "y"] : [];
-    return {
-      category: "custom-override",
-      testAxes: axes,
-      tolerance: 0,
-      reason: `CLI --axis override (${axisOverride})`
-    };
-  }
-
-  // 1. Explicit overrides
-  if (rules.overrides && (rules.overrides[filename] || rules.overrides[base] || rules.overrides[nameWithExt] || rules.overrides[stem])) {
-    const ovr = rules.overrides[filename] || rules.overrides[base] || rules.overrides[nameWithExt] || rules.overrides[stem];
-    const catConfig = rules.categories[ovr.category] || { testAxes: ["x", "y"], tolerance: 0 };
-    return {
-      category: ovr.category,
-      testAxes: catConfig.testAxes,
-      tolerance: ovr.tolerance ?? catConfig.tolerance ?? 0,
-      reason: ovr.notes || "Explicit override in tiling-rules.json"
-    };
-  }
-
-  // 2. Handheld items
-  if (rules.itemIds && rules.itemIds.includes(stem)) {
-    return {
-      category: "exempt",
-      testAxes: [],
-      tolerance: 0,
-      reason: "Handheld item icon (non-tiling world asset)"
-    };
-  }
-
-  // 3. Glob patterns
-  if (rules.patterns) {
-    for (const pat of rules.patterns) {
-      if (matchGlob(nameWithExt, pat.pattern)) {
-        const catConfig = rules.categories[pat.category] || { testAxes: [], tolerance: 0 };
-        return {
-          category: pat.category,
-          testAxes: catConfig.testAxes,
-          tolerance: catConfig.tolerance ?? 0,
-          reason: pat.reason || `Matched pattern ${pat.pattern}`
-        };
-      }
-    }
-  }
-
-  // 4. Default category
-  const defCategory = rules.defaultCategory || "toroidal";
-  const defConfig = rules.categories[defCategory] || { testAxes: ["x", "y"], tolerance: 0 };
-  return {
-    category: defCategory,
-    testAxes: defConfig.testAxes,
-    tolerance: defConfig.tolerance ?? 0,
-    reason: "Default toroidal full-block surface"
-  };
-}
-
-/**
- * Resolves a texture identifier or filename directly to its tiling category name
- * ('toroidal', 'x-only', 'y-only', 'exempt').
- */
-export function resolveTilingCategory(filename, rules) {
-  return categorizeTexture(filename, rules).category;
-}
+// Patterns are written against `<stem>.svg`, so a `.png`, upper-case extension or extensionless
+// id is rebuilt from its stem and resolves exactly as its `.svg` master does.
+export {
+  basenameOf,
+  globToRegExp,
+  matchGlob,
+  categorizeTexture,
+  resolveTilingCategory
+};
 
 // --------------------------------------------------------------------------
 // Resvg Rasterization & 3x3 Grid Compiler
