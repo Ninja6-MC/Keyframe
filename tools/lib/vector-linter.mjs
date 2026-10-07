@@ -155,10 +155,27 @@ export function parseSvgDocument(clean) {
         for (const el of stack.splice(openIdx)) {
           if (el.local === "style" && styleText !== null) {
             const css = styleText.replace(/\/\*[\s\S]*?\*\//g, "");
-            const blockRegex = /\{([^{}]*)\}/g;
+            const blockRegex = /([^{}]*)\{([^{}]*)\}/g;
             let block;
+            let matchedAny = false;
             while ((block = blockRegex.exec(css)) !== null) {
-              declarations.push(...parseDeclarations(block[1], "in <style>"));
+              matchedAny = true;
+              const selector = block[1].trim();
+              if (selector.includes("\\")) {
+                declarations.push({
+                  property: "",
+                  value: "\\",
+                  where: `selector "${selector}" in <style>`
+                });
+              }
+              declarations.push(...parseDeclarations(block[2], "in <style>"));
+            }
+            if (!matchedAny && css.includes("\\")) {
+              declarations.push({
+                property: "",
+                value: "\\",
+                where: "<style>"
+              });
             }
             styleText = null;
           }
@@ -178,8 +195,8 @@ export function parseSvgDocument(clean) {
     const parentScope = stack.length ? stack[stack.length - 1].scope : new Map([["xml", "http://www.w3.org/XML/1998/namespace"]]);
     const scope = new Map(parentScope);
     for (const attr of attrs) {
-      if (attr.name === "xmlns") scope.set("", attr.value.trim());
-      else if (attr.prefix === "xmlns") scope.set(attr.local, attr.value.trim());
+      if (attr.name === "xmlns") scope.set("", attr.value);
+      else if (attr.prefix === "xmlns") scope.set(attr.local, attr.value);
     }
 
     const { prefix, local } = splitQName(qname);
@@ -277,13 +294,18 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
 
   const doc = parseSvgDocument(clean);
 
-  let hasRootNsError = false;
   const rootEl = doc.elements[0];
-  const rootXmlns = rootEl?.attrs.find((a) => a.name === "xmlns");
+  if (rootEl?.name !== "svg") {
+    errors.push(`${filePath}: Root element must be <svg>`);
+    return { ok: false, errors };
+  }
+
+  let hasRootNsError = false;
+  const rootXmlns = rootEl.attrs.find((a) => a.name === "xmlns");
   if (!rootXmlns) {
     errors.push(`${filePath}: Missing xmlns attribute on root <svg> (must be "${SVG_NS}")`);
     hasRootNsError = true;
-  } else if (rootXmlns.value.trim() !== SVG_NS) {
+  } else if (rootXmlns.value !== SVG_NS) {
     errors.push(`${filePath}: Invalid xmlns "${rootXmlns.value}" on root <svg> (must be "${SVG_NS}")`);
     hasRootNsError = true;
   }

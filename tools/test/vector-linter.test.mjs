@@ -168,6 +168,16 @@ console.log("\n[Suite 2] ViewBox Invariant Verification");
   assertEqual(resMissingXmlnsRefs.ok, false, "Missing root xmlns with references is rejected");
   assertEqual(resMissingXmlnsRefs.errors.length, 1, "Only 1 error reported when root xmlns is missing (referential checks stopped early)");
   assert(resMissingXmlnsRefs.errors[0].includes("Missing xmlns attribute on root <svg>"), "Root xmlns error is reported");
+
+  const nonSvgRootWrapper = `<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/></svg></div>`;
+  const resNonSvgWrapper = lintSvgContent(nonSvgRootWrapper, "non_svg_wrapper.svg");
+  assertEqual(resNonSvgWrapper.ok, false, "Non-svg root wrapper <div> is rejected");
+  assert(resNonSvgWrapper.errors[0].includes("Root element must be <svg>"), "Error message identifies non-svg root element");
+
+  const whitespaceXmlns = `<svg xmlns=" http://www.w3.org/2000/svg " viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/></svg>`;
+  const resWhitespaceXmlns = lintSvgContent(whitespaceXmlns, "whitespace_xmlns.svg");
+  assertEqual(resWhitespaceXmlns.ok, false, "Root xmlns with leading/trailing whitespace is rejected");
+  assert(resWhitespaceXmlns.errors[0].includes("Invalid xmlns"), "Error message identifies invalid xmlns on root <svg>");
 }
 
 // -----------------------------------------------------------------------------
@@ -584,6 +594,7 @@ console.log("\n[Suite 8] Only Reference Forms resvg Honours Pass");
     // CSS backslash escapes are not decoded by resvg
     ['CSS escape in <style> property fil\\6c:url(#g)', doc(`<style>.a{fil\\6c:url(#g)}</style><rect class="a" width="512" height="512"/>`), "CSS backslash escape"],
     ['CSS escape in <style> value fill:u\\72l(#g)', doc(`<style>.a{fill:u\\72l(#g)}</style><rect class="a" width="512" height="512"/>`), "CSS backslash escape"],
+    ['CSS escape in <style> selector .\\61', doc(`<style>.\\61 { fill: #000 }</style><rect width="512" height="512"/>`), "CSS backslash escape"],
     ['CSS escape in style attribute property fil\\6c:url(#g)', doc(`<rect width="512" height="512" style="fil\\6c:url(#g)"/>`), "CSS backslash escape"],
     ['CSS escape in style attribute value fill:u\\72l(#g)', doc(`<rect width="512" height="512" style="fill:u\\72l(#g)"/>`), "CSS backslash escape"],
     // url() pointing at an element of the wrong type
