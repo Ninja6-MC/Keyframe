@@ -52,8 +52,9 @@ export const FORBIDDEN_NAMESPACE_URIS = Object.freeze([
 
 /**
  * The properties on which resvg applies a url(#id) reference, and the SVG elements each
- * one accepts as a target. Property names are case-sensitive in resvg, and the `marker`
- * shorthand is not applied at all.
+ * one accepts as a target. Property names are case-sensitive in resvg. The `marker` shorthand
+ * is prohibited by policy across all forms in favour of explicit longhands (marker-start,
+ * marker-mid, marker-end).
  */
 export const URL_REFERENCE_TARGETS = Object.freeze({
   fill: ["linearGradient", "radialGradient", "pattern"],
@@ -276,6 +277,17 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
 
   const doc = parseSvgDocument(clean);
 
+  let hasRootNsError = false;
+  const rootEl = doc.elements[0];
+  const rootXmlns = rootEl?.attrs.find((a) => a.name === "xmlns");
+  if (!rootXmlns) {
+    errors.push(`${filePath}: Missing xmlns attribute on root <svg> (must be "${SVG_NS}")`);
+    hasRootNsError = true;
+  } else if (rootXmlns.value.trim() !== SVG_NS) {
+    errors.push(`${filePath}: Invalid xmlns "${rootXmlns.value}" on root <svg> (must be "${SVG_NS}")`);
+    hasRootNsError = true;
+  }
+
   // 2. Forbidden editor namespaces & editor residue. Editors are identified by namespace
   // URI, not prefix: Inkscape may bind its namespace to `ns1`, and Illustrator writes
   // `xmlns:i="&ns_ai;"` with the URI declared in an internal <!ENTITY>.
@@ -324,12 +336,24 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
     }
   }
 
+  if (hasRootNsError) {
+    return {
+      ok: false,
+      errors
+    };
+  }
+
   // 4. ClipPath, url(#id) and href="#id" referential integrity
   const idTargets = new Map();
+  const seenIds = new Set();
   for (const el of doc.elements) {
     const idAttr = el.attrs.find((a) => a.name === "id");
     const id = idAttr ? idAttr.value.trim() : "";
-    if (id && !idTargets.has(id)) {
+    if (id) {
+      if (seenIds.has(id)) {
+        errors.push(`${filePath}: Duplicate id "${id}" detected`);
+      }
+      seenIds.add(id);
       idTargets.set(id, el);
     }
     if (el.local === "clipPath" && !id) {
@@ -365,6 +389,11 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
   // at an element of the type that property needs. Anything else renders silently wrong
   // (unclipped, black, or invisible), so anything else is an error.
   for (const decl of doc.declarations) {
+    if (decl.value.includes("\\") || decl.property.includes("\\")) {
+      errors.push(`${filePath}: CSS backslash escape in ${decl.where} is not decoded by resvg`);
+      continue;
+    }
+
     const fnRegex = /(?<![\w-])url\s*\(/gi;
     let fnMatch;
     while ((fnMatch = fnRegex.exec(decl.value)) !== null) {
@@ -399,7 +428,11 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
 
       const allowed = URL_REFERENCE_TARGETS[decl.property];
       if (!allowed) {
-        errors.push(`${filePath}: url(#${refId}) in ${where} is not applied by resvg (url() references are only honoured on ${Object.keys(URL_REFERENCE_TARGETS).join(", ")}; property names are case-sensitive)`);
+        if (decl.property === "marker") {
+          errors.push(`${filePath}: The "marker" shorthand in ${where} is prohibited by policy (use marker-start, marker-mid, or marker-end)`);
+        } else {
+          errors.push(`${filePath}: url(#${refId}) in ${where} is not applied by resvg (url() references are only honoured on ${Object.keys(URL_REFERENCE_TARGETS).join(", ")}; property names are case-sensitive)`);
+        }
       } else if (targetEl.ns !== SVG_NS || !allowed.includes(targetEl.local)) {
         const expected = allowed.map((t) => `<${t}>`).join(" or ");
         errors.push(`${filePath}: Invalid ${decl.property} reference "#${refId}": element exists but is not a ${expected} (found <${targetEl.name}>)`);
