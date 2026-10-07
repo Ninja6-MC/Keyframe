@@ -157,6 +157,16 @@ console.log("\n[Suite 2] Material Rules Resolution & Optical Parameters");
   const diamondOre = resolveMaterial("diamond_ore", rules);
   assertEqual(diamondOre.baseHeight, 215, "diamond_ore baseHeight is 215");
   assert(diamondOre.parsedFeatures && diamondOre.parsedFeatures.length >= 6, "diamond_ore carries crystal facets");
+  const diamondGemFeatures = diamondOre.parsedFeatures.filter((f) => f.f0 !== 10);
+  assert(diamondGemFeatures.length > 0, "diamond_ore gem F0 is scoped to colorFeatures");
+  assert(
+    diamondGemFeatures.every((f) => f.f0 === iorToF0(2.417)),
+    `diamond_ore gem F0 is ${iorToF0(2.417)} (diamond n = 2.417, linear F0)`
+  );
+  assert(
+    diamondOre.parsedFeatures.every((f) => (f.emission ?? 0) === 0),
+    "diamond_ore colorFeatures carry no emission (diamond ore does not glow)"
+  );
 
   // Dirt resolution
   const dirt = resolveMaterial("dirt", rules);
@@ -310,9 +320,11 @@ console.log("\n[Suite 2] Material Rules Resolution & Optical Parameters");
   assertEqual(dsDiamondOre.smoothness, 45, "deepslate_diamond_ore host rock smoothness is 45");
   assertEqual(dsDiamondOre.f0, 10, "deepslate_diamond_ore host rock f0 is 10");
   assertEqual(dsDiamondOre.porosity, 4, "deepslate_diamond_ore host rock porosity is 4");
+  const dsDiamondGemFeatures = dsDiamondOre.parsedFeatures.filter((f) => f.f0 !== 10);
+  assert(dsDiamondGemFeatures.length > 0, "deepslate_diamond_ore gem F0 is scoped to colorFeatures");
   assert(
-    dsDiamondOre.parsedFeatures.some((f) => f.f0 >= 48),
-    "deepslate_diamond_ore gem F0 is scoped to colorFeatures"
+    dsDiamondGemFeatures.every((f) => f.f0 === iorToF0(2.417)),
+    `deepslate_diamond_ore gem F0 is ${iorToF0(2.417)} (diamond n = 2.417, linear F0)`
   );
   assert(
     dsDiamondOre.parsedFeatures.every((f) => (f.emission ?? 0) === 0),
@@ -433,7 +445,7 @@ console.log("\n[Suite 2] Material Rules Resolution & Optical Parameters");
 
   const calcite = resolveStem("calcite");
   assertEqual(calcite.smoothness, 60, "calcite smoothness is 60");
-  assertEqual(calcite.f0, 14, "calcite f0 is 14");
+  assertEqual(calcite.f0, iorToF0(1.57), `calcite f0 is ${iorToF0(1.57)} (calcite avg n = 1.57)`);
   assertEqual(calcite.porosity, 6, "calcite porosity is 6");
 
   // Architectural Resolution
@@ -464,6 +476,11 @@ console.log("\n[Suite 2] Material Rules Resolution & Optical Parameters");
 
   const glazedTerracotta = resolveStem("white_glazed_terracotta");
   assertEqual(glazedTerracotta.smoothness, 190, "*_glazed_terracotta resolves glossy glaze smoothness 190");
+  assertEqual(
+    glazedTerracotta.f0,
+    iorToF0(1.5),
+    `*_glazed_terracotta resolves glaze f0 ${iorToF0(1.5)} (silicate glaze n = 1.5)`
+  );
   assertEqual(glazedTerracotta.porosity, 0, "*_glazed_terracotta resolves impermeable glaze porosity 0");
 
   const concretePowder = resolveStem("cyan_concrete_powder");
@@ -647,9 +664,13 @@ console.log("\n[Suite 4] LabPBR 1.3 Specular Map Channel Packing & Gemstone Opti
 
   const gemSpec = generateSpecularMap("diamond_ore", gemPixels, width, height);
   assert(gemSpec[0] >= 200, `Diamond crystal facet has high smoothness >= 200 (actual: ${gemSpec[0]})`);
-  assertEqual(gemSpec[1], 48, "Diamond crystal facet Green is F0 48");
+  assertEqual(
+    gemSpec[1],
+    iorToF0(2.417),
+    `Diamond crystal facet Green is F0 ${iorToF0(2.417)} (diamond n = 2.417)`
+  );
   assertEqual(gemSpec[2], 0, "Diamond crystal facet Blue is porosity 0 (impermeable gem)");
-  assert(gemSpec[3] > 0, `Diamond crystal facet Alpha has emission > 0 (actual: ${gemSpec[3]})`);
+  assertEqual(gemSpec[3], 0, "Diamond crystal facet Alpha is emission 0 (diamond ore does not glow)");
 
   // 3. Emission clamping (max 254 per LabPBR spec)
   const maxEmissionPixels = Buffer.alloc(width * height * 4);
@@ -736,7 +757,11 @@ console.log("\n[Suite 4] LabPBR 1.3 Specular Map Channel Packing & Gemstone Opti
   assertEqual(emeraldHostSpec[1], 10, "Emerald ore host stone Green is F0 10");
 
   const dsDiamondGemSpec = generateSpecularMap("deepslate_diamond_ore", fillHex("#4eebd9"), width, height);
-  assertEqual(dsDiamondGemSpec[1], 48, "Deepslate diamond gem pixel Green is F0 48");
+  assertEqual(
+    dsDiamondGemSpec[1],
+    iorToF0(2.417),
+    `Deepslate diamond gem pixel Green is F0 ${iorToF0(2.417)} (diamond n = 2.417)`
+  );
   assertEqual(dsDiamondGemSpec[3], 0, "Deepslate diamond gem pixel Alpha is emission 0");
   const dsDiamondHostSpec = generateSpecularMap("deepslate_diamond_ore", fillHex("#646464"), width, height);
   assertEqual(dsDiamondHostSpec[1], 10, "Deepslate diamond ore host deepslate Green is F0 10");

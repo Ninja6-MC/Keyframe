@@ -66,39 +66,39 @@
           "smoothness": 200,
           "f0": 44,
           "porosity": 0,
-          "emission": 20
+          "emission": 0
         },
         {
           "hex": "#4eebd9",
           "height": 250,
           "smoothness": 225,
-          "f0": 48,
+          "f0": 44,
           "porosity": 0,
-          "emission": 30
+          "emission": 0
         },
         {
           "hex": "#73f7eb",
           "height": 250,
           "smoothness": 225,
-          "f0": 48,
+          "f0": 44,
           "porosity": 0,
-          "emission": 30
+          "emission": 0
         },
         {
           "hex": "#a7fbf3",
           "height": 255,
           "smoothness": 235,
-          "f0": 50,
+          "f0": 44,
           "porosity": 0,
-          "emission": 35
+          "emission": 0
         },
         {
           "hex": "#084a44",
           "height": 225,
           "smoothness": 190,
-          "f0": 40,
+          "f0": 44,
           "porosity": 0,
-          "emission": 10
+          "emission": 0
         },
         {
           "hex": "#202a33",
@@ -645,7 +645,7 @@
           "hex": "#4eebd9",
           "height": 250,
           "smoothness": 225,
-          "f0": 48,
+          "f0": 44,
           "porosity": 0,
           "emission": 0
         },
@@ -653,7 +653,7 @@
           "hex": "#73f7eb",
           "height": 250,
           "smoothness": 225,
-          "f0": 48,
+          "f0": 44,
           "porosity": 0,
           "emission": 0
         },
@@ -661,7 +661,7 @@
           "hex": "#a7fbf3",
           "height": 255,
           "smoothness": 235,
-          "f0": 50,
+          "f0": 44,
           "porosity": 0,
           "emission": 0
         },
@@ -669,7 +669,7 @@
           "hex": "#084a44",
           "height": 225,
           "smoothness": 190,
-          "f0": 40,
+          "f0": 44,
           "porosity": 0,
           "emission": 0
         },
@@ -886,7 +886,7 @@
     "calcite": {
       "baseHeight": 215,
       "smoothness": 60,
-      "f0": 14,
+      "f0": 13,
       "porosity": 6,
       "emission": 0
     },
@@ -914,7 +914,7 @@
     "glazed_terracotta": {
       "baseHeight": 220,
       "smoothness": 190,
-      "f0": 14,
+      "f0": 10,
       "porosity": 0,
       "emission": 0
     },
