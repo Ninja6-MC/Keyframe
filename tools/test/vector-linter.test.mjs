@@ -152,6 +152,32 @@ console.log("\n[Suite 2] ViewBox Invariant Verification");
   const missingRootSvg = `<div>Not an SVG</div>`;
   const resNoSvg = lintSvgContent(missingRootSvg, "nosvg.svg");
   assertEqual(resNoSvg.ok, false, "Missing root <svg> element is rejected");
+
+  const missingRootXmlns = `<svg viewBox="0 0 512 512" width="512" height="512"><rect width="512" height="512" fill="#000"/></svg>`;
+  const resMissingXmlns = lintSvgContent(missingRootXmlns, "missing_xmlns.svg");
+  assertEqual(resMissingXmlns.ok, false, "Missing root xmlns attribute is rejected");
+  assert(resMissingXmlns.errors[0].includes("Missing xmlns attribute on root <svg>"), "Error message specifies missing xmlns attribute on root <svg>");
+
+  const wrongRootXmlns = `<svg xmlns="http://example.com/svg" viewBox="0 0 512 512" width="512" height="512"><rect width="512" height="512" fill="#000"/></svg>`;
+  const resWrongXmlns = lintSvgContent(wrongRootXmlns, "wrong_xmlns.svg");
+  assertEqual(resWrongXmlns.ok, false, "Wrong root xmlns attribute is rejected");
+  assert(resWrongXmlns.errors[0].includes("Invalid xmlns"), "Error message identifies invalid xmlns on root <svg>");
+
+  const missingXmlnsWithRefs = `<svg viewBox="0 0 512 512"><defs><linearGradient id="g"><stop offset="0" stop-color="#000"/></linearGradient></defs><rect width="512" height="512" fill="url(#g)"/></svg>`;
+  const resMissingXmlnsRefs = lintSvgContent(missingXmlnsWithRefs, "missing_xmlns_refs.svg");
+  assertEqual(resMissingXmlnsRefs.ok, false, "Missing root xmlns with references is rejected");
+  assertEqual(resMissingXmlnsRefs.errors.length, 1, "Only 1 error reported when root xmlns is missing (referential checks stopped early)");
+  assert(resMissingXmlnsRefs.errors[0].includes("Missing xmlns attribute on root <svg>"), "Root xmlns error is reported");
+
+  const nonSvgRootWrapper = `<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/></svg></div>`;
+  const resNonSvgWrapper = lintSvgContent(nonSvgRootWrapper, "non_svg_wrapper.svg");
+  assertEqual(resNonSvgWrapper.ok, false, "Non-svg root wrapper <div> is rejected");
+  assert(resNonSvgWrapper.errors[0].includes("Root element must be <svg>"), "Error message identifies non-svg root element");
+
+  const whitespaceXmlns = `<svg xmlns=" http://www.w3.org/2000/svg " viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/></svg>`;
+  const resWhitespaceXmlns = lintSvgContent(whitespaceXmlns, "whitespace_xmlns.svg");
+  assertEqual(resWhitespaceXmlns.ok, false, "Root xmlns with leading/trailing whitespace is rejected");
+  assert(resWhitespaceXmlns.errors[0].includes("Invalid xmlns"), "Error message identifies invalid xmlns on root <svg>");
 }
 
 // -----------------------------------------------------------------------------
@@ -397,6 +423,45 @@ console.log("\n[Suite 5] ClipPath and url(#id) Referential Integrity Verificatio
 
   const resSingleQuoted = lintSvgContent(quotedGrad(`fill="url('#g')"`), "single_quoted.svg");
   assertEqual(resSingleQuoted.ok, false, "Literal url('#g') is rejected even when #g exists");
+
+  // Duplicate id values
+  const duplicateIdSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+      <linearGradient id="g"><stop offset="0" stop-color="#000"/></linearGradient>
+      <linearGradient id="g"><stop offset="0" stop-color="#fff"/></linearGradient>
+    </defs>
+    <rect width="512" height="512" fill="url(#g)" />
+  </svg>`;
+  const resDupId = lintSvgContent(duplicateIdSvg, "duplicate_id.svg");
+  assertEqual(resDupId.ok, false, "Duplicate id is rejected");
+  assert(resDupId.errors.some(e => e.includes('Duplicate id "g" detected')), "Error names duplicate id");
+
+  // Duplicate id where last element has wrong type for reference
+  const duplicateIdWrongTypeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+      <linearGradient id="g"><stop offset="0" stop-color="#000"/></linearGradient>
+      <rect id="g" width="10" height="10" />
+    </defs>
+    <rect width="512" height="512" fill="url(#g)" />
+  </svg>`;
+  const resDupWrongType = lintSvgContent(duplicateIdWrongTypeSvg, "duplicate_id_wrong_type.svg");
+  assertEqual(resDupWrongType.ok, false, "Duplicate id with wrong type on last element is rejected");
+  assert(resDupWrongType.errors.some(e => e.includes('Duplicate id "g" detected')), "Error reports duplicate id");
+  assert(resDupWrongType.errors.some(e => e.includes('Invalid fill reference "#g"')), "Resolves to last element and flags wrong target type");
+
+  // Triple duplicate id
+  const tripleDuplicateIdSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+      <rect id="t" width="10" height="10" />
+      <rect id="t" width="20" height="20" />
+      <rect id="t" width="30" height="30" />
+    </defs>
+    <use href="#t" />
+  </svg>`;
+  const resTripleDup = lintSvgContent(tripleDuplicateIdSvg, "triple_duplicate_id.svg");
+  assertEqual(resTripleDup.ok, false, "Triple duplicate id is rejected");
+  const dupErrors = resTripleDup.errors.filter(e => e.includes('Duplicate id "t" detected'));
+  assertEqual(dupErrors.length, 2, "Reports duplicate id for each repeated occurrence (2 errors for 3 declarations)");
 }
 
 // -----------------------------------------------------------------------------
@@ -522,8 +587,16 @@ console.log("\n[Suite 8] Only Reference Forms resvg Honours Pass");
     // property names resvg does not apply a url() on
     ['upper-case attribute CLIP-PATH="url(#c)"', doc(`<rect width="512" height="512" CLIP-PATH="url(#c)"/>`), "is not applied by resvg"],
     ['upper-case style="FILL:url(#g)"', doc(`<rect width="512" height="512" style="FILL:url(#g)"/>`), "is not applied by resvg"],
-    ["upper-case <style> rule FILL:url(#g)", doc(`<style>.a{FILL:url(#g)}</style><rect class="a" width="512" height="512"/>`), "is not applied by resvg"],
-    ['marker shorthand marker="url(#mk)"', doc(`<path d="M0 0 L32 32" stroke="#000" marker="url(#mk)"/>`), "is not applied by resvg"],
+    ['upper-case <style> rule FILL:url(#g)', doc(`<style>.a{FILL:url(#g)}</style><rect class="a" width="512" height="512"/>`), "is not applied by resvg"],
+    ['marker shorthand marker="url(#mk)"', doc(`<path d="M0 0 L32 32" stroke="#000" marker="url(#mk)"/>`), "prohibited by policy"],
+    ['marker shorthand in style attribute style="marker:url(#mk)"', doc(`<path d="M0 0 L32 32" stroke="#000" style="marker:url(#mk)"/>`), "prohibited by policy"],
+    ['marker shorthand in <style> rule marker:url(#mk)', doc(`<style>.a{marker:url(#mk)}</style><path class="a" d="M0 0 L32 32" stroke="#000"/>`), "prohibited by policy"],
+    // CSS backslash escapes are not decoded by resvg
+    ['CSS escape in <style> property fil\\6c:url(#g)', doc(`<style>.a{fil\\6c:url(#g)}</style><rect class="a" width="512" height="512"/>`), "CSS backslash escape"],
+    ['CSS escape in <style> value fill:u\\72l(#g)', doc(`<style>.a{fill:u\\72l(#g)}</style><rect class="a" width="512" height="512"/>`), "CSS backslash escape"],
+    ['CSS escape in <style> selector .\\61', doc(`<style>.\\61 { fill: #000 }</style><rect width="512" height="512"/>`), "CSS backslash escape"],
+    ['CSS escape in style attribute property fil\\6c:url(#g)', doc(`<rect width="512" height="512" style="fil\\6c:url(#g)"/>`), "CSS backslash escape"],
+    ['CSS escape in style attribute value fill:u\\72l(#g)', doc(`<rect width="512" height="512" style="fill:u\\72l(#g)"/>`), "CSS backslash escape"],
     // url() pointing at an element of the wrong type
     ['fill="url(#r)" pointing at a <rect>', doc(`<rect width="512" height="512" fill="url(#r)"/>`), 'Invalid fill reference "#r"'],
     ['stroke="url(#c)" pointing at a <clipPath>', doc(`<rect width="512" height="512" stroke="url(#c)"/>`), 'Invalid stroke reference "#c"'],
