@@ -2,11 +2,16 @@ import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
 import { fileURLToPath } from "node:url";
+import {
+  globToRegExp,
+  matchGlob,
+  loadTilingRules,
+  resolveTilingCategory
+} from "./tiling-resolver.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DEFAULT_RULES_PATH = path.join(__dirname, "pbr-rules.json");
-const TILING_RULES_PATH = path.join(__dirname, "..", "tiling-rules.json");
 
 export const DEFAULT_FALLBACK_RULES = {
   version: "1.0.0",
@@ -105,66 +110,10 @@ export function encodePng(width, height, rgbaBuffer) {
 }
 
 // --------------------------------------------------------------------------
-// Pattern Matching & Tiling Helpers
+// Pattern Matching & Tiling Helpers (Re-exported from tiling-resolver.mjs)
 // --------------------------------------------------------------------------
 
-const GLOB_METACHARS = /[.+^${}()|[\]\\]/g;
-const globRegexCache = new Map();
-
-export function globToRegExp(pattern) {
-  const cached = globRegexCache.get(pattern);
-  if (cached) return cached;
-  const body = pattern
-    .replace(GLOB_METACHARS, "\\$&")
-    .replace(/\*/g, ".*")
-    .replace(/\?/g, ".");
-  const regex = new RegExp(`^${body}$`);
-  globRegexCache.set(pattern, regex);
-  return regex;
-}
-
-export function matchGlob(name, pattern) {
-  return globToRegExp(pattern).test(name);
-}
-
-let cachedTilingRules = null;
-
-export function loadTilingRules(tilingPath = TILING_RULES_PATH) {
-  if (cachedTilingRules) return cachedTilingRules;
-  if (fs.existsSync(tilingPath)) {
-    try {
-      cachedTilingRules = JSON.parse(fs.readFileSync(tilingPath, "utf-8"));
-      return cachedTilingRules;
-    } catch {
-      // Fall through to default
-    }
-  }
-  return { defaultCategory: "toroidal", categories: {}, patterns: [] };
-}
-
-export function resolveTilingCategory(stem, tilingRules) {
-  const base = path.basename(String(stem).replace(/\\/g, "/"));
-  const nameWithExt = base.endsWith(".svg") ? base : base + ".svg";
-  const stemWithoutExt = base.replace(/\.(svg|png)$/i, "");
-
-  if (tilingRules?.overrides?.[nameWithExt]) {
-    return tilingRules.overrides[nameWithExt].category;
-  }
-  if (tilingRules?.overrides?.[stemWithoutExt]) {
-    return tilingRules.overrides[stemWithoutExt].category;
-  }
-  if (tilingRules?.itemIds && tilingRules.itemIds.includes(stemWithoutExt)) {
-    return "exempt";
-  }
-  if (tilingRules?.patterns) {
-    for (const p of tilingRules.patterns) {
-      if (matchGlob(nameWithExt, p.pattern) || matchGlob(stemWithoutExt, p.pattern)) {
-        return p.category;
-      }
-    }
-  }
-  return tilingRules?.defaultCategory || "toroidal";
-}
+export { globToRegExp, matchGlob, loadTilingRules, resolveTilingCategory };
 
 // --------------------------------------------------------------------------
 // Material Rules Resolution & Color Matching

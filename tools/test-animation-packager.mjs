@@ -233,6 +233,67 @@ await asyncTest("Workspace Directory-Based Animation Packager", async () => {
   assert.strictEqual(mcmetaContent.animation.interpolate, true);
 });
 
+await asyncTest("Item Animation Sorting with Default Rules and Custom Options", async () => {
+  const sortWorkspace = path.join(TEST_TMP, "sort_workspace");
+  const defaultItemDir = path.join(sortWorkspace, "golden_apple");
+  const defaultBlockDir = path.join(sortWorkspace, "fire_0");
+  const customItemDir = path.join(sortWorkspace, "custom_wand");
+  fs.mkdirSync(defaultItemDir, { recursive: true });
+  fs.mkdirSync(defaultBlockDir, { recursive: true });
+  fs.mkdirSync(customItemDir, { recursive: true });
+
+  const dummySvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#FF0000"/></svg>`;
+  fs.writeFileSync(path.join(defaultItemDir, "0.svg"), dummySvg, "utf-8");
+  fs.writeFileSync(path.join(defaultBlockDir, "0.svg"), dummySvg, "utf-8");
+  fs.writeFileSync(path.join(customItemDir, "0.svg"), dummySvg, "utf-8");
+
+  // 1. Default tiling-rules.json: golden_apple is item, fire_0 and custom_wand are blocks
+  const outBlocksDef = path.join(TEST_TMP, "sort_out_blocks_def");
+  const outItemsDef = path.join(TEST_TMP, "sort_out_items_def");
+  fs.mkdirSync(outBlocksDef, { recursive: true });
+  fs.mkdirSync(outItemsDef, { recursive: true });
+
+  processAnimatedTextures(
+    sortWorkspace,
+    { blocksDir: outBlocksDef, itemsDir: outItemsDef },
+    512
+  );
+  assert.ok(fs.existsSync(path.join(outItemsDef, "golden_apple.png")), "golden_apple sorted to itemsDir via default rules");
+  assert.ok(fs.existsSync(path.join(outBlocksDef, "fire_0.png")), "fire_0 sorted to blocksDir via default rules");
+  assert.ok(fs.existsSync(path.join(outBlocksDef, "custom_wand.png")), "custom_wand sorted to blocksDir when unlisted in default rules");
+
+  // 2. Custom options.itemIds as Array
+  const outBlocksArr = path.join(TEST_TMP, "sort_out_blocks_arr");
+  const outItemsArr = path.join(TEST_TMP, "sort_out_items_arr");
+  fs.mkdirSync(outBlocksArr, { recursive: true });
+  fs.mkdirSync(outItemsArr, { recursive: true });
+
+  processAnimatedTextures(
+    sortWorkspace,
+    { blocksDir: outBlocksArr, itemsDir: outItemsArr },
+    512,
+    { itemIds: ["custom_wand"] }
+  );
+  assert.ok(fs.existsSync(path.join(outItemsArr, "custom_wand.png")), "custom_wand sorted to itemsDir via custom Array");
+  assert.ok(fs.existsSync(path.join(outBlocksArr, "golden_apple.png")), "golden_apple sorted to blocksDir when omitted in custom Array");
+
+  // 3. Custom options.itemIds as Set
+  const outBlocksSet = path.join(TEST_TMP, "sort_out_blocks_set");
+  const outItemsSet = path.join(TEST_TMP, "sort_out_items_set");
+  fs.mkdirSync(outBlocksSet, { recursive: true });
+  fs.mkdirSync(outItemsSet, { recursive: true });
+
+  processAnimatedTextures(
+    sortWorkspace,
+    { blocksDir: outBlocksSet, itemsDir: outItemsSet },
+    512,
+    { itemIds: new Set(["custom_wand", "golden_apple"]) }
+  );
+  assert.ok(fs.existsSync(path.join(outItemsSet, "custom_wand.png")), "custom_wand sorted to itemsDir via custom Set");
+  assert.ok(fs.existsSync(path.join(outItemsSet, "golden_apple.png")), "golden_apple sorted to itemsDir via custom Set");
+  assert.ok(fs.existsSync(path.join(outBlocksSet, "fire_0.png")), "fire_0 sorted to blocksDir via custom Set");
+});
+
 // Clean up temporary test files
 if (fs.existsSync(TEST_TMP)) {
   fs.rmSync(TEST_TMP, { recursive: true, force: true });
