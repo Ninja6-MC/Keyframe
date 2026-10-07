@@ -21,6 +21,11 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
   top-to-side color harmony across all vanilla biomes with zero color skew (#60).
 
 ### Added
+- Pinned `bedrock` blockstate override to a single un-rotated variant (#232).
+- Pinned `deepslate` and `infested_deepslate` blockstate overrides, dropping random
+  mirror and `y: 180` variants while preserving per-axis pillar rotations (#232).
+- Pinned `infested_stone` blockstate override to a single un-rotated variant matching
+  `stone.json` (#236).
 - LabPBR 1.3 material matrix in `tools/lib/pbr-rules.json`: stone and deepslate ores,
   metal blocks (hardcoded metal IDs 230/231/234, albedo-driven `255` for netherite),
   raw ore blocks (dielectric), minerals and masonry, glass, terracotta, glazed
