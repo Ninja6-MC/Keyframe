@@ -6,13 +6,13 @@
   <!--                                                                           -->
   <!-- SHARED BASE MASTER - READ BEFORE EDITING                                   -->
   <!-- This file is the deepslate background for deepslate-variant ores. Two     -->
-  <!-- sections are copied verbatim into each derivative: <defs> (if any) and   -->
-  <!-- the <g id="deepslate_base"> group, whose first child is the full-canvas    -->
-  <!-- slate fill (#3d3d43). Deepslate ore blocks must blend seamlessly into     -->
-  <!-- surrounding deepslate in caves. Anything shared must live INSIDE one of   -->
-  <!-- them: a shared element left as a loose sibling is compared by nothing.    -->
-  <!-- The registry is tools/base-sync.json; tools/lib/base-sync.mjs enforces it  -->
-  <!-- - `npm run build` fails on drift and `npm test` covers it.                 -->
+  <!-- sections are copied verbatim into each derivative: the (currently empty)  -->
+  <!-- <defs> block and the <g id="deepslate_base"> group, whose first child is  -->
+  <!-- the full-canvas slate fill (#3d3d43). Deepslate ore blocks must blend     -->
+  <!-- seamlessly into surrounding deepslate in caves. Anything shared must live -->
+  <!-- INSIDE one of them: a shared element left as a loose sibling is compared  -->
+  <!-- by nothing. The registry is tools/base-sync.json; tools/lib/base-sync.mjs -->
+  <!-- enforces it - `npm run build` fails on drift and `npm test` covers it.    -->
   <!-- ========================================================================= -->
 
   <defs>
