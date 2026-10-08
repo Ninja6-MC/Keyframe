@@ -106,6 +106,21 @@ console.log("[Suite 1] Registry Loading");
     "Deepslate shared sections cover defs and deepslate_base group"
   );
   assert(typeof deepslate.description === "string" && deepslate.description.length > 0, "Deepslate base includes description");
+  assert(
+    deepslate.description.includes(
+      "Anything shared must sit inside one of the listed sharedSections; a shared element left as a loose sibling is compared by nothing."
+    ),
+    "Deepslate description documents the sharedSection containment invariant"
+  );
+  const rawRulesJson = fs.readFileSync(DEFAULT_RULES_FILE, "utf-8");
+  assert(
+    /"sharedSections":\s*\["defs",\s*"group:stone_base"\]/.test(rawRulesJson),
+    "Stone sharedSections is formatted on a single line"
+  );
+  assert(
+    /"sharedSections":\s*\["defs",\s*"group:deepslate_base"\]/.test(rawRulesJson),
+    "Deepslate sharedSections is formatted on a single line"
+  );
 
   const missing = loadBaseSyncRules(path.join(TEST_TMP, "nope.json"));
   assertEqual(Object.keys(missing.bases).length, 0, "An absent registry degrades to an empty one");
@@ -222,6 +237,11 @@ console.log("\n[Suite 3] Shipped Masters Are In Sync");
   assert(
     /base-sync/i.test(deepslateText) && /deepslate_base/.test(deepslateText),
     "deepslate.svg header documents the base contract and marker group"
+  );
+  assert(!deepslateText.includes("(if any)"), "deepslate.svg header drops '(if any)'");
+  assert(
+    /\(currently empty\)[\s\S]*?<defs>\s*block/.test(deepslateText),
+    "deepslate.svg header documents copying the (currently empty) <defs> block"
   );
 }
 
@@ -417,6 +437,19 @@ console.log("\n[Suite 4b] Deepslate Strata Drift Detection");
   });
   result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
   assert(!result.ok, "Derivative missing deepslate_base group is caught");
+
+  // Missing defs section in derivative even though base defs is empty
+  const missingDefsOre = mockDeepslateOre.replace(/<defs>[\s\S]*?<\/defs>/, "");
+  tree = makeFixtureTree({
+    "block/deepslate.svg": deepslateBase,
+    "block/deepslate_diamond_ore.svg": missingDefsOre
+  });
+  result = checkBaseSync(tree, DEEPSLATE_FIXTURE_RULES);
+  assert(!result.ok, "Derivative missing <defs> fails even though base defs is empty");
+  assert(
+    result.errors.some((e) => e.includes("<defs>")),
+    "The missing defs error names the <defs> section"
+  );
 
   // Unregistered deepslate derivative carrying deepslate_base marker
   const unregTree = makeFixtureTree({
