@@ -114,11 +114,11 @@ console.log("[Suite 1] Registry Loading");
   );
   const rawRulesJson = fs.readFileSync(DEFAULT_RULES_FILE, "utf-8");
   assert(
-    /"sharedSections":\s*\["defs",\s*"group:stone_base"\]/.test(rawRulesJson),
+    /"sharedSections":[ \t]*\["defs",[ \t]*"group:stone_base"\]/.test(rawRulesJson),
     "Stone sharedSections is formatted on a single line"
   );
   assert(
-    /"sharedSections":\s*\["defs",\s*"group:deepslate_base"\]/.test(rawRulesJson),
+    /"sharedSections":[ \t]*\["defs",[ \t]*"group:deepslate_base"\]/.test(rawRulesJson),
     "Deepslate sharedSections is formatted on a single line"
   );
 
