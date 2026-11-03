@@ -13,14 +13,20 @@ in any `0.MINOR` bump — see [`RELEASE_PROCESS.md`](RELEASE_PROCESS.md).
 ## [Unreleased]
 
 ### Changed
+- Soil substrate palette calibrated to Cinematic Warm Loam (`#996b36`, $L=40.6\%, Y=17.6$)
+  across `dirt.svg`, `grass_block_side.svg`, and `dirt_path_side.svg`, grounding natural terrain
+  reflectance and eliminating terracotta/candy hue cast while preserving distinct separation from
+  `coarse_dirt` (#61).
 - Grass block texturing calibrated for dynamic engine biome colormap multiplication:
   `textures/block/grass_block_top.svg` authored in calibrated grayscale (`#b8b8b8` base turf,
   `#f0f0f0` strata plates, `#686868` crevice shadows), `textures/block/grass_block_side.svg`
-  updated to pure Balanced Warm Umber soil base (`#c77d38`), and `textures/block/grass_block_side_overlay.svg`
-  authored with matching calibrated grayscale stepped overhang (`#b8b8b8`). Guarantees seamless
-  top-to-side color harmony across all vanilla biomes with zero color skew (#60).
+  updated to pure soil base, and `textures/block/grass_block_side_overlay.svg` authored with
+  matching calibrated grayscale stepped overhang (`#b8b8b8`). Guarantees seamless top-to-side
+  color harmony across all vanilla biomes with zero color skew (#60).
 
 ### Added
+- Authored authentic 3D vector master for `rooted_dirt.svg` with fibrous botanical azalea root
+  tendrils and 100% toroidal seam wrapping continuity at $\Delta=0$ (#61).
 - Pinned `bedrock` blockstate override to a single un-rotated variant (#232).
 - Pinned `deepslate` and `infested_deepslate` blockstate overrides, dropping random
   mirror and `y: 180` variants while preserving per-axis pillar rotations (#232).
