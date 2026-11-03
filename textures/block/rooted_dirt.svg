@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
+  <!-- ========================================================================= -->
+  <!-- KEYFRAME TRAILER STYLE: ROOTED DIRT                                       -->
+  <!-- Cinematic Warm Loam soil base embedded with fibrous botanical azalea roots -->
+  <!-- ========================================================================= -->
+
+  <defs>
+    <!-- Border Tendril Y-Wrap: Vertical alignment at y=0 crossing -->
+    <g id="border_tendril_y">
+      <path d="M 420 -48 L 420 48 L 430 48 L 430 -48 Z" fill="#c49a6c" />
+      <path d="M 420 -48 L 420 48 L 423 48 L 423 -48 Z" fill="#dcba8e" />
+    </g>
+
+    <!-- Border Tendril X-Wrap: Horizontal alignment at x=0 crossing -->
+    <g id="border_tendril_x">
+      <path d="M -48 196 Q -24 204 0 200 Q 24 196 48 208 L 46 216 Q 24 204 0 208 Q -24 212 -46 204 Z" fill="#c49a6c" />
+      <path d="M -48 196 Q -24 204 0 200 Q 24 196 48 208 L 47 210 Q 25 198 0 202 Q -23 206 -47 198 Z" fill="#dcba8e" />
+    </g>
+  </defs>
+
+  <!-- 1. Cinematic Warm Loam Soil Base (#996b36) -->
+  <rect width="512" height="512" fill="#996b36" />
+
+  <!-- 2. Soil Clods & Pebbles (Toroidal Seamless) -->
+  <rect x="48" y="32" width="96" height="64" rx="8" fill="#7a5225" />
+  <rect x="56" y="40" width="48" height="32" rx="4" fill="#603e18" />
+
+  <rect x="320" y="120" width="112" height="80" rx="10" fill="#7a5225" />
+  <rect x="336" y="136" width="64" height="40" rx="6" fill="#603e18" />
+
+  <rect x="140" y="340" width="128" height="72" rx="10" fill="#7a5225" />
+  <rect x="156" y="356" width="64" height="36" rx="4" fill="#603e18" />
+
+  <rect x="380" y="380" width="88" height="64" rx="8" fill="#7a5225" />
+
+  <!-- 3. Warm Sunlit Highlights -->
+  <rect x="220" y="48" width="64" height="48" rx="6" fill="#bc8843" />
+  <rect x="232" y="56" width="32" height="24" rx="3" fill="#c89651" />
+
+  <rect x="48" y="220" width="72" height="56" rx="8" fill="#bc8843" />
+  <rect x="60" y="232" width="40" height="28" rx="4" fill="#c89651" />
+
+  <rect x="240" y="220" width="56" height="48" rx="6" fill="#7a5225" />
+
+  <rect x="320" y="280" width="72" height="52" rx="6" fill="#bc8843" />
+  <rect x="332" y="292" width="40" height="24" rx="3" fill="#c89651" />
+
+  <rect x="40" y="420" width="64" height="48" rx="6" fill="#bc8843" />
+
+  <!-- 4. Stylized Slate Stone Pebbles (70% Opacity) -->
+  <g id="stylized-stone-pebbles" opacity="0.7">
+    <!-- Pebble 1 (Upper Left) -->
+    <rect x="180" y="100" width="28" height="20" rx="4" fill="#6f7887" />
+    <path d="M 180 100 L 208 100 L 204 103 L 184 103 Z" fill="#9ba4b2" />
+    <path d="M 180 120 L 208 120 L 204 117 L 184 117 Z" fill="#4d5562" />
+
+    <!-- Pebble 2 (Mid Left) -->
+    <rect x="110" y="260" width="30" height="22" rx="4" fill="#6f7887" />
+    <path d="M 110 260 L 140 260 L 136 264 L 114 264 Z" fill="#9ba4b2" />
+    <path d="M 110 282 L 140 282 L 136 278 L 114 278 Z" fill="#4d5562" />
+
+    <!-- Pebble 3 (Upper Right) -->
+    <rect x="360" y="220" width="24" height="18" rx="4" fill="#6f7887" />
+    <path d="M 360 220 L 384 220 L 380 223 L 364 223 Z" fill="#9ba4b2" />
+    <path d="M 360 238 L 384 238 L 380 235 L 364 235 Z" fill="#4d5562" />
+
+    <!-- Pebble 4 (Lower Center) -->
+    <rect x="220" y="410" width="32" height="24" rx="5" fill="#6f7887" />
+    <path d="M 220 410 L 252 410 L 248 414 L 224 414 Z" fill="#9ba4b2" />
+    <path d="M 220 434 L 252 434 L 248 430 L 224 430 Z" fill="#4d5562" />
+
+    <!-- Pebble 5 (Lower Right) -->
+    <rect x="420" y="440" width="22" height="16" rx="4" fill="#6f7887" />
+    <path d="M 420 440 L 442 440 L 439 443 L 423 443 Z" fill="#9ba4b2" />
+  </g>
+
+  <!-- 5. Botanical Root Strands & Fibers (Toroidal Seamless) -->
+  <g id="botanical-roots">
+    <!-- Crevice Shadows under interior root paths -->
+    <g fill="#5c381c" opacity="0.85">
+      <path d="M 216 116 Q 248 168 228 228 Q 212 284 236 348 Q 256 396 244 444 L 256 448 Q 270 394 248 344 Q 226 284 240 224 Q 260 164 228 112 Z" />
+    </g>
+
+    <!-- Primary Root Tendril: Center-Left meandering downward (Fully Interior) -->
+    <g>
+      <path d="M 220 112 Q 252 164 232 224 Q 216 280 240 344 Q 260 392 248 440 L 236 438 Q 246 394 228 348 Q 204 284 220 228 Q 238 168 208 118 Z" fill="#c49a6c" />
+      <path d="M 210 118 Q 240 168 222 228 Q 206 284 230 348 Q 248 394 238 438 L 242 439 Q 254 393 234 346 Q 212 282 226 226 Q 246 166 216 115 Z" fill="#dcba8e" />
+    </g>
+
+    <!-- Branch A: Branching off center root toward right (Interior) -->
+    <g>
+      <path d="M 232 236 Q 284 252 324 284 Q 344 300 364 304 L 362 312 Q 340 308 318 290 Q 280 260 228 244 Z" fill="#c49a6c" />
+      <path d="M 232 236 Q 284 252 324 284 Q 344 300 364 304 L 363 307 Q 342 303 321 287 Q 282 255 230 240 Z" fill="#dcba8e" />
+    </g>
+
+    <!-- Branch B: Branching off center root toward left (Interior) -->
+    <g>
+      <path d="M 224 336 Q 180 348 144 376 Q 116 398 96 432 L 88 426 Q 110 390 140 368 Q 176 340 220 328 Z" fill="#c49a6c" />
+      <path d="M 220 328 Q 176 340 140 368 Q 110 390 88 426 L 91 424 Q 113 392 142 371 Q 178 343 222 332 Z" fill="#dcba8e" />
+    </g>
+
+    <!-- Fine Root Fibers & Hair Spines (Interior) -->
+    <g>
+      <path d="M 160 48 Q 176 68 188 96 L 182 98 Q 172 72 156 52 Z" fill="#c49a6c" />
+      <path d="M 156 52 Q 172 72 182 98 L 184 97 Q 174 70 158 50 Z" fill="#dcba8e" />
+
+      <path d="M 380 160 Q 396 172 408 192 L 404 195 Q 392 176 376 164 Z" fill="#c49a6c" />
+      <path d="M 376 164 Q 392 176 404 195 L 406 193 Q 394 174 378 162 Z" fill="#dcba8e" />
+
+      <path d="M 340 380 Q 352 400 368 416 L 364 420 Q 346 404 334 382 Z" fill="#c49a6c" />
+
+      <path d="M 180 440 Q 168 460 148 480 L 144 476 Q 162 458 174 438 Z" fill="#c49a6c" />
+    </g>
+
+    <!-- Toroidally Wrapped Root Tendrils (Zero-discontinuity definitions via <use>) -->
+    <!-- Y-axis wrapping: instantiated at y=0 and y=512 -->
+    <use href="#border_tendril_y" x="0" y="0" />
+    <use href="#border_tendril_y" x="0" y="512" />
+
+    <!-- X-axis wrapping: instantiated at x=0 and x=512 -->
+    <use href="#border_tendril_x" x="0" y="0" />
+    <use href="#border_tendril_x" x="512" y="0" />
+  </g>
+</svg>
