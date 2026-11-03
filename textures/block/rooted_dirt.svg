@@ -1,27 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!-- ========================================================================= -->
-  <!-- KEYFRAME TRAILER STYLE: ROOTED DIRT                                       -->
-  <!-- Cinematic Warm Loam soil base embedded with fibrous botanical azalea roots -->
+  <!-- OFFICIAL MINECRAFT TRAILER STYLE: ROOTED DIRT                             -->
+  <!-- Cinematic Warm Loam soil embedded with fibrous botanical azalea roots     -->
   <!-- ========================================================================= -->
-
-  <defs>
-    <!-- Border Tendril Y-Wrap: Vertical alignment at y=0 crossing -->
-    <g id="border_tendril_y">
-      <path d="M 420 -48 L 420 48 L 430 48 L 430 -48 Z" fill="#c49a6c" />
-      <path d="M 420 -48 L 420 48 L 423 48 L 423 -48 Z" fill="#dcba8e" />
-    </g>
-
-    <!-- Border Tendril X-Wrap: Horizontal alignment at x=0 crossing -->
-    <g id="border_tendril_x">
-      <path d="M -48 196 Q -24 204 0 200 Q 24 196 48 208 L 46 216 Q 24 204 0 208 Q -24 212 -46 204 Z" fill="#c49a6c" />
-      <path d="M -48 196 Q -24 204 0 200 Q 24 196 48 208 L 47 210 Q 25 198 0 202 Q -23 206 -47 198 Z" fill="#dcba8e" />
-    </g>
-  </defs>
 
   <!-- 1. Cinematic Warm Loam Soil Base (#996b36) -->
   <rect width="512" height="512" fill="#996b36" />
 
-  <!-- 2. Soil Clods & Pebbles (Toroidal Seamless) -->
+  <!-- 2. Soil Clods (Toroidal Seamless Substrate) -->
   <rect x="48" y="32" width="96" height="64" rx="8" fill="#7a5225" />
   <rect x="56" y="40" width="48" height="32" rx="4" fill="#603e18" />
 
@@ -33,7 +19,7 @@
 
   <rect x="380" y="380" width="88" height="64" rx="8" fill="#7a5225" />
 
-  <!-- 3. Warm Sunlit Highlights -->
+  <!-- 3. Warm Sunlit Soil Swells -->
   <rect x="220" y="48" width="64" height="48" rx="6" fill="#bc8843" />
   <rect x="232" y="56" width="32" height="24" rx="3" fill="#c89651" />
 
@@ -49,76 +35,329 @@
 
   <!-- 4. Stylized Slate Stone Pebbles (70% Opacity) -->
   <g id="stylized-stone-pebbles" opacity="0.7">
-    <!-- Pebble 1 (Upper Left) -->
     <rect x="180" y="100" width="28" height="20" rx="4" fill="#6f7887" />
     <path d="M 180 100 L 208 100 L 204 103 L 184 103 Z" fill="#9ba4b2" />
     <path d="M 180 120 L 208 120 L 204 117 L 184 117 Z" fill="#4d5562" />
 
-    <!-- Pebble 2 (Mid Left) -->
     <rect x="110" y="260" width="30" height="22" rx="4" fill="#6f7887" />
     <path d="M 110 260 L 140 260 L 136 264 L 114 264 Z" fill="#9ba4b2" />
     <path d="M 110 282 L 140 282 L 136 278 L 114 278 Z" fill="#4d5562" />
 
-    <!-- Pebble 3 (Upper Right) -->
     <rect x="360" y="220" width="24" height="18" rx="4" fill="#6f7887" />
     <path d="M 360 220 L 384 220 L 380 223 L 364 223 Z" fill="#9ba4b2" />
     <path d="M 360 238 L 384 238 L 380 235 L 364 235 Z" fill="#4d5562" />
 
-    <!-- Pebble 4 (Lower Center) -->
     <rect x="220" y="410" width="32" height="24" rx="5" fill="#6f7887" />
     <path d="M 220 410 L 252 410 L 248 414 L 224 414 Z" fill="#9ba4b2" />
     <path d="M 220 434 L 252 434 L 248 430 L 224 430 Z" fill="#4d5562" />
 
-    <!-- Pebble 5 (Lower Right) -->
     <rect x="420" y="440" width="22" height="16" rx="4" fill="#6f7887" />
     <path d="M 420 440 L 442 440 L 439 443 L 423 443 Z" fill="#9ba4b2" />
   </g>
 
-  <!-- 5. Botanical Root Strands & Fibers (Toroidal Seamless) -->
-  <g id="botanical-roots">
-    <!-- Crevice Shadows under interior root paths -->
-    <g fill="#5c381c" opacity="0.85">
-      <path d="M 216 116 Q 248 168 228 228 Q 212 284 236 348 Q 256 396 244 444 L 256 448 Q 270 394 248 344 Q 226 284 240 224 Q 260 164 228 112 Z" />
+  <!-- ========================================================================= -->
+  <!-- 5. BOTANICAL AZALEA ROOT NETWORK (MULTI-SCALE WOODY EMBEDDING)           -->
+  <!-- ========================================================================= -->
+
+  <!-- 5A. Ambient Occlusion Crevice Shadows (Nestled into Loam Furrows) -->
+  <g id="root-crevice-shadows" fill="none" stroke="#5c381c" stroke-linecap="round" stroke-linejoin="round" transform="translate(3.5, 4)">
+    <path d="M 168 34 C 172 56 176 76 184 98" stroke-width="28.0" opacity="0.9" />
+    <path d="M 184 98 C 192 126 200 158 206 192 C 211 220 214 240 218 256" stroke-width="26.0" opacity="0.9" />
+    <path d="M 218 256 C 224 286 228 316 234 348" stroke-width="24.0" opacity="0.9" />
+    <path d="M 234 348 C 228 372 218 398 208 420 C 202 432 196 442 190 450" stroke-width="20.0" opacity="0.82" />
+    <path d="M 234 348 C 244 378 254 410 262 440 C 266 454 268 464 270 472" stroke-width="21.0" opacity="0.9" />
+    <path d="M 184 98 C 218 86 258 80 300 94 C 324 102 350 108 376 112" stroke-width="23.0" opacity="0.9" />
+    <path d="M 376 112 C 400 116 422 120 442 126 C 454 130 464 136 470 142" stroke-width="19.0" opacity="0.82" />
+    <path d="M 324 102 C 328 130 332 165 336 196 C 338 214 340 228 342 238" stroke-width="18.0" opacity="0.82" />
+    <path d="M 392 116 C 398 132 404 150 408 162" stroke-width="15.0" opacity="0.75" />
+    <path d="M 174 72 C 150 68 128 72 110 80 C 96 86 84 94 76 104" stroke-width="19.0" opacity="0.82" />
+    <path d="M 110 80 C 94 72 78 68 64 66" stroke-width="14.0" opacity="0.75" />
+    <path d="M 210 236 C 182 250 156 270 134 292 C 122 304 112 316 104 326" stroke-width="19.0" opacity="0.82" />
+    <path d="M 134 292 C 124 316 116 344 110 368" stroke-width="15.0" opacity="0.75" />
+    <path d="M 218 382 C 198 398 178 414 160 426 C 150 432 142 436 136 440" stroke-width="16.0" opacity="0.82" />
+    <path d="M 218 256 C 248 272 280 294 312 322 C 336 344 360 370 384 396" stroke-width="22.0" opacity="0.9" />
+    <path d="M 384 396 C 402 414 420 426 438 434 C 450 440 460 444 468 448" stroke-width="19.0" opacity="0.82" />
+    <path d="M 368 378 C 376 404 384 430 392 452 C 396 462 398 470 400 476" stroke-width="17.0" opacity="0.82" />
+    <path d="M 426 428 C 438 438 448 448 454 456" stroke-width="14.0" opacity="0.75" />
+    <path d="M 280 294 C 292 308 302 324 308 336" stroke-width="14.0" opacity="0.75" />
+    <path d="M 252 82 C 262 70 272 60 280 52" stroke-width="13.0" opacity="0.75" />
+    <path d="M 352 108 C 358 122 364 136 366 146" stroke-width="13.0" opacity="0.75" />
+    <path d="M 240 240 C 260 236 278 234 292 236" stroke-width="13.0" opacity="0.75" />
+    <path d="M 228 326 C 212 334 196 342 184 348" stroke-width="14.0" opacity="0.75" />
+    <path d="M 208 420 C 216 432 222 444 226 454" stroke-width="14.0" opacity="0.75" />
+    <path d="M 408 418 C 416 428 424 436 430 442" stroke-width="13.0" opacity="0.75" />
+    <path d="M 76 104 C 68 112 60 120 54 126" stroke-width="5.0" opacity="0.65" />
+    <path d="M 64 66 C 54 66 46 68 40 72" stroke-width="5.0" opacity="0.65" />
+    <path d="M 174 72 C 166 60 156 50 148 44" stroke-width="5.0" opacity="0.65" />
+    <path d="M 280 52 C 286 46 292 42 298 38" stroke-width="5.0" opacity="0.65" />
+    <path d="M 442 126 C 452 134 460 142 464 148" stroke-width="5.0" opacity="0.65" />
+    <path d="M 408 162 C 414 174 418 184 420 192" stroke-width="5.0" opacity="0.65" />
+    <path d="M 104 326 C 96 334 88 344 82 352" stroke-width="5.0" opacity="0.65" />
+    <path d="M 110 368 C 104 380 98 392 94 402" stroke-width="5.0" opacity="0.65" />
+    <path d="M 136 440 C 128 446 120 452 114 456" stroke-width="5.0" opacity="0.65" />
+    <path d="M 190 450 C 184 458 178 464 172 470" stroke-width="5.0" opacity="0.65" />
+    <path d="M 270 472 C 272 478 274 484 276 488" stroke-width="5.0" opacity="0.65" />
+    <path d="M 308 336 C 314 348 318 358 320 366" stroke-width="5.0" opacity="0.65" />
+    <path d="M 400 476 C 402 482 404 486 406 490" stroke-width="5.0" opacity="0.65" />
+    <path d="M 454 456 C 462 464 468 472 472 478" stroke-width="5.0" opacity="0.65" />
+    <path d="M 468 448 C 476 454 482 460 486 466" stroke-width="5.0" opacity="0.65" />
+  </g>
+
+  <!-- 5B. Root Bark Base & Underside Shade -->
+  <g id="root-bark-base" fill="none" stroke="#7c4e25" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.5, 1.5)">
+    <path d="M 168 34 C 172 56 176 76 184 98" stroke-width="24.5" />
+    <path d="M 184 98 C 192 126 200 158 206 192 C 211 220 214 240 218 256" stroke-width="22.5" />
+    <path d="M 218 256 C 224 286 228 316 234 348" stroke-width="20.5" />
+    <path d="M 234 348 C 228 372 218 398 208 420 C 202 432 196 442 190 450" stroke-width="16.5" />
+    <path d="M 234 348 C 244 378 254 410 262 440 C 266 454 268 464 270 472" stroke-width="17.5" />
+    <path d="M 184 98 C 218 86 258 80 300 94 C 324 102 350 108 376 112" stroke-width="19.5" />
+    <path d="M 376 112 C 400 116 422 120 442 126 C 454 130 464 136 470 142" stroke-width="15.5" />
+    <path d="M 324 102 C 328 130 332 165 336 196 C 338 214 340 228 342 238" stroke-width="14.5" />
+    <path d="M 392 116 C 398 132 404 150 408 162" stroke-width="11.5" />
+    <path d="M 174 72 C 150 68 128 72 110 80 C 96 86 84 94 76 104" stroke-width="15.5" />
+    <path d="M 110 80 C 94 72 78 68 64 66" stroke-width="10.5" />
+    <path d="M 210 236 C 182 250 156 270 134 292 C 122 304 112 316 104 326" stroke-width="15.5" />
+    <path d="M 134 292 C 124 316 116 344 110 368" stroke-width="11.5" />
+    <path d="M 218 382 C 198 398 178 414 160 426 C 150 432 142 436 136 440" stroke-width="12.5" />
+    <path d="M 218 256 C 248 272 280 294 312 322 C 336 344 360 370 384 396" stroke-width="18.5" />
+    <path d="M 384 396 C 402 414 420 426 438 434 C 450 440 460 444 468 448" stroke-width="15.5" />
+    <path d="M 368 378 C 376 404 384 430 392 452 C 396 462 398 470 400 476" stroke-width="13.5" />
+    <path d="M 426 428 C 438 438 448 448 454 456" stroke-width="10.5" />
+    <path d="M 280 294 C 292 308 302 324 308 336" stroke-width="10.5" />
+    <path d="M 252 82 C 262 70 272 60 280 52" stroke-width="9.5" />
+    <path d="M 352 108 C 358 122 364 136 366 146" stroke-width="9.5" />
+    <path d="M 240 240 C 260 236 278 234 292 236" stroke-width="9.5" />
+    <path d="M 228 326 C 212 334 196 342 184 348" stroke-width="10.5" />
+    <path d="M 208 420 C 216 432 222 444 226 454" stroke-width="10.5" />
+    <path d="M 408 418 C 416 428 424 436 430 442" stroke-width="9.5" />
+    <path d="M 76 104 C 68 112 60 120 54 126" stroke-width="3.2" />
+    <path d="M 64 66 C 54 66 46 68 40 72" stroke-width="3.2" />
+    <path d="M 174 72 C 166 60 156 50 148 44" stroke-width="3.2" />
+    <path d="M 280 52 C 286 46 292 42 298 38" stroke-width="3.2" />
+    <path d="M 442 126 C 452 134 460 142 464 148" stroke-width="3.2" />
+    <path d="M 408 162 C 414 174 418 184 420 192" stroke-width="3.2" />
+    <path d="M 104 326 C 96 334 88 344 82 352" stroke-width="3.2" />
+    <path d="M 110 368 C 104 380 98 392 94 402" stroke-width="3.2" />
+    <path d="M 136 440 C 128 446 120 452 114 456" stroke-width="3.2" />
+    <path d="M 190 450 C 184 458 178 464 172 470" stroke-width="3.2" />
+    <path d="M 270 472 C 272 478 274 484 276 488" stroke-width="3.2" />
+    <path d="M 308 336 C 314 348 318 358 320 366" stroke-width="3.2" />
+    <path d="M 400 476 C 402 482 404 486 406 490" stroke-width="3.2" />
+    <path d="M 454 456 C 462 464 468 472 472 478" stroke-width="3.2" />
+    <path d="M 468 448 C 476 454 482 460 486 466" stroke-width="3.2" />
+  </g>
+
+  <!-- 5C. Main Botanical Root Body (Warm Botanical Wood Tan) -->
+  <g id="root-cortex-body" fill="none" stroke="#c49a6c" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 168 34 C 172 56 176 76 184 98" stroke-width="22.0" />
+    <path d="M 184 98 C 192 126 200 158 206 192 C 211 220 214 240 218 256" stroke-width="20.0" />
+    <path d="M 218 256 C 224 286 228 316 234 348" stroke-width="18.0" />
+    <path d="M 234 348 C 228 372 218 398 208 420 C 202 432 196 442 190 450" stroke-width="14.0" />
+    <path d="M 234 348 C 244 378 254 410 262 440 C 266 454 268 464 270 472" stroke-width="15.0" />
+    <path d="M 184 98 C 218 86 258 80 300 94 C 324 102 350 108 376 112" stroke-width="17.0" />
+    <path d="M 376 112 C 400 116 422 120 442 126 C 454 130 464 136 470 142" stroke-width="13.0" />
+    <path d="M 324 102 C 328 130 332 165 336 196 C 338 214 340 228 342 238" stroke-width="12.0" />
+    <path d="M 392 116 C 398 132 404 150 408 162" stroke-width="9.0" />
+    <path d="M 174 72 C 150 68 128 72 110 80 C 96 86 84 94 76 104" stroke-width="13.0" />
+    <path d="M 110 80 C 94 72 78 68 64 66" stroke-width="8.0" />
+    <path d="M 210 236 C 182 250 156 270 134 292 C 122 304 112 316 104 326" stroke-width="13.0" />
+    <path d="M 134 292 C 124 316 116 344 110 368" stroke-width="9.0" />
+    <path d="M 218 382 C 198 398 178 414 160 426 C 150 432 142 436 136 440" stroke-width="10.0" />
+    <path d="M 218 256 C 248 272 280 294 312 322 C 336 344 360 370 384 396" stroke-width="16.0" />
+    <path d="M 384 396 C 402 414 420 426 438 434 C 450 440 460 444 468 448" stroke-width="13.0" />
+    <path d="M 368 378 C 376 404 384 430 392 452 C 396 462 398 470 400 476" stroke-width="11.0" />
+    <path d="M 426 428 C 438 438 448 448 454 456" stroke-width="8.0" />
+    <path d="M 280 294 C 292 308 302 324 308 336" stroke-width="8.0" />
+    <path d="M 252 82 C 262 70 272 60 280 52" stroke-width="7.0" />
+    <path d="M 352 108 C 358 122 364 136 366 146" stroke-width="7.0" />
+    <path d="M 240 240 C 260 236 278 234 292 236" stroke-width="7.0" />
+    <path d="M 228 326 C 212 334 196 342 184 348" stroke-width="8.0" />
+    <path d="M 208 420 C 216 432 222 444 226 454" stroke-width="8.0" />
+    <path d="M 408 418 C 416 428 424 436 430 442" stroke-width="7.0" />
+    <path d="M 76 104 C 68 112 60 120 54 126" stroke-width="2.2" />
+    <path d="M 64 66 C 54 66 46 68 40 72" stroke-width="2.2" />
+    <path d="M 174 72 C 166 60 156 50 148 44" stroke-width="2.2" />
+    <path d="M 280 52 C 286 46 292 42 298 38" stroke-width="2.2" />
+    <path d="M 442 126 C 452 134 460 142 464 148" stroke-width="2.2" />
+    <path d="M 408 162 C 414 174 418 184 420 192" stroke-width="2.2" />
+    <path d="M 104 326 C 96 334 88 344 82 352" stroke-width="2.2" />
+    <path d="M 110 368 C 104 380 98 392 94 402" stroke-width="2.2" />
+    <path d="M 136 440 C 128 446 120 452 114 456" stroke-width="2.2" />
+    <path d="M 190 450 C 184 458 178 464 172 470" stroke-width="2.2" />
+    <path d="M 270 472 C 272 478 274 484 276 488" stroke-width="2.2" />
+    <path d="M 308 336 C 314 348 318 358 320 366" stroke-width="2.2" />
+    <path d="M 400 476 C 402 482 404 486 406 490" stroke-width="2.2" />
+    <path d="M 454 456 C 462 464 468 472 472 478" stroke-width="2.2" />
+    <path d="M 468 448 C 476 454 482 460 486 466" stroke-width="2.2" />
+  </g>
+
+  <!-- 5D. Organic Botanical Nodes & Knobby Joints -->
+  <g id="root-nodes">
+    <ellipse cx="186.5" cy="101" rx="14.5" ry="12.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="185" cy="99" rx="13.0" ry="11.0" fill="#7c4e25" />
+    <ellipse cx="184" cy="98" rx="12.0" ry="10.0" fill="#c49a6c" />
+    <ellipse cx="182.5" cy="96.5" rx="7.4" ry="6.2" fill="#dcba8e" />
+    <ellipse cx="181.8" cy="95.8" rx="3.8" ry="3.2" fill="#eed2ab" />
+    <ellipse cx="208.5" cy="195" rx="13.5" ry="11.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="207" cy="193" rx="12.0" ry="10.0" fill="#7c4e25" />
+    <ellipse cx="206" cy="192" rx="11.0" ry="9.0" fill="#c49a6c" />
+    <ellipse cx="204.5" cy="190.5" rx="6.8" ry="5.6" fill="#dcba8e" />
+    <ellipse cx="203.8" cy="189.8" rx="3.5" ry="2.9" fill="#eed2ab" />
+    <ellipse cx="220.5" cy="259" rx="15.5" ry="13.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="219" cy="257" rx="14.0" ry="12.0" fill="#7c4e25" />
+    <ellipse cx="218" cy="256" rx="13.0" ry="11.0" fill="#c49a6c" />
+    <ellipse cx="216.5" cy="254.5" rx="8.1" ry="6.8" fill="#dcba8e" />
+    <ellipse cx="215.8" cy="253.8" rx="4.2" ry="3.5" fill="#eed2ab" />
+    <ellipse cx="236.5" cy="351" rx="14.5" ry="12.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="235" cy="349" rx="13.0" ry="11.0" fill="#7c4e25" />
+    <ellipse cx="234" cy="348" rx="12.0" ry="10.0" fill="#c49a6c" />
+    <ellipse cx="232.5" cy="346.5" rx="7.4" ry="6.2" fill="#dcba8e" />
+    <ellipse cx="231.8" cy="345.8" rx="3.8" ry="3.2" fill="#eed2ab" />
+    <ellipse cx="302.5" cy="97" rx="12.5" ry="11.0" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="301" cy="95" rx="11.0" ry="9.5" fill="#7c4e25" />
+    <ellipse cx="300" cy="94" rx="10.0" ry="8.5" fill="#c49a6c" />
+    <ellipse cx="298.5" cy="92.5" rx="6.2" ry="5.3" fill="#dcba8e" />
+    <ellipse cx="297.8" cy="91.8" rx="3.2" ry="2.7" fill="#eed2ab" />
+    <ellipse cx="378.5" cy="115" rx="12.0" ry="10.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="377" cy="113" rx="10.5" ry="9.0" fill="#7c4e25" />
+    <ellipse cx="376" cy="112" rx="9.5" ry="8.0" fill="#c49a6c" />
+    <ellipse cx="374.5" cy="110.5" rx="5.9" ry="5.0" fill="#dcba8e" />
+    <ellipse cx="373.8" cy="109.8" rx="3.0" ry="2.6" fill="#eed2ab" />
+    <ellipse cx="326.5" cy="105" rx="12.5" ry="11.0" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="325" cy="103" rx="11.0" ry="9.5" fill="#7c4e25" />
+    <ellipse cx="324" cy="102" rx="10.0" ry="8.5" fill="#c49a6c" />
+    <ellipse cx="322.5" cy="100.5" rx="6.2" ry="5.3" fill="#dcba8e" />
+    <ellipse cx="321.8" cy="99.8" rx="3.2" ry="2.7" fill="#eed2ab" />
+    <ellipse cx="112.5" cy="83" rx="11.0" ry="9.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="111" cy="81" rx="9.5" ry="8.0" fill="#7c4e25" />
+    <ellipse cx="110" cy="80" rx="8.5" ry="7.0" fill="#c49a6c" />
+    <ellipse cx="108.5" cy="78.5" rx="5.3" ry="4.3" fill="#dcba8e" />
+    <ellipse cx="107.8" cy="77.8" rx="2.7" ry="2.2" fill="#eed2ab" />
+    <ellipse cx="136.5" cy="295" rx="11.5" ry="10.0" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="135" cy="293" rx="10.0" ry="8.5" fill="#7c4e25" />
+    <ellipse cx="134" cy="292" rx="9.0" ry="7.5" fill="#c49a6c" />
+    <ellipse cx="132.5" cy="290.5" rx="5.6" ry="4.7" fill="#dcba8e" />
+    <ellipse cx="131.8" cy="289.8" rx="2.9" ry="2.4" fill="#eed2ab" />
+    <ellipse cx="314.5" cy="325" rx="13.0" ry="11.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="313" cy="323" rx="11.5" ry="10.0" fill="#7c4e25" />
+    <ellipse cx="312" cy="322" rx="10.5" ry="9.0" fill="#c49a6c" />
+    <ellipse cx="310.5" cy="320.5" rx="6.5" ry="5.6" fill="#dcba8e" />
+    <ellipse cx="309.8" cy="319.8" rx="3.4" ry="2.9" fill="#eed2ab" />
+    <ellipse cx="386.5" cy="399" rx="12.5" ry="11.0" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="385" cy="397" rx="11.0" ry="9.5" fill="#7c4e25" />
+    <ellipse cx="384" cy="396" rx="10.0" ry="8.5" fill="#c49a6c" />
+    <ellipse cx="382.5" cy="394.5" rx="6.2" ry="5.3" fill="#dcba8e" />
+    <ellipse cx="381.8" cy="393.8" rx="3.2" ry="2.7" fill="#eed2ab" />
+    <ellipse cx="210.5" cy="423" rx="11.0" ry="10.0" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="209" cy="421" rx="9.5" ry="8.5" fill="#7c4e25" />
+    <ellipse cx="208" cy="420" rx="8.5" ry="7.5" fill="#c49a6c" />
+    <ellipse cx="206.5" cy="418.5" rx="5.3" ry="4.7" fill="#dcba8e" />
+    <ellipse cx="205.8" cy="417.8" rx="2.7" ry="2.4" fill="#eed2ab" />
+    <ellipse cx="264.5" cy="443" rx="11.5" ry="10.5" fill="#5c381c" opacity="0.88" />
+    <ellipse cx="263" cy="441" rx="10.0" ry="9.0" fill="#7c4e25" />
+    <ellipse cx="262" cy="440" rx="9.0" ry="8.0" fill="#c49a6c" />
+    <ellipse cx="260.5" cy="438.5" rx="5.6" ry="5.0" fill="#dcba8e" />
+    <ellipse cx="259.8" cy="437.8" rx="2.9" ry="2.6" fill="#eed2ab" />
+  </g>
+
+  <!-- 5E. Fibrous Botanical Wood Grain (Longitudinal Striations) -->
+  <g id="root-grain-fibers" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="#96673a" stroke-width="1.4" opacity="0.70" transform="translate(0.8, 0.8)">
+      <path d="M 168 34 C 172 56 176 76 184 98" />
+      <path d="M 184 98 C 192 126 200 158 206 192 C 211 220 214 240 218 256" />
+      <path d="M 218 256 C 224 286 228 316 234 348" />
+      <path d="M 234 348 C 228 372 218 398 208 420 C 202 432 196 442 190 450" />
+      <path d="M 234 348 C 244 378 254 410 262 440 C 266 454 268 464 270 472" />
+      <path d="M 184 98 C 218 86 258 80 300 94 C 324 102 350 108 376 112" />
+      <path d="M 376 112 C 400 116 422 120 442 126 C 454 130 464 136 470 142" />
+      <path d="M 324 102 C 328 130 332 165 336 196 C 338 214 340 228 342 238" />
+      <path d="M 174 72 C 150 68 128 72 110 80 C 96 86 84 94 76 104" />
+      <path d="M 210 236 C 182 250 156 270 134 292 C 122 304 112 316 104 326" />
+      <path d="M 218 256 C 248 272 280 294 312 322 C 336 344 360 370 384 396" />
+      <path d="M 384 396 C 402 414 420 426 438 434 C 450 440 460 444 468 448" />
+      <path d="M 368 378 C 376 404 384 430 392 452 C 396 462 398 470 400 476" />
     </g>
-
-    <!-- Primary Root Tendril: Center-Left meandering downward (Fully Interior) -->
-    <g>
-      <path d="M 220 112 Q 252 164 232 224 Q 216 280 240 344 Q 260 392 248 440 L 236 438 Q 246 394 228 348 Q 204 284 220 228 Q 238 168 208 118 Z" fill="#c49a6c" />
-      <path d="M 210 118 Q 240 168 222 228 Q 206 284 230 348 Q 248 394 238 438 L 242 439 Q 254 393 234 346 Q 212 282 226 226 Q 246 166 216 115 Z" fill="#dcba8e" />
+    <g stroke="#dcba8e" stroke-width="1.2" opacity="0.75" transform="translate(-0.8, -0.8)">
+      <path d="M 168 34 C 172 56 176 76 184 98" />
+      <path d="M 184 98 C 192 126 200 158 206 192 C 211 220 214 240 218 256" />
+      <path d="M 218 256 C 224 286 228 316 234 348" />
+      <path d="M 234 348 C 228 372 218 398 208 420 C 202 432 196 442 190 450" />
+      <path d="M 234 348 C 244 378 254 410 262 440 C 266 454 268 464 270 472" />
+      <path d="M 184 98 C 218 86 258 80 300 94 C 324 102 350 108 376 112" />
+      <path d="M 376 112 C 400 116 422 120 442 126 C 454 130 464 136 470 142" />
+      <path d="M 324 102 C 328 130 332 165 336 196 C 338 214 340 228 342 238" />
+      <path d="M 174 72 C 150 68 128 72 110 80 C 96 86 84 94 76 104" />
+      <path d="M 210 236 C 182 250 156 270 134 292 C 122 304 112 316 104 326" />
+      <path d="M 218 256 C 248 272 280 294 312 322 C 336 344 360 370 384 396" />
+      <path d="M 384 396 C 402 414 420 426 438 434 C 450 440 460 444 468 448" />
+      <path d="M 368 378 C 376 404 384 430 392 452 C 396 462 398 470 400 476" />
     </g>
+  </g>
 
-    <!-- Branch A: Branching off center root toward right (Interior) -->
-    <g>
-      <path d="M 232 236 Q 284 252 324 284 Q 344 300 364 304 L 362 312 Q 340 308 318 290 Q 280 260 228 244 Z" fill="#c49a6c" />
-      <path d="M 232 236 Q 284 252 324 284 Q 344 300 364 304 L 363 307 Q 342 303 321 287 Q 282 255 230 240 Z" fill="#dcba8e" />
+  <!-- 5F. Directional Sunlit Bevel Highlights (Top-Left Lighting) -->
+  <g id="root-sunlit-highlights" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(-1.8, -2.0)">
+    <g stroke="#dcba8e">
+      <path d="M 168 34 C 172 56 176 76 184 98" stroke-width="7.5" />
+      <path d="M 184 98 C 192 126 200 158 206 192 C 211 220 214 240 218 256" stroke-width="6.8" />
+      <path d="M 218 256 C 224 286 228 316 234 348" stroke-width="6.1" />
+      <path d="M 234 348 C 228 372 218 398 208 420 C 202 432 196 442 190 450" stroke-width="4.8" />
+      <path d="M 234 348 C 244 378 254 410 262 440 C 266 454 268 464 270 472" stroke-width="5.1" />
+      <path d="M 184 98 C 218 86 258 80 300 94 C 324 102 350 108 376 112" stroke-width="5.8" />
+      <path d="M 376 112 C 400 116 422 120 442 126 C 454 130 464 136 470 142" stroke-width="4.4" />
+      <path d="M 324 102 C 328 130 332 165 336 196 C 338 214 340 228 342 238" stroke-width="4.1" />
+      <path d="M 392 116 C 398 132 404 150 408 162" stroke-width="3.1" />
+      <path d="M 174 72 C 150 68 128 72 110 80 C 96 86 84 94 76 104" stroke-width="4.4" />
+      <path d="M 110 80 C 94 72 78 68 64 66" stroke-width="2.7" />
+      <path d="M 210 236 C 182 250 156 270 134 292 C 122 304 112 316 104 326" stroke-width="4.4" />
+      <path d="M 134 292 C 124 316 116 344 110 368" stroke-width="3.1" />
+      <path d="M 218 382 C 198 398 178 414 160 426 C 150 432 142 436 136 440" stroke-width="3.4" />
+      <path d="M 218 256 C 248 272 280 294 312 322 C 336 344 360 370 384 396" stroke-width="5.4" />
+      <path d="M 384 396 C 402 414 420 426 438 434 C 450 440 460 444 468 448" stroke-width="4.4" />
+      <path d="M 368 378 C 376 404 384 430 392 452 C 396 462 398 470 400 476" stroke-width="3.7" />
+      <path d="M 426 428 C 438 438 448 448 454 456" stroke-width="2.7" />
+      <path d="M 280 294 C 292 308 302 324 308 336" stroke-width="2.7" />
+      <path d="M 252 82 C 262 70 272 60 280 52" stroke-width="2.4" />
+      <path d="M 352 108 C 358 122 364 136 366 146" stroke-width="2.4" />
+      <path d="M 240 240 C 260 236 278 234 292 236" stroke-width="2.4" />
+      <path d="M 228 326 C 212 334 196 342 184 348" stroke-width="2.7" />
+      <path d="M 208 420 C 216 432 222 444 226 454" stroke-width="2.7" />
+      <path d="M 408 418 C 416 428 424 436 430 442" stroke-width="2.4" />
+      <path d="M 76 104 C 68 112 60 120 54 126" stroke-width="1.1" />
+      <path d="M 64 66 C 54 66 46 68 40 72" stroke-width="1.1" />
+      <path d="M 174 72 C 166 60 156 50 148 44" stroke-width="1.1" />
+      <path d="M 280 52 C 286 46 292 42 298 38" stroke-width="1.1" />
+      <path d="M 442 126 C 452 134 460 142 464 148" stroke-width="1.1" />
+      <path d="M 408 162 C 414 174 418 184 420 192" stroke-width="1.1" />
+      <path d="M 104 326 C 96 334 88 344 82 352" stroke-width="1.1" />
+      <path d="M 110 368 C 104 380 98 392 94 402" stroke-width="1.1" />
+      <path d="M 136 440 C 128 446 120 452 114 456" stroke-width="1.1" />
+      <path d="M 190 450 C 184 458 178 464 172 470" stroke-width="1.1" />
+      <path d="M 270 472 C 272 478 274 484 276 488" stroke-width="1.1" />
+      <path d="M 308 336 C 314 348 318 358 320 366" stroke-width="1.1" />
+      <path d="M 400 476 C 402 482 404 486 406 490" stroke-width="1.1" />
+      <path d="M 454 456 C 462 464 468 472 472 478" stroke-width="1.1" />
+      <path d="M 468 448 C 476 454 482 460 486 466" stroke-width="1.1" />
     </g>
-
-    <!-- Branch B: Branching off center root toward left (Interior) -->
-    <g>
-      <path d="M 224 336 Q 180 348 144 376 Q 116 398 96 432 L 88 426 Q 110 390 140 368 Q 176 340 220 328 Z" fill="#c49a6c" />
-      <path d="M 220 328 Q 176 340 140 368 Q 110 390 88 426 L 91 424 Q 113 392 142 371 Q 178 343 222 332 Z" fill="#dcba8e" />
+    <g stroke="#eed2ab" stroke-width="1.8" opacity="0.90">
+      <path d="M 168 36 C 172 56 176 76 184 98" />
+      <path d="M 194 135 C 200 158 205 180 208 204" />
+      <path d="M 184 96 C 218 84 256 78 296 92" />
+      <path d="M 330 104 C 354 110 380 114 406 118" />
+      <path d="M 224 262 C 248 276 276 296 304 320" />
+      <path d="M 230 326 C 233 342 236 358 238 372" />
+      <path d="M 174 70 C 152 66 132 70 116 78" />
+      <path d="M 210 238 C 186 250 162 268 142 288" />
     </g>
+  </g>
 
-    <!-- Fine Root Fibers & Hair Spines (Interior) -->
-    <g>
-      <path d="M 160 48 Q 176 68 188 96 L 182 98 Q 172 72 156 52 Z" fill="#c49a6c" />
-      <path d="M 156 52 Q 172 72 182 98 L 184 97 Q 174 70 158 50 Z" fill="#dcba8e" />
-
-      <path d="M 380 160 Q 396 172 408 192 L 404 195 Q 392 176 376 164 Z" fill="#c49a6c" />
-      <path d="M 376 164 Q 392 176 404 195 L 406 193 Q 394 174 378 162 Z" fill="#dcba8e" />
-
-      <path d="M 340 380 Q 352 400 368 416 L 364 420 Q 346 404 334 382 Z" fill="#c49a6c" />
-
-      <path d="M 180 440 Q 168 460 148 480 L 144 476 Q 162 458 174 438 Z" fill="#c49a6c" />
-    </g>
-
-    <!-- Toroidally Wrapped Root Tendrils (Zero-discontinuity definitions via <use>) -->
-    <!-- Y-axis wrapping: instantiated at y=0 and y=512 -->
-    <use href="#border_tendril_y" x="0" y="0" />
-    <use href="#border_tendril_y" x="0" y="512" />
-
-    <!-- X-axis wrapping: instantiated at x=0 and x=512 -->
-    <use href="#border_tendril_x" x="0" y="0" />
-    <use href="#border_tendril_x" x="512" y="0" />
+  <!-- 5G. Soil-Root Entwinement Lips (Roots Deeply Embedded in Loam Bed) -->
+  <g id="soil-entwinement-lips">
+    <path d="M 228 338 Q 236 346 244 342 Q 238 352 230 356 Q 224 346 228 338 Z" fill="#7a5225" />
+    <path d="M 126 72 Q 134 80 140 76 Q 136 86 128 88 Q 122 80 126 72 Z" fill="#7a5225" />
+    <path d="M 334 122 Q 342 128 348 124 Q 344 134 336 136 Q 330 128 334 122 Z" fill="#603e18" />
+    <circle cx="178" cy="110" r="3.8" fill="#bc8843" />
+    <circle cx="177" cy="109" r="2.0" fill="#c89651" />
+    <circle cx="228" cy="268" r="4.0" fill="#7a5225" />
+    <circle cx="414" cy="432" r="3.5" fill="#7a5225" />
   </g>
 </svg>
