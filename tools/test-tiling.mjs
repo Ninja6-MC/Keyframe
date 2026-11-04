@@ -177,28 +177,37 @@ export function analyzeSeams(renderedImage, testAxes = ["x", "y"], tolerance = 0
     }
   }
 
-  // 2. Vertical Seam (Y-axis wrap: Row 0 vs Row H-1)
+  // 2. Vertical Seam (Y-axis wrap: per-frame top vs bottom for multi-frame strips)
   if (testAxes.includes("y")) {
-    for (let x = 0; x < W; x++) {
-      const idx0 = (0 * W + x) * 4;
-      const idx1 = ((H - 1) * W + x) * 4;
+    const frameHeight = (H > W && H % W === 0) ? W : H;
+    const frameCount = Math.floor(H / frameHeight);
 
-      const dr = Math.abs(px[idx0 + 0] - px[idx1 + 0]);
-      const dg = Math.abs(px[idx0 + 1] - px[idx1 + 1]);
-      const db = Math.abs(px[idx0 + 2] - px[idx1 + 2]);
-      const da = Math.abs(px[idx0 + 3] - px[idx1 + 3]);
-      const delta = Math.max(dr, dg, db, da);
+    for (let f = 0; f < frameCount; f++) {
+      const topRow = f * frameHeight;
+      const bottomRow = (f + 1) * frameHeight - 1;
 
-      if (delta > tolerance) {
-        errors.push({
-          axis: "Y",
-          coord: x,
-          delta,
-          color0: toHex(px[idx0], px[idx0 + 1], px[idx0 + 2], px[idx0 + 3]),
-          color1: toHex(px[idx1], px[idx1 + 1], px[idx1 + 2], px[idx1 + 3]),
-          c0Raw: [px[idx0], px[idx0 + 1], px[idx0 + 2], px[idx0 + 3]],
-          c1Raw: [px[idx1], px[idx1 + 1], px[idx1 + 2], px[idx1 + 3]]
-        });
+      for (let x = 0; x < W; x++) {
+        const idx0 = (topRow * W + x) * 4;
+        const idx1 = (bottomRow * W + x) * 4;
+
+        const dr = Math.abs(px[idx0 + 0] - px[idx1 + 0]);
+        const dg = Math.abs(px[idx0 + 1] - px[idx1 + 1]);
+        const db = Math.abs(px[idx0 + 2] - px[idx1 + 2]);
+        const da = Math.abs(px[idx0 + 3] - px[idx1 + 3]);
+        const delta = Math.max(dr, dg, db, da);
+
+        if (delta > tolerance) {
+          errors.push({
+            axis: "Y",
+            frame: f,
+            coord: x,
+            delta,
+            color0: toHex(px[idx0], px[idx0 + 1], px[idx0 + 2], px[idx0 + 3]),
+            color1: toHex(px[idx1], px[idx1 + 1], px[idx1 + 2], px[idx1 + 3]),
+            c0Raw: [px[idx0], px[idx0 + 1], px[idx0 + 2], px[idx0 + 3]],
+            c1Raw: [px[idx1], px[idx1 + 1], px[idx1 + 2], px[idx1 + 3]]
+          });
+        }
       }
     }
   }

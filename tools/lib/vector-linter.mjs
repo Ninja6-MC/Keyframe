@@ -287,8 +287,19 @@ export function lintSvgContent(svgContent, filePath = "<inline>") {
   } else {
     const rawViewBox = viewBoxMatch[2];
     const normalizedViewBox = rawViewBox.trim().replace(/\s+/g, " ");
-    if (normalizedViewBox !== REQUIRED_VIEWBOX) {
-      errors.push(`${filePath}: Invalid viewBox "${rawViewBox}" (must be exactly "${REQUIRED_VIEWBOX}")`);
+    const vbParts = normalizedViewBox.split(" ");
+    const isValidMultiFrame =
+      vbParts.length === 4 &&
+      vbParts[0] === "0" &&
+      vbParts[1] === "0" &&
+      vbParts[2] === "512" &&
+      !isNaN(Number(vbParts[3])) &&
+      Number.isInteger(Number(vbParts[3])) &&
+      Number(vbParts[3]) > 0 &&
+      Number(vbParts[3]) % 512 === 0;
+
+    if (!isValidMultiFrame) {
+      errors.push(`${filePath}: Invalid viewBox "${rawViewBox}" (must be exactly "${REQUIRED_VIEWBOX}" or a vertical multi-frame strip "0 0 512 (512 * N)")`);
     }
   }
 

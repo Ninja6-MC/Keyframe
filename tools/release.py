@@ -81,10 +81,11 @@ def expected_assets(resolution, pbr=False):
         if source.suffix == ".svg":
             stem = source.stem
             stems = [f"{dye}_{stem.removesuffix('.template')}" for dye in dyes] if stem.endswith(".template") else [stem]
+            is_fluid = stem.startswith(("water", "lava"))
             for output in stems:
                 name = prefix + output + ".png"
                 textures[name] = svg_dimensions(source, resolution)
-                if pbr and (stem.endswith(".template") or "_overlay" not in relative.as_posix()):
+                if pbr and not is_fluid and (stem.endswith(".template") or "_overlay" not in relative.as_posix()):
                     for suffix in ("_n.png", "_s.png"):
                         textures[prefix + output + suffix] = (resolution, resolution)
             if not stem.endswith(".template"):
