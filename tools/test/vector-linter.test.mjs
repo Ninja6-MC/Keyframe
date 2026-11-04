@@ -113,6 +113,16 @@ console.log("\n[Suite 2] ViewBox Invariant Verification");
   assertEqual(validRes.ok, true, 'Valid viewBox "0 0 512 512" passes');
   assertEqual(validRes.errors.length, 0, "No errors on valid viewBox");
 
+  const validMultiFrame16 = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 8192" width="512" height="8192"><rect width="512" height="8192" fill="#000"/></svg>`;
+  const resMulti16 = lintSvgContent(validMultiFrame16, "water_still.svg");
+  assertEqual(resMulti16.ok, true, 'Multi-frame vertical strip viewBox "0 0 512 8192" passes');
+  assertEqual(resMulti16.errors.length, 0, "No errors on multi-frame 16x strip viewBox");
+
+  const validMultiFrame3 = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 1536" width="512" height="1536"><rect width="512" height="1536" fill="#000"/></svg>`;
+  const resMulti3 = lintSvgContent(validMultiFrame3, "water.svg");
+  assertEqual(resMulti3.ok, true, 'Multi-frame vertical strip viewBox "0 0 512 1536" passes');
+  assertEqual(resMulti3.errors.length, 0, "No errors on multi-frame 3x strip viewBox");
+
   const missingViewBox = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><rect width="512" height="512" fill="#000"/></svg>`;
   const missingRes = lintSvgContent(missingViewBox, "missing_viewbox.svg");
   assertEqual(missingRes.ok, false, "Missing viewBox is rejected");

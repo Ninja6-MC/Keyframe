@@ -305,7 +305,8 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
         const relLog = path.join(relDir === "." ? "" : relDir, stem + ".png").replace(/\\/g, "/");
 
         const isOverlay = stem.endsWith("_overlay") || file.relPath.includes("_overlay");
-        if (pbr && !isOverlay) {
+        const isFluid = stem.startsWith("water_") || stem.startsWith("lava_") || stem === "water" || stem === "lava";
+        if (pbr && !isOverlay && !isFluid) {
           const pbrMaps = generatePbrMaps(stem, rendered.pixels, targetRes, targetRes);
           fs.writeFileSync(path.join(targetDir, stem + "_n.png"), pbrMaps.normalMap);
           fs.writeFileSync(path.join(targetDir, stem + "_s.png"), pbrMaps.specularMap);
@@ -336,7 +337,7 @@ export async function buildResourcePack(targetRes = 512, options = {}) {
           aliasesToCopy.push({ src: destPng, dest: path.join(targetDir, "grass_2.png"), label: grassRel, stem });
         }
 
-        const pbrSuffix = pbr && !isOverlay ? " (+LabPBR _n/_s)" : "";
+        const pbrSuffix = pbr && !isOverlay && !isFluid ? " (+LabPBR _n/_s)" : "";
         return "  ✓ " + relLog + pbrSuffix;
       } else {
         // Direct mirror for non-SVG texture assets (.mcmeta, .png, .json)

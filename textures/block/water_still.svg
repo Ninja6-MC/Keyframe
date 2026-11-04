@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 8192" width="512" height="8192">
+  <!-- ========================================================================= -->
+  <!-- KEYFRAME OFFICIAL TRAILER STYLE: STILL WATER (16-FRAME PURE FLAT STREAM) -->
+  <!-- Clean, minimal, zero-noise flat translucent trailer standard              -->
+  <!-- ========================================================================= -->
+  <g id="frame_0" transform="translate(0, 0)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_1" transform="translate(0, 512)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_2" transform="translate(0, 1024)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_3" transform="translate(0, 1536)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_4" transform="translate(0, 2048)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_5" transform="translate(0, 2560)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_6" transform="translate(0, 3072)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_7" transform="translate(0, 3584)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_8" transform="translate(0, 4096)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_9" transform="translate(0, 4608)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_10" transform="translate(0, 5120)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_11" transform="translate(0, 5632)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_12" transform="translate(0, 6144)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_13" transform="translate(0, 6656)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_14" transform="translate(0, 7168)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+  <g id="frame_15" transform="translate(0, 7680)">
+    <rect width="512" height="512" fill="#ffffff" fill-opacity="0.78" />
+  </g>
+</svg>
